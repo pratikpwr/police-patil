@@ -11,23 +11,20 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(body: SafeArea(child: _buildBody(context)));
   }
 
-  BlocProvider<SplashBloc> _buildBody(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SplashBloc(),
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white,
-        child: Center(
-          child: BlocBuilder<SplashBloc, SplashState>(
-            builder: (context, state) {
-              if ((state is SplashInitial) || (state is SplashLoading)) {
-                return const SplashWidget();
-              } else {
-                return const HomeScreen();
-              }
-            },
-          ),
+  Widget _buildBody(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: Colors.white,
+      child: Center(
+        child: BlocBuilder<SplashBloc, SplashState>(
+          builder: (context, state) {
+            if ((state is SplashInitial) || (state is SplashLoading)) {
+              return const SplashWidget();
+            } else {
+              return const SignInScreen();
+            }
+          },
         ),
       ),
     );

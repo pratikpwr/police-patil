@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/views/views.dart';
 import 'package:shared/modules/splash/bloc/splash_bloc.dart';
 
 class SplashWidget extends StatefulWidget {
@@ -25,20 +26,6 @@ class _SplashWidgetState extends State<SplashWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      // crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(ImageConstants.policeLogo),
-        const SizedBox(
-          height: 12,
-        ),
-        Text(
-          PolicePatilApp,
-          style: GoogleFonts.poppins(
-              fontSize: 28, fontWeight: FontWeight.w600, color: Text_Color),
-        )
-      ],
-    );
+    return const LogoWidget();
   }
 }

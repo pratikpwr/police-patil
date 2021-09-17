@@ -1,10 +1,16 @@
 import 'package:api/api.dart';
 import 'package:dio/dio.dart';
 
-class AuthRepository {
-  // Future<Response> signIn({String email, String password}) async {
-  //   Response response = await ApiSdk.signIn(email: email, password: password);
-  //   return response;
-  // }
+enum AuthStatus { unknown, authenticated, unauthenticated }
 
+class AuthRepository {
+  Future<void> logIn({
+    required String username,
+    required String password,
+  }) async {
+    await Future.delayed(
+      const Duration(milliseconds: 300),
+      // () => _controller.add(AuthenticationStatus.authenticated),
+    );
+  }
 }

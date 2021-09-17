@@ -6,5 +6,5 @@ class ImageConstants {
   // factory ImageConstants() => _instance;
 
   // String museTransparent = 'assets/muse.png';
-  static String policeLogo = "assets/logo.png";
+  static String policeLogo = "assets/logo_no_bg.png";
 }

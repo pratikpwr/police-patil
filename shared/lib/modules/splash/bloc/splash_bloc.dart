@@ -18,7 +18,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   ) async* {
     if (event is NavigateToHome) {
       yield SplashLoading();
-      await Future.delayed(const Duration(seconds: 4));
+      await Future.delayed(const Duration(seconds: 2));
       yield SplashLoaded();
     }
   }
