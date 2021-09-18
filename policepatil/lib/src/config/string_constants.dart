@@ -10,6 +10,7 @@ const String POLICE_PATIL_APP = "पोलीस पाटील"; // ॲप
 const String USER_ID = "युझर आयडी";
 const String PASSWORD = "पासवर्ड";
 const String SIGN_IN = "लॉग इन करा";
+const String PROFILE = "प्रोफाइल";
 
 // Register Categories
 const String REGISTER = "रजिस्टर";
@@ -23,3 +24,11 @@ const String CRIMES_REGISTER = "गावांमध्ये घडलेल�
 const String SOCIAL_PLACES = "सार्वजनिक स्थळे";
 const String ILLEGAL_WORKS = "अवैद्य धंदे";
 const String DISASTER_MANAGEMENT = "आपत्ती व्यवस्थापन";
+
+// const String  = "";
+const String NAME = "नाव";
+const String MOB_NO = "मोबाईल नंबर";
+const String ADDRESS = "पत्ता";
+const String OTHER_INFO = "इतर माहिती";
+const String DO_REGISTER = "रजिस्टर करा";
+const String SAVED = "सेव झाले";

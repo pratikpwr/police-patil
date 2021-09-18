@@ -26,20 +26,11 @@ class RegisterScreen extends StatelessWidget {
             children: [
               _spacer(),
               RegistersButton(
-                  text: ARMS_COLLECTIONS,
+                  text: WATCH_REGISTER,
                   imageUrl: ImageConstants.IMG_PLACEHOLDER,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const ArmsRegScreen();
-                    }));
-                  }),
-              _spacer(),
-              RegistersButton(
-                  text: COLLECTION_REGISTER,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const CollectRegScreen();
+                      return const WatchRegScreen();
                     }));
                   }),
               _spacer(),
@@ -53,11 +44,20 @@ class RegisterScreen extends StatelessWidget {
                   }),
               _spacer(),
               RegistersButton(
-                  text: WATCH_REGISTER,
+                  text: COLLECTION_REGISTER,
                   imageUrl: ImageConstants.IMG_PLACEHOLDER,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const WatchRegScreen();
+                      return const CollectRegScreen();
+                    }));
+                  }),
+              _spacer(),
+              RegistersButton(
+                  text: ARMS_COLLECTIONS,
+                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const ArmsRegScreen();
                     }));
                   }),
               _spacer(),

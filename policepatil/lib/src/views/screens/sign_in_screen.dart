@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:shared/modules/auth/bloc/auth_bloc.dart';
 
 import '../views.dart';
@@ -97,26 +98,18 @@ class _SignInScreenState extends State<SignInScreen> {
         _authButton(
             text: SIGN_IN,
             onTap: () {
-              if (_emailController.text.length < 6) {
-                return showSnackBar('Enter valid userId!');
-              }
-              if (_passwordController.text.length < 6) {
-                return showSnackBar('Password is too short!');
-              }
+              // if (_emailController.text.length < 6) {
+              //   return showSnackBar(context, 'Enter valid userId!');
+              // }
+              // if (_passwordController.text.length < 6) {
+              //   return showSnackBar(context, 'Password is too short!');
+              // }
               BlocProvider.of<AuthBloc>(context).add(SignInEvent(
                   email: _emailController.text,
                   password: _passwordController.text));
             }),
       ],
     );
-  }
-
-  void showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          message,
-      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
-    )));
   }
 
   Widget _authButton({required String text, required VoidCallback onTap}) {

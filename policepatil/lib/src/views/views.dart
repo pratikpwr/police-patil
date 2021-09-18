@@ -27,5 +27,12 @@ export 'package:policepatil/src/views/widgets/custom_button.dart';
 export 'package:policepatil/src/views/widgets/logo_widget.dart';
 export 'package:policepatil/src/views/widgets/registers_button.dart';
 
+export 'package:policepatil/src/views/widgets/custom_textfield.dart';
+export 'package:policepatil/src/views/widgets/custom_dropdown.dart';
+
 // export 'package:policepatil/src/views/widgets/';
 // export 'package:policepatil/src/views/widgets/';
+// export 'package:policepatil/src/views/widgets/';
+// // export 'package:policepatil/src/views/widgets/';
+// export 'package:policepatil/src/views/widgets/';
+// // export 'package:policepatil/src/views/widgets/';
