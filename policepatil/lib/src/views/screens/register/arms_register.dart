@@ -45,6 +45,7 @@ class _ArmsRegScreenState extends State<ArmsRegScreen> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
+                spacer(),
                 buildDropButton(
                     value: _chosenValue,
                     items: _armsRegTypes,

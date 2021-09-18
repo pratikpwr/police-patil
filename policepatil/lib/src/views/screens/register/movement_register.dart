@@ -21,6 +21,8 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
     "संस्कृती हालचाली"
   ];
 
+  List<String>? _movementSubRegTypes;
+
   final List<String> _politicalMovements = <String>[
     "आंदोलने",
     "सभा",
@@ -59,6 +61,7 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(
             children: [
+              spacer(),
               buildDropButton(
                   value: _movementValue,
                   items: _movementRegTypes,
@@ -66,13 +69,14 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
                   onChanged: (String? value) {
                     setState(() {
                       _movementValue = value;
+                      _movementSubRegTypes = _getSubList(_movementValue);
                     });
                   }),
               spacer(),
               _movementValue != null
                   ? buildDropButton(
                       value: _movementSubValue,
-                      items: _getSubList(_movementValue),
+                      items: _movementSubRegTypes!,
                       hint: "हालचाली उपप्रकार निवडा",
                       onChanged: (String? value) {
                         setState(() {

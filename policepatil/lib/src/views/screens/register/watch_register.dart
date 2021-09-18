@@ -44,6 +44,7 @@ class _WatchRegScreenState extends State<WatchRegScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(
             children: [
+              spacer(),
               buildDropButton(
                   value: _chosenValue,
                   items: _watchRegTypes,
