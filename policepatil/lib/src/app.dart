@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:policepatil/src/config/constants.dart';
-import 'package:policepatil/src/views/screens/splash_screen.dart';
+import 'package:policepatil/src/views/views.dart';
 import 'package:shared/modules/auth/bloc/auth_bloc.dart';
 import 'package:shared/modules/splash/bloc/splash_bloc.dart';
 
@@ -16,9 +16,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SplashBloc())
       ],
       child: const MaterialApp(
-          title: AppName,
+          title: STR_APP_NAME,
           debugShowCheckedModeBanner: false,
-          home: SplashScreen()),
+          home: RegisterScreen()),
     );
   }
 }

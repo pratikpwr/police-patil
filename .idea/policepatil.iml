@@ -3,17 +3,17 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/sdk/build" />
-      <excludeFolder url="file://$MODULE_DIR$/sdk/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/api/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/api/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/api/build" />
-      <excludeFolder url="file://$MODULE_DIR$/shared/build" />
-      <excludeFolder url="file://$MODULE_DIR$/shared/.pub" />
-      <excludeFolder url="file://$MODULE_DIR$/shared/.dart_tool" />
-      <excludeFolder url="file://$MODULE_DIR$/policepatil/build" />
       <excludeFolder url="file://$MODULE_DIR$/policepatil/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/policepatil/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/policepatil/build" />
+      <excludeFolder url="file://$MODULE_DIR$/sdk/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/sdk/build" />
+      <excludeFolder url="file://$MODULE_DIR$/shared/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/shared/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/shared/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

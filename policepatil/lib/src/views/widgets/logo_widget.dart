@@ -11,14 +11,14 @@ class LogoWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset(ImageConstants.policeLogo),
+        Image.asset(ImageConstants.IMG_POLICE_LOGO),
         const SizedBox(
           height: 12,
         ),
         Text(
-          PolicePatilApp,
+          POLICE_PATIL_APP,
           style: GoogleFonts.poppins(
-              fontSize: 28, fontWeight: FontWeight.w600, color: Text_Color),
+              fontSize: 28, fontWeight: FontWeight.w600, color: TEXT_COLOR),
         )
       ],
     );

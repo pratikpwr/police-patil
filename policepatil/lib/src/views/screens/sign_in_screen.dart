@@ -26,7 +26,11 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
+          if (state is AuthLoading) {
+            isLoading = true;
+          }
           if (state is AuthSuccess) {
+            isLoading = false;
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (ctx) {
               return const HomeScreen();
@@ -35,13 +39,15 @@ class _SignInScreenState extends State<SignInScreen> {
         },
         child: SafeArea(
             child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
           child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
               padding: const EdgeInsets.all(16.0),
-              child: signInWidget()),
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : signInWidget()),
         )),
       ),
     );
@@ -63,8 +69,9 @@ class _SignInScreenState extends State<SignInScreen> {
               prefixIcon: const Icon(
                 Icons.email_rounded,
               ),
-              hintText: UserId,
-              hintStyle: GoogleFonts.poppins(fontSize: 14),
+              hintText: USER_ID,
+              hintStyle: GoogleFonts.poppins(
+                  fontSize: 14, fontWeight: FontWeight.w500),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
         ),
@@ -78,8 +85,9 @@ class _SignInScreenState extends State<SignInScreen> {
               prefixIcon: const Icon(
                 Icons.lock_rounded,
               ),
-              hintText: Password,
-              hintStyle: GoogleFonts.poppins(fontSize: 14),
+              hintText: PASSWORD,
+              hintStyle: GoogleFonts.poppins(
+                  fontSize: 14, fontWeight: FontWeight.w500),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
         ),
@@ -87,11 +95,10 @@ class _SignInScreenState extends State<SignInScreen> {
           height: 16,
         ),
         _authButton(
-            text: SignIn,
+            text: SIGN_IN,
             onTap: () {
-              if (_emailController.text.length < 6 &&
-                  !_emailController.text.contains('@')) {
-                return showSnackBar('Enter valid email!');
+              if (_emailController.text.length < 6) {
+                return showSnackBar('Enter valid userId!');
               }
               if (_passwordController.text.length < 6) {
                 return showSnackBar('Password is too short!');
@@ -107,8 +114,8 @@ class _SignInScreenState extends State<SignInScreen> {
   void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-      message,
-      style: GoogleFonts.poppins(fontSize: 12),
+          message,
+      style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
     )));
   }
 
