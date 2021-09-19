@@ -37,3 +37,7 @@ const String DESCRIPTION = "वर्णन";
 const String YES = "हो";
 const String NO = "नाही";
 const String VEHICLE_NO = "वाहनांचे क्रमांक";
+const String CRIMES = "गुन्हे";
+const String DEATHS = "अकस्मात मयत";
+const String BURNS = "अकस्मात जळीत";
+const String MISSING = "मिसिंग";

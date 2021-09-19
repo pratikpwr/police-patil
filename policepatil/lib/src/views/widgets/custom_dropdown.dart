@@ -21,7 +21,7 @@ Widget buildDropButton(
           //elevation: 5,
           style: GoogleFonts.poppins(color: Colors.white),
           iconEnabledColor: Colors.black,
-          iconSize: 26,
+          iconSize: 30,
           items: items.map<DropdownMenuItem<String>>((String val) {
             return DropdownMenuItem<String>(
               value: val,

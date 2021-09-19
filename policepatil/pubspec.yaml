@@ -15,7 +15,7 @@ dependencies:
   # UI
   google_fonts: ^2.1.0
   cupertino_icons: ^1.0.3
-
+  carousel_slider: ^4.0.0
   # Network
 
   #

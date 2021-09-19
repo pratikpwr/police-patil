@@ -13,7 +13,7 @@ class RegistersButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width * 0.93,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -32,7 +32,7 @@ class RegistersButton extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               const SizedBox(
-                width: 12,
+                width: 16,
               ),
               Text(
                 text,

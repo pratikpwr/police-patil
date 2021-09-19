@@ -27,7 +27,7 @@ class RegisterScreen extends StatelessWidget {
               _spacer(),
               RegistersButton(
                   text: WATCH_REGISTER,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  imageUrl: ImageConstants.IMG_WATCH,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const WatchRegScreen();
@@ -36,7 +36,7 @@ class RegisterScreen extends StatelessWidget {
               _spacer(),
               RegistersButton(
                   text: MOVEMENT_REGISTER,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  imageUrl: ImageConstants.IMG_MOVEMENT,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const MovementRegScreen();
@@ -45,7 +45,7 @@ class RegisterScreen extends StatelessWidget {
               _spacer(),
               RegistersButton(
                   text: COLLECTION_REGISTER,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  imageUrl: ImageConstants.IMG_COLLECTION,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const CollectRegScreen();
@@ -54,7 +54,7 @@ class RegisterScreen extends StatelessWidget {
               _spacer(),
               RegistersButton(
                   text: ARMS_COLLECTIONS,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  imageUrl: ImageConstants.IMG_ARMS,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const ArmsRegScreen();
@@ -63,7 +63,7 @@ class RegisterScreen extends StatelessWidget {
               _spacer(),
               RegistersButton(
                   text: CRIMES_REGISTER,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  imageUrl: ImageConstants.IMG_CRIMES,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const CrimesRegScreen();
@@ -72,7 +72,7 @@ class RegisterScreen extends StatelessWidget {
               _spacer(),
               RegistersButton(
                   text: SOCIAL_PLACES,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  imageUrl: ImageConstants.IMG_PLACES,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const SocialPlacesRegScreen();
@@ -81,7 +81,7 @@ class RegisterScreen extends StatelessWidget {
               _spacer(),
               RegistersButton(
                   text: ILLEGAL_WORKS,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  imageUrl: ImageConstants.IMG_ILLEGAL,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const IllegalWorksScreen();
@@ -90,7 +90,7 @@ class RegisterScreen extends StatelessWidget {
               _spacer(),
               RegistersButton(
                   text: DISASTER_MANAGEMENT,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  imageUrl: ImageConstants.IMG_DISASTER,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const DisasterRegScreen();

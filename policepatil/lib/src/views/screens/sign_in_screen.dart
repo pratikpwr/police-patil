@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
-import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:shared/modules/auth/bloc/auth_bloc.dart';
 
 import '../views.dart';
@@ -40,7 +39,7 @@ class _SignInScreenState extends State<SignInScreen> {
         },
         child: SafeArea(
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,

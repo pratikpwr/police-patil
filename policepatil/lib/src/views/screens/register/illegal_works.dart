@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
-
 import '../../views.dart';
 
 class IllegalWorksScreen extends StatefulWidget {
