@@ -52,11 +52,11 @@ class _CollectRegScreenState extends State<CollectRegScreen> {
                       });
                     }),
                 spacer(),
-                buildTextField(_addressController, ADDRESS),
+                buildTextField(_addressController, PLACE),
                 spacer(),
                 buildTextField(_dateController, DATE),
                 spacer(),
-                buildTextField(_detailsController, DESCRIPTION),
+                buildTextField(_detailsController, "जप्ती मालाचे वर्णन"),
                 spacer(),
                 CustomButton(
                     text: DO_REGISTER,

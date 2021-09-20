@@ -33,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
             isLoading = false;
             Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(builder: (ctx) {
-              return const HomeScreen();
+              return const BottomNavBar();
             }));
           }
         },
@@ -115,7 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-            primary: PRIMARY_COLOR,
+            primary: const Color(0xff000eac),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))),
         onPressed: onTap,

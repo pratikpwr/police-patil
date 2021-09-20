@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class ImageConstants {
   // ImageConstants._();
 
@@ -24,8 +26,8 @@ class ImageConstants {
   static String IMG_DEATH = "assets/skull.png";
   static String IMG_MISSING = "assets/missing.png";
   static String IMG_PROFILE = "assets/user.png";
-// static String = "assets";
-// static String = "assets";
-// static String = "assets";
-
+  static String IMG_ATTENDANCE = "assets/accepted.png";
+  static String IMG_CERTIFICATE = "assets/certificate.png";
+  static String IMG_MONEY = "assets/money.png";
+  static String IMG_MEETING = "assets/meeting.png";
 }

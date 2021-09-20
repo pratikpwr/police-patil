@@ -16,12 +16,12 @@ class CustomButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
             primary: PRIMARY_COLOR,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15))),
+                borderRadius: BorderRadius.circular(10))),
         onPressed: onTap,
         child: Text(
           text,
           style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
         ));
   }
 }

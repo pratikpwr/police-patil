@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
@@ -21,7 +22,12 @@ class _ArmsRegScreenState extends State<ArmsRegScreen> {
     "स्फोटक उडविणारे"
   ];
 
+  Position? _position;
+  final TextEditingController _longController = TextEditingController();
+  final TextEditingController _latController = TextEditingController();
+
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _adharController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _certificateNoController =
@@ -58,9 +64,23 @@ class _ArmsRegScreenState extends State<ArmsRegScreen> {
                 spacer(),
                 buildTextField(_nameController, NAME),
                 spacer(),
+                buildTextField(_adharController, "आधार क्र."),
+                spacer(),
                 buildTextField(_phoneController, MOB_NO),
                 spacer(),
                 buildTextField(_addressController, ADDRESS),
+                spacer(),
+                buildTextField(_longController, LONGITUDE),
+                spacer(),
+                buildTextField(_latController, LATITUDE),
+                spacer(),
+                CustomButton(
+                    text: SELECT_LOCATION, //📌
+                    onTap: () async {
+                      _position = await determinePosition();
+                      _longController.text = _position!.longitude.toString();
+                      _latController.text = _position!.latitude.toString();
+                    }),
                 spacer(),
                 buildTextField(_certificateNoController, "परवाना क्रमांक"),
                 spacer(),

@@ -36,25 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              spacer(),
-              RegistersButton(
-                  text: PROFILE,
-                  imageUrl: ImageConstants.IMG_PROFILE,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const ProfileScreen();
-                    }));
-                  }),
-              spacer(),
-              RegistersButton(
-                  text: REGISTER,
-                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const RegisterScreen();
-                    }));
-                  }),
-              spacer(),
+              spacer(height: 8),
               Container(
                   padding: const EdgeInsets.all(8),
                   margin: const EdgeInsets.all(16),
@@ -79,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 12,
                           ),
                           Text(
-                            "महत्त्वाच्या बातम्या !",
+                            "महत्त्वाच्या घडामोडी !",
                             style: GoogleFonts.poppins(
                                 fontSize: 18, fontWeight: FontWeight.w600),
                           )
@@ -89,6 +71,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       updates(context),
                     ],
                   )),
+              spacer(),
+              RegistersButton(
+                  text: REGISTER,
+                  imageUrl: ImageConstants.IMG_PLACEHOLDER,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const RegisterScreen();
+                    }));
+                  }),
+              spacer(),
+              RegistersButton(
+                  text: "हजेरीबाबतचे स्वयंघोषणापत्र",
+                  imageUrl: ImageConstants.IMG_CERTIFICATE,
+                  onTap: () {}),
+              spacer(),
+              RegistersButton(
+                  text: "पो. पाटलांनी घेतलेल्या बैठकी",
+                  imageUrl: ImageConstants.IMG_MEETING,
+                  onTap: () {}),
+              spacer(),
             ],
           ),
         )));
@@ -96,15 +98,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget updates(BuildContext context) {
     var ups = [
-      "जप्ती मालाचा प्रकार बेवारस वाहने दागिने गौण खनिज इतर",
+      "जप्ती मालाचा प्रकार बेवारस वाहने दागिने गौण खनिज इतर, जप्ती मालाचा प्रकार बेवारस वाहने दागिने गौण खनिज इतर.",
       "हे हस्तलिखित प्रिंटिंग होणार हातासो ते लिहावे असे आवाहन  करतो व ते आपल्या फोटोसह माझ्या नावाने किंवा शाळेच्या नावाने पोस्टाने किंवा कुरिअर ने पाठवाव्यात",
       "अवैद्य दारू विक्री करणारे गुटका जुगार मटका चालविणारे इतर जुगार खेळणारे गौण खनिज उत्खनन करणारे वाळू तस्कर",
     ];
     return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.4,
+        height: MediaQuery.of(context).size.height * 0.27,
         child: CarouselSlider(
           options: CarouselOptions(
-              viewportFraction: 0.5,
+              viewportFraction: 0.8,
               // enlargeCenterPage: true,
               disableCenter: true,
               scrollDirection: Axis.vertical,
@@ -122,6 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListTile(
                     title: Text(
                       title,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 5,
                       style: GoogleFonts.poppins(fontSize: 16),
                     ),
                   ),

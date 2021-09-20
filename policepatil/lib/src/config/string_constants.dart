@@ -11,6 +11,8 @@ const String USER_ID = "युझर आयडी";
 const String PASSWORD = "पासवर्ड";
 const String SIGN_IN = "लॉग इन करा";
 const String PROFILE = "प्रोफाइल";
+const String NOTICE = "सूचना";
+const String HOME = "होम";
 
 // Register Categories
 const String REGISTER = "रजिस्टर";
@@ -29,6 +31,10 @@ const String DISASTER_MANAGEMENT = "आपत्ती व्यवस्था�
 const String NAME = "नाव";
 const String MOB_NO = "मोबाईल नंबर";
 const String ADDRESS = "पत्ता";
+const String PLACE = "ठिकाण";
+const String LONGITUDE = "रेखांश (longitude)";
+const String LATITUDE = "अक्षांश (latitude)";
+const String SELECT_LOCATION = "जीपीएस लोकेशन निवडा "; //📌
 const String OTHER_INFO = "इतर माहिती";
 const String DO_REGISTER = "रजिस्टर करा";
 const String SAVED = "सेव झाले";

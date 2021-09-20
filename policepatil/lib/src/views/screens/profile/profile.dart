@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/views/views.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -15,9 +16,7 @@ class ProfileScreen extends StatelessWidget {
           style: GoogleFonts.poppins(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
-        ],
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.logout))],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -58,7 +57,13 @@ class ProfileScreen extends StatelessWidget {
                   spacer(height: 8),
                   buildDetails("नेमणुकीची मुदत :", "11 DEC 2021"),
                   spacer(height: 8),
-                  buildDetails("गावाचे अंतर :", "20 कि.मी.")
+                  buildDetails("पो. ठा. पासून गावाचे अंतर :", "20 कि.मी."),
+                  spacer(),
+                  RegistersButton(
+                      text: "मानधन व निधी",
+                      imageUrl: ImageConstants.IMG_MONEY,
+                      onTap: () {}),
+                  spacer(),
                 ],
               ),
             )),

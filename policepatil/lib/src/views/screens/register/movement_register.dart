@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
@@ -14,11 +16,12 @@ class MovementRegScreen extends StatefulWidget {
 class _MovementRegScreenState extends State<MovementRegScreen> {
   String? _movementValue;
   String? _movementSubValue;
+  var _isIssue;
   final List<String> _movementRegTypes = <String>[
     "राजकीय हालचाली",
     "धार्मिक हालचाली",
     "जातीय हालचाली",
-    "संस्कृती हालचाली"
+    "सांस्कृतिक हालचाली"
   ];
 
   List<String>? _movementSubRegTypes;
@@ -27,12 +30,12 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
     "आंदोलने",
     "सभा",
     "निवडणुका",
-    "राजकीय संघर्ष/वाद-विवाद"
+    // "राजकीय संघर्ष/वाद-विवाद"
   ];
   final List<String> _religionMovements = <String>[
     "यात्रा/उत्सव",
     "घेण्यात येणारे कार्यक्रम",
-    "धार्मिक प्रसंगी उद्भवणारे वाद-विवाद"
+    // "धार्मिक प्रसंगी उद्भवणारे वाद-विवाद"
   ];
   final List<String> _castMovements = <String>["कार्यक्रम", "जातीय वाद-विवाद"];
   final List<String> _culturalMovements = <String>[
@@ -40,9 +43,11 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
     "सण/उत्सव",
     "इतर सांस्कृतिक हालचाली"
   ];
-
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
+  Position? _position;
+  String _selectedDateTime = "वेळ आणि तारीख";
+  String _longitude = LONGITUDE;
+  String _latitude = LATITUDE;
+  final TextEditingController _placeController = TextEditingController();
   final TextEditingController _otherController = TextEditingController();
 
   @override
@@ -85,19 +90,101 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
                       })
                   : spacer(height: 0),
               spacer(),
-              buildTextField(
-                _dateController,
-                "दिनांक",
+              buildTextField(_placeController, PLACE),
+              spacer(),
+              CustomButton(
+                  text: SELECT_LOCATION,
+                  onTap: () async {
+                    _position = await determinePosition();
+                    setState(() {
+                      _longitude = _position!.longitude.toString();
+                      _latitude = _position!.latitude.toString();
+                    });
+                  }),
+              spacer(),
+              Text("$LONGITUDE: $_longitude",
+                  style: GoogleFonts.poppins(fontSize: 16)),
+              spacer(),
+              Text("$LATITUDE: $_latitude",
+                  style: GoogleFonts.poppins(fontSize: 16)),
+              spacer(),
+              CustomButton(
+                onTap: () {
+                  DatePicker.showDateTimePicker(
+                    context,
+                    showTitleActions: true,
+                    minTime: DateTime(2021, 1, 1),
+                    maxTime: DateTime(2021, 12, 31),
+                    onChanged: (date) {
+                      setState(() {
+                        _selectedDateTime = dateInFormat(date);
+                      });
+                    },
+                    onConfirm: (date) {
+                      setState(() {
+                        _selectedDateTime = dateInFormat(date);
+                      });
+                    },
+                    currentTime: DateTime.now(),
+                  );
+                },
+                text: 'वेळ आणि तारीख निवडा',
               ),
               spacer(),
-              buildTextField(
-                _addressController,
-                "पत्ता",
+              Text(_selectedDateTime, style: GoogleFonts.poppins(fontSize: 16)),
+              spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "काही वाद आहेत का ?",
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  ),
+                  Row(
+                    children: [
+                      Row(
+                        children: [
+                          Radio(
+                              value: YES,
+                              groupValue: _isIssue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isIssue = value;
+                                });
+                              }),
+                          Text(
+                            YES,
+                            style: GoogleFonts.poppins(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 18,
+                      ),
+                      Row(
+                        children: [
+                          Radio(
+                              value: NO,
+                              groupValue: _isIssue,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isIssue = value;
+                                });
+                              }),
+                          Text(
+                            NO,
+                            style: GoogleFonts.poppins(fontSize: 14),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
               spacer(),
               buildTextField(
                 _otherController,
-                "इतर माहिती",
+                "घटनेची सविस्तर माहिती",
               ),
               spacer(),
               CustomButton(
@@ -125,7 +212,7 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
       return _religionMovements;
     } else if (movementValue == "जातीय हालचाली") {
       return _castMovements;
-    } else if (movementValue == "संस्कृती हालचाली") {
+    } else if (movementValue == "सांस्कृतिक हालचाली") {
       return _culturalMovements;
     } else {
       return ["अगोदर हालचाली प्रकार निवडा"];

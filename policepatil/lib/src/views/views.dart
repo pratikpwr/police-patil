@@ -5,6 +5,8 @@
 export 'package:policepatil/src/views/screens/home_screen.dart';
 export 'package:policepatil/src/views/screens/sign_in_screen.dart';
 export 'package:policepatil/src/views/screens/splash_screen.dart';
+export 'package:policepatil/src/views/screens/alert_screen.dart';
+export 'package:policepatil/src/views/screens/bottom_nav_bar.dart';
 
 // Register
 export 'package:policepatil/src/views/screens/register/register_screen.dart';

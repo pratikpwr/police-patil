@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
@@ -23,9 +24,14 @@ class _SocialPlacesRegScreenState extends State<SocialPlacesRegScreen> {
     "धार्मिक स्थळ"
   ];
 
+  var _isIssue;
   var _isCCTV;
   var _isCrimeReg;
 
+  Position? _position;
+  final TextEditingController _placeController = TextEditingController();
+  final TextEditingController _longController = TextEditingController();
+  final TextEditingController _latController = TextEditingController();
   final TextEditingController _reasonController = TextEditingController();
   final TextEditingController _situationController = TextEditingController();
 
@@ -55,9 +61,19 @@ class _SocialPlacesRegScreenState extends State<SocialPlacesRegScreen> {
                 });
               }),
           spacer(),
-          buildTextField(_reasonController, "वादाचे कारण"),
+          buildTextField(_placeController, PLACE),
           spacer(),
-          buildTextField(_situationController, "वादाची सद्यस्थिती"),
+          buildTextField(_longController, LONGITUDE),
+          spacer(),
+          buildTextField(_latController, LATITUDE),
+          spacer(),
+          CustomButton(
+              text: SELECT_LOCATION, //📌
+              onTap: () async {
+                _position = await determinePosition();
+                _longController.text = _position!.longitude.toString();
+                _latController.text = _position!.latitude.toString();
+              }),
           spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,7 +128,7 @@ class _SocialPlacesRegScreenState extends State<SocialPlacesRegScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "गुन्हा दाखल आहे का ?",
+                "काही वाद आहेत का ?",
                 style: GoogleFonts.poppins(fontSize: 14),
               ),
               Row(
@@ -121,10 +137,10 @@ class _SocialPlacesRegScreenState extends State<SocialPlacesRegScreen> {
                     children: [
                       Radio(
                           value: YES,
-                          groupValue: _isCrimeReg,
+                          groupValue: _isIssue,
                           onChanged: (value) {
                             setState(() {
-                              _isCrimeReg = value;
+                              _isIssue = value;
                             });
                           }),
                       Text(
@@ -140,10 +156,10 @@ class _SocialPlacesRegScreenState extends State<SocialPlacesRegScreen> {
                     children: [
                       Radio(
                           value: NO,
-                          groupValue: _isCrimeReg,
+                          groupValue: _isIssue,
                           onChanged: (value) {
                             setState(() {
-                              _isCrimeReg = value;
+                              _isIssue = value;
                             });
                           }),
                       Text(
@@ -157,6 +173,65 @@ class _SocialPlacesRegScreenState extends State<SocialPlacesRegScreen> {
             ],
           ),
           spacer(),
+          _isIssue == YES
+              ? Column(
+                  children: [
+                    buildTextField(_reasonController, "वादाचे कारण"),
+                    spacer(),
+                    buildTextField(_situationController, "वादाची सद्यस्थिती"),
+                    spacer(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "गुन्हा दाखल आहे का ?",
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        ),
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Radio(
+                                    value: YES,
+                                    groupValue: _isCrimeReg,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isCrimeReg = value;
+                                      });
+                                    }),
+                                Text(
+                                  YES,
+                                  style: GoogleFonts.poppins(fontSize: 14),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              width: 18,
+                            ),
+                            Row(
+                              children: [
+                                Radio(
+                                    value: NO,
+                                    groupValue: _isCrimeReg,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isCrimeReg = value;
+                                      });
+                                    }),
+                                Text(
+                                  NO,
+                                  style: GoogleFonts.poppins(fontSize: 14),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                    spacer(),
+                  ],
+                )
+              : spacer(height: 0),
           CustomButton(
               text: DO_REGISTER,
               onTap: () {
