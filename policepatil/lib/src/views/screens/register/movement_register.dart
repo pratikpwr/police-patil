@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
+import 'package:policepatil/src/views/widgets/attach_button.dart';
 
 class MovementRegScreen extends StatefulWidget {
   const MovementRegScreen({Key? key}) : super(key: key);
@@ -17,15 +20,28 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
   String? _movementValue;
   String? _movementSubValue;
   var _isIssue;
+  List<String>? _movementSubRegTypes;
+
+  Position? _position;
+  String _longitude = LONGITUDE;
+  String _latitude = LATITUDE;
+
+  String _photoName = "हालचालीचा फोटो जोडा";
+  File? _photoImage;
+  final picker = ImagePicker();
+
+  final TextEditingController _countController = TextEditingController();
+  final TextEditingController _placeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _otherController = TextEditingController();
+
   final List<String> _movementRegTypes = <String>[
     "राजकीय हालचाली",
     "धार्मिक हालचाली",
     "जातीय हालचाली",
     "सांस्कृतिक हालचाली"
   ];
-
-  List<String>? _movementSubRegTypes;
-
   final List<String> _politicalMovements = <String>[
     "आंदोलने",
     "सभा",
@@ -43,12 +59,6 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
     "सण/उत्सव",
     "इतर सांस्कृतिक हालचाली"
   ];
-  Position? _position;
-  String _selectedDateTime = "वेळ आणि तारीख";
-  String _longitude = LONGITUDE;
-  String _latitude = LATITUDE;
-  final TextEditingController _placeController = TextEditingController();
-  final TextEditingController _otherController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,20 +90,21 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
               spacer(),
               _movementValue != null
                   ? buildDropButton(
-                      value: _movementSubValue,
-                      items: _movementSubRegTypes!,
-                      hint: "हालचाली उपप्रकार निवडा",
-                      onChanged: (String? value) {
-                        setState(() {
-                          _movementSubValue = value;
-                        });
-                      })
+                  value: _movementSubValue,
+                  items: _movementSubRegTypes!,
+                  hint: "हालचाली उपप्रकार निवडा",
+                  onChanged: (String? value) {
+                    setState(() {
+                      _movementSubValue = value;
+                    });
+                  })
                   : spacer(height: 0),
               spacer(),
               buildTextField(_placeController, PLACE),
               spacer(),
-              CustomButton(
+              AttachButton(
                   text: SELECT_LOCATION,
+                  icon: Icons.location_on_rounded,
                   onTap: () async {
                     _position = await determinePosition();
                     setState(() {
@@ -102,36 +113,21 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
                     });
                   }),
               spacer(),
-              Text("$LONGITUDE: $_longitude",
-                  style: GoogleFonts.poppins(fontSize: 16)),
-              spacer(),
-              Text("$LATITUDE: $_latitude",
-                  style: GoogleFonts.poppins(fontSize: 16)),
-              spacer(),
-              CustomButton(
-                onTap: () {
-                  DatePicker.showDateTimePicker(
-                    context,
-                    showTitleActions: true,
-                    minTime: DateTime(2021, 1, 1),
-                    maxTime: DateTime(2021, 12, 31),
-                    onChanged: (date) {
-                      setState(() {
-                        _selectedDateTime = dateInFormat(date);
-                      });
-                    },
-                    onConfirm: (date) {
-                      setState(() {
-                        _selectedDateTime = dateInFormat(date);
-                      });
-                    },
-                    currentTime: DateTime.now(),
-                  );
-                },
-                text: 'वेळ आणि तारीख निवडा',
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text("$LONGITUDE: $_longitude",
+                      style: GoogleFonts.poppins(fontSize: 16)),
+                  const SizedBox(width: 12),
+                  Text("$LATITUDE: $_latitude",
+                      style: GoogleFonts.poppins(fontSize: 16)),
+                ],
               ),
               spacer(),
-              Text(_selectedDateTime, style: GoogleFonts.poppins(fontSize: 16)),
+              buildDateTextField(context, _dateController, DATE),
+              spacer(),
+              buildTimeTextField(context, _timeController, TIME),
               spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,9 +178,18 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
                 ],
               ),
               spacer(),
+              buildTextField(_countController, "उपस्थित लोकसंख्या"),
+              spacer(),
               buildTextField(
                 _otherController,
                 "घटनेची सविस्तर माहिती",
+              ),
+              spacer(),
+              AttachButton(
+                text: _photoName,
+                onTap: () {
+                  getImage(context, _photoImage);
+                },
               ),
               spacer(),
               CustomButton(
@@ -197,7 +202,8 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
                         return const RegisterScreen();
                       }));
                     });
-                  })
+                  }),
+              spacer()
             ],
           ),
         ),
@@ -217,5 +223,54 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
     } else {
       return ["अगोदर हालचाली प्रकार निवडा"];
     }
+  }
+
+  Future getImage(BuildContext ctx, File? _image) async {
+    await showDialog(
+        context: ctx,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'फोटो काढा अथवा गॅलरी मधून निवडा',
+              style: GoogleFonts.poppins(fontSize: 14),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.camera);
+                    setState(() {
+                      if (pickedImage != null) {
+                        _image = File(pickedImage.path);
+                      } else {
+                        debugPrint('No image selected.');
+                      }
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(
+                    'कॅमेरा',
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  )),
+              TextButton(
+                  onPressed: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    setState(() {
+                      if (pickedImage != null) {
+                        _image = File(pickedImage.path);
+                      } else {
+                        debugPrint('No image selected.');
+                      }
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(
+                    'गॅलरी',
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  ))
+            ],
+          );
+        });
   }
 }

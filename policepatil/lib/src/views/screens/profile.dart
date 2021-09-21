@@ -59,11 +59,6 @@ class ProfileScreen extends StatelessWidget {
                   spacer(height: 8),
                   buildDetails("पो. ठा. पासून गावाचे अंतर :", "20 कि.मी."),
                   spacer(),
-                  RegistersButton(
-                      text: "मानधन व निधी",
-                      imageUrl: ImageConstants.IMG_MONEY,
-                      onTap: () {}),
-                  spacer(),
                 ],
               ),
             )),

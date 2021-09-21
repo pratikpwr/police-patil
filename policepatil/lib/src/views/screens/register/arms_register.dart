@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
@@ -23,11 +26,16 @@ class _ArmsRegScreenState extends State<ArmsRegScreen> {
   ];
 
   Position? _position;
-  final TextEditingController _longController = TextEditingController();
-  final TextEditingController _latController = TextEditingController();
+  String _longitude = LONGITUDE;
+  String _latitude = LATITUDE;
+
+  String _fileName = 'आधार कार्ड जोडा';
+  String _photoName = "परवान्याचा फोटो जोडा";
+  File? _fileImage;
+  File? _photoImage;
+  final picker = ImagePicker();
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _adharController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _certificateNoController =
@@ -64,28 +72,51 @@ class _ArmsRegScreenState extends State<ArmsRegScreen> {
                 spacer(),
                 buildTextField(_nameController, NAME),
                 spacer(),
-                buildTextField(_adharController, "आधार क्र."),
-                spacer(),
                 buildTextField(_phoneController, MOB_NO),
+                spacer(),
+                AttachButton(
+                  text: _fileName,
+                  onTap: () {
+                    getImage(context, _fileImage);
+                  },
+                ),
                 spacer(),
                 buildTextField(_addressController, ADDRESS),
                 spacer(),
-                buildTextField(_longController, LONGITUDE),
-                spacer(),
-                buildTextField(_latController, LATITUDE),
-                spacer(),
-                CustomButton(
-                    text: SELECT_LOCATION, //📌
+                AttachButton(
+                    text: SELECT_LOCATION,
+                    icon: Icons.location_on_rounded,
                     onTap: () async {
                       _position = await determinePosition();
-                      _longController.text = _position!.longitude.toString();
-                      _latController.text = _position!.latitude.toString();
+                      setState(() {
+                        _longitude = _position!.longitude.toString();
+                        _latitude = _position!.latitude.toString();
+                      });
                     }),
+                spacer(),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("$LONGITUDE: $_longitude",
+                        style: GoogleFonts.poppins(fontSize: 14)),
+                    const SizedBox(width: 12),
+                    Text("$LATITUDE: $_latitude",
+                        style: GoogleFonts.poppins(fontSize: 14)),
+                  ],
+                ),
                 spacer(),
                 buildTextField(_certificateNoController, "परवाना क्रमांक"),
                 spacer(),
-                buildTextField(
-                    _certificateExpiryController, "परवान्याची वैधता कालावधी"),
+                buildDateTextField(context, _certificateExpiryController,
+                    "परवान्याची वैधता कालावधी"),
+                spacer(),
+                AttachButton(
+                  text: _photoName,
+                  onTap: () {
+                    getImage(context, _photoImage);
+                  },
+                ),
                 spacer(),
                 CustomButton(
                     text: DO_REGISTER,
@@ -102,5 +133,54 @@ class _ArmsRegScreenState extends State<ArmsRegScreen> {
             )),
       ),
     );
+  }
+
+  Future getImage(BuildContext ctx, File? _image) async {
+    await showDialog(
+        context: ctx,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'फोटो काढा अथवा गॅलरी मधून निवडा',
+              style: GoogleFonts.poppins(fontSize: 14),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.camera);
+                    setState(() {
+                      if (pickedImage != null) {
+                        _image = File(pickedImage.path);
+                      } else {
+                        debugPrint('No image selected.');
+                      }
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(
+                    'कॅमेरा',
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  )),
+              TextButton(
+                  onPressed: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    setState(() {
+                      if (pickedImage != null) {
+                        _image = File(pickedImage.path);
+                      } else {
+                        debugPrint('No image selected.');
+                      }
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(
+                    'गॅलरी',
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  ))
+            ],
+          );
+        });
   }
 }

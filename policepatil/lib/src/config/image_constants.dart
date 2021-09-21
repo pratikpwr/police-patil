@@ -30,4 +30,5 @@ class ImageConstants {
   static String IMG_CERTIFICATE = "assets/certificate.png";
   static String IMG_MONEY = "assets/money.png";
   static String IMG_MEETING = "assets/meeting.png";
+  static String IMG_HAMMER = "assets/hammer.png";
 }

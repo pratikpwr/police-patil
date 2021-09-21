@@ -54,7 +54,7 @@ class _CollectRegScreenState extends State<CollectRegScreen> {
                 spacer(),
                 buildTextField(_addressController, PLACE),
                 spacer(),
-                buildTextField(_dateController, DATE),
+                buildDateTextField(context, _dateController, DATE),
                 spacer(),
                 buildTextField(_detailsController, "जप्ती मालाचे वर्णन"),
                 spacer(),

@@ -6,7 +6,10 @@ TextField buildTextField(TextEditingController _controller, String hint) {
     controller: _controller,
     style: GoogleFonts.poppins(fontSize: 14),
     decoration: InputDecoration(
-        hintText: hint,
+        // hintText: hint,
+        label: Text(hint,
+            style:
+                GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500)),
         hintStyle:
             GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),

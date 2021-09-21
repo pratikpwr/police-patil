@@ -15,13 +15,15 @@ class CrimesScreen extends StatefulWidget {
 
 class _CrimesScreenState extends State<CrimesScreen> {
   String? _chosenValue;
-  String _date = "वेळ आणि तारीख निवडा";
   final TextEditingController _noController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+
   final List<String> _crimesTypes = [
     "शरीरा विरुद्ध",
     "माला विरुद्ध",
     "महिलांविरुद्ध",
-    "अपघात ",
+    "अपघात",
     "इतर अपराध"
   ];
 
@@ -54,28 +56,9 @@ class _CrimesScreenState extends State<CrimesScreen> {
             spacer(),
             buildTextField(_noController, "गुन्हा रजिस्टर नंबर"),
             spacer(),
-            CustomButton(
-              onTap: () {
-                DatePicker.showDatePicker(
-                  context,
-                  showTitleActions: true,
-                  minTime: DateTime(2021, 1, 1),
-                  maxTime: DateTime(2021, 12, 31),
-                  onChanged: (date) {
-                    setState(() {
-                      _date = date.toIso8601String().substring(0, 10);
-                    });
-                  },
-                  onConfirm: (date) {
-                    setState(() {
-                      _date = date.toIso8601String().substring(0, 10);
-                    });
-                  },
-                  currentTime: DateTime.now(),
-                );
-              },
-              text: _date,
-            ),
+            buildDateTextField(context, _dateController, DATE),
+            spacer(),
+            buildTimeTextField(context, _timeController, TIME),
             spacer(),
             CustomButton(
                 text: DO_REGISTER,

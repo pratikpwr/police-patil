@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import '../../views.dart';
@@ -13,6 +17,14 @@ class IllegalWorksScreen extends StatefulWidget {
 
 class _IllegalWorksScreenState extends State<IllegalWorksScreen> {
   String? _chosenValue;
+
+  Position? _position;
+  String _longitude = LONGITUDE;
+  String _latitude = LATITUDE;
+
+  File? _photoImage;
+  String _photoName = "फोटो जोडा";
+  final picker = ImagePicker();
 
   final List<String> _watchRegTypes = <String>[
     "अवैद्य दारू विक्री करणारे",
@@ -55,7 +67,37 @@ class _IllegalWorksScreenState extends State<IllegalWorksScreen> {
                 spacer(),
                 buildTextField(_nameController, NAME),
                 spacer(),
+                AttachButton(
+                  text: _photoName,
+                  onTap: () {
+                    getImage(context, _photoImage);
+                  },
+                ),
+                spacer(),
                 buildTextField(_addressController, ADDRESS),
+                spacer(),
+                AttachButton(
+                    text: SELECT_LOCATION,
+                    icon: Icons.location_on_rounded,
+                    onTap: () async {
+                      _position = await determinePosition();
+                      setState(() {
+                        _longitude = _position!.longitude.toString();
+                        _latitude = _position!.latitude.toString();
+                      });
+                    }),
+                spacer(),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("$LONGITUDE: $_longitude",
+                        style: GoogleFonts.poppins(fontSize: 14)),
+                    const SizedBox(width: 12),
+                    Text("$LATITUDE: $_latitude",
+                        style: GoogleFonts.poppins(fontSize: 14)),
+                  ],
+                ),
                 spacer(),
                 _chosenValue == _watchRegTypes[3] ||
                         _chosenValue == _watchRegTypes[4]
@@ -77,5 +119,54 @@ class _IllegalWorksScreenState extends State<IllegalWorksScreen> {
             )),
       ),
     );
+  }
+
+  Future getImage(BuildContext ctx, File? _image) async {
+    await showDialog(
+        context: ctx,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'फोटो काढा अथवा गॅलरी मधून निवडा',
+              style: GoogleFonts.poppins(fontSize: 14),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.camera);
+                    setState(() {
+                      if (pickedImage != null) {
+                        _image = File(pickedImage.path);
+                      } else {
+                        debugPrint('No image selected.');
+                      }
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(
+                    'कॅमेरा',
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  )),
+              TextButton(
+                  onPressed: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    setState(() {
+                      if (pickedImage != null) {
+                        _image = File(pickedImage.path);
+                      } else {
+                        debugPrint('No image selected.');
+                      }
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(
+                    'गॅलरी',
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  ))
+            ],
+          );
+        });
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -24,34 +25,7 @@ class RegisterScreen extends StatelessWidget {
           child: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
-              _spacer(),
-              RegistersButton(
-                  text: WATCH_REGISTER,
-                  imageUrl: ImageConstants.IMG_WATCH,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const WatchRegScreen();
-                    }));
-                  }),
-              _spacer(),
-              RegistersButton(
-                  text: MOVEMENT_REGISTER,
-                  imageUrl: ImageConstants.IMG_MOVEMENT,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const MovementRegScreen();
-                    }));
-                  }),
-              _spacer(),
-              RegistersButton(
-                  text: COLLECTION_REGISTER,
-                  imageUrl: ImageConstants.IMG_COLLECTION,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const CollectRegScreen();
-                    }));
-                  }),
-              _spacer(),
+              spacer(),
               RegistersButton(
                   text: ARMS_COLLECTIONS,
                   imageUrl: ImageConstants.IMG_ARMS,
@@ -60,7 +34,34 @@ class RegisterScreen extends StatelessWidget {
                       return const ArmsRegScreen();
                     }));
                   }),
-              _spacer(),
+              spacer(),
+              RegistersButton(
+                  text: COLLECTION_REGISTER,
+                  imageUrl: ImageConstants.IMG_COLLECTION,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const CollectRegScreen();
+                    }));
+                  }),
+              spacer(),
+              RegistersButton(
+                  text: MOVEMENT_REGISTER,
+                  imageUrl: ImageConstants.IMG_MOVEMENT,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const MovementRegScreen();
+                    }));
+                  }),
+              spacer(),
+              RegistersButton(
+                  text: WATCH_REGISTER,
+                  imageUrl: ImageConstants.IMG_WATCH,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const WatchRegScreen();
+                    }));
+                  }),
+              spacer(),
               RegistersButton(
                   text: CRIMES_REGISTER,
                   imageUrl: ImageConstants.IMG_CRIMES,
@@ -69,7 +70,7 @@ class RegisterScreen extends StatelessWidget {
                       return const CrimesRegScreen();
                     }));
                   }),
-              _spacer(),
+              spacer(),
               RegistersButton(
                   text: SOCIAL_PLACES,
                   imageUrl: ImageConstants.IMG_PLACES,
@@ -78,7 +79,7 @@ class RegisterScreen extends StatelessWidget {
                       return const SocialPlacesRegScreen();
                     }));
                   }),
-              _spacer(),
+              spacer(),
               RegistersButton(
                   text: ILLEGAL_WORKS,
                   imageUrl: ImageConstants.IMG_ILLEGAL,
@@ -87,25 +88,10 @@ class RegisterScreen extends StatelessWidget {
                       return const IllegalWorksScreen();
                     }));
                   }),
-              _spacer(),
-              RegistersButton(
-                  text: DISASTER_MANAGEMENT,
-                  imageUrl: ImageConstants.IMG_DISASTER,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const DisasterRegScreen();
-                    }));
-                  }),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  Widget _spacer() {
-    return const SizedBox(
-      height: 16,
     );
   }
 }

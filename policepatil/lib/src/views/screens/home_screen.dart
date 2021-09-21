@@ -82,15 +82,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
               spacer(),
               RegistersButton(
-                  text: "हजेरीबाबतचे स्वयंघोषणापत्र",
-                  imageUrl: ImageConstants.IMG_CERTIFICATE,
-                  onTap: () {}),
+                  text: MANDHAN,
+                  imageUrl: ImageConstants.IMG_MONEY,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const MandhanScreen();
+                    }));
+                  }),
               spacer(),
               RegistersButton(
-                  text: "पो. पाटलांनी घेतलेल्या बैठकी",
-                  imageUrl: ImageConstants.IMG_MEETING,
-                  onTap: () {}),
+                  text: LAWS,
+                  imageUrl: ImageConstants.IMG_HAMMER,
+                  onTap: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    //   return const MandhanScreen();
+                    // }));
+                  }),
               spacer(),
+              RegistersButton(
+                  text: DISASTER_MANAGEMENT,
+                  imageUrl: ImageConstants.IMG_DISASTER,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const DisasterRegScreen();
+                    }));
+                  }),
             ],
           ),
         )));
