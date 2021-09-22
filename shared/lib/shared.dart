@@ -1,7 +1,5 @@
-library shared;
+export 'package:shared/modules/authentication/auth.dart';
+export 'package:shared/modules/authentication/bloc/bloc_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+Future<SharedPreferences> prefs = SharedPreferences.getInstance();

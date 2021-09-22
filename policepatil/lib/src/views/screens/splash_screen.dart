@@ -1,32 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:policepatil/src/views/views.dart';
-import 'package:shared/modules/splash/bloc/splash_bloc.dart';
+import 'package:shared/shared.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(child: _buildBody(context)));
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  late AuthenticationBloc authenticationBloc;
+
+  @override
+  void initState() {
+    authenticationBloc = AuthenticationBlocController().authenticationBloc;
+    authenticationBloc.add(AppLoadedUp());
+    super.initState();
   }
 
-  Widget _buildBody(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      color: Colors.white,
-      child: Center(
-        child: BlocBuilder<SplashBloc, SplashState>(
-          builder: (context, state) {
-            if ((state is SplashInitial) || (state is SplashLoading)) {
-              return const SplashWidget();
-            } else {
-              return const SignInScreen();
-            }
-          },
-        ),
-      ),
-    );
+  @override
+  Widget build(BuildContext context) {
+    // SizeConfig().init(context);
+    return Scaffold(
+        body: BlocListener<AuthenticationBloc, AuthenticationState>(
+      bloc: authenticationBloc,
+      listener: (BuildContext context, AuthenticationState state) {
+        if (state is AppAuthenticated) {
+          Navigator.pushNamed(context, '/home');
+        }
+        if (state is AuthenticationStart) {
+          Navigator.pushNamed(context, '/auth');
+        }
+        if (state is UserLogoutState) {
+          Navigator.pushNamed(context, '/auth');
+        }
+      },
+      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          bloc: authenticationBloc,
+          builder: (BuildContext context, AuthenticationState state) {
+            return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                child: const LogoWidget());
+          }),
+    ));
   }
 }

@@ -12,7 +12,17 @@ class ApiSdk {
   //   return response;
   // }
 
-  static Future<Response> verifyOTPAndSignUp({required userAuthData}) async {
+  static Future<Response> loginWithEmailAndPassword(
+      {required userAuthData}) async {
+    String path = ApiConstants.SIGN_UP;
+
+    Map<String, dynamic> body = userAuthData;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getUserData({required userAuthData}) async {
     String path = ApiConstants.SIGN_UP;
 
     Map<String, dynamic> body = userAuthData;

@@ -27,7 +27,6 @@ export 'package:policepatil/src/views/screens/register/crimes_register/missing_s
 
 // Widgets
 // export 'package:policepatil/src/views/widgets/';
-export 'package:policepatil/src/views/widgets/splash_widget.dart';
 export 'package:policepatil/src/views/widgets/custom_button.dart';
 export 'package:policepatil/src/views/widgets/logo_widget.dart';
 export 'package:policepatil/src/views/widgets/registers_button.dart';
