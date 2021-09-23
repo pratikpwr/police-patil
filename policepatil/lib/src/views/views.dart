@@ -8,7 +8,7 @@ export 'package:policepatil/src/views/screens/splash_screen.dart';
 export 'package:policepatil/src/views/screens/alert_screen.dart';
 export 'package:policepatil/src/views/screens/bottom_nav_bar.dart';
 export 'package:policepatil/src/views/screens/mandhan_screen.dart';
-export 'package:policepatil/src/views/screens/disaster_management.dart';
+export 'package:policepatil/src/views/screens/disaster_managment/disaster_manage_menu.dart';
 export 'package:policepatil/src/views/screens/profile.dart';
 
 // Register
@@ -24,6 +24,9 @@ export 'package:policepatil/src/views/screens/register/crimes_register/crimes_sc
 export 'package:policepatil/src/views/screens/register/crimes_register/death_screen.dart';
 export 'package:policepatil/src/views/screens/register/crimes_register/fires_screen.dart';
 export 'package:policepatil/src/views/screens/register/crimes_register/missing_screen.dart';
+
+export 'package:policepatil/src/views/screens/disaster_managment/disaster_manage_screen.dart';
+export 'package:policepatil/src/views/screens/disaster_managment/disaster_register_screen.dart';
 
 // Widgets
 // export 'package:policepatil/src/views/widgets/';

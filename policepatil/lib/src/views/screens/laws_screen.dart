@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/custom_methods.dart';
 
-class DisasterRegScreen extends StatelessWidget {
-  const DisasterRegScreen({Key? key}) : super(key: key);
+class LawsScreen extends StatelessWidget {
+  const LawsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,10 @@ class DisasterRegScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: Column(),
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [],
+        ),
       ),
     );
   }

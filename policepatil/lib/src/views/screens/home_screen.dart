@@ -104,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   imageUrl: ImageConstants.IMG_DISASTER,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const DisasterRegScreen();
+                      return const DisasterMenuScreen();
                     }));
                   }),
             ],
