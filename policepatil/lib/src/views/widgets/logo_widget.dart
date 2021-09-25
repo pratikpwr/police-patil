@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/custom_methods.dart';
 
 class LogoWidget extends StatelessWidget {
-  const LogoWidget({Key? key}) : super(key: key);
+  const LogoWidget({Key? key, required this.logoSize}) : super(key: key);
+  final double logoSize;
 
   @override
   Widget build(BuildContext context) {
@@ -11,14 +13,17 @@ class LogoWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset(ImageConstants.IMG_POLICE_LOGO),
-        const SizedBox(
-          height: 12,
+        Image.asset(
+          ImageConstants.IMG_POLICE_LOGO,
+          height: logoSize,
         ),
+        spacer(height: 12),
         Text(
           POLICE_PATIL_APP,
           style: GoogleFonts.poppins(
-              fontSize: 28, fontWeight: FontWeight.w600, color: TEXT_COLOR),
+              fontSize: logoSize > 150.00 ? 28 : 14,
+              fontWeight: FontWeight.w600,
+              color: TEXT_COLOR),
         )
       ],
     );

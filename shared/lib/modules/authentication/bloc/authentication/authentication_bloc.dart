@@ -57,7 +57,8 @@ class AuthenticationBloc
     final SharedPreferences sharedPreferences = await prefs;
     yield AuthenticationLoading();
     try {
-      await Future.delayed(const Duration(seconds: 2)); // a simulated delay
+      await Future.delayed(
+          const Duration(milliseconds: 300)); // a simulated delay
       // final data = await authenticationService.loginWithEmailAndPassword(
       //     event.email, event.password);
       // if (data["error"] == null) {

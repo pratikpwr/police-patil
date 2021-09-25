@@ -10,14 +10,14 @@ import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:policepatil/src/views/widgets/attach_button.dart';
 
-class WatchRegScreen extends StatefulWidget {
-  const WatchRegScreen({Key? key}) : super(key: key);
+class WatchRegFormScreen extends StatefulWidget {
+  const WatchRegFormScreen({Key? key}) : super(key: key);
 
   @override
-  State<WatchRegScreen> createState() => _WatchRegScreenState();
+  State<WatchRegFormScreen> createState() => _WatchRegFormScreenState();
 }
 
-class _WatchRegScreenState extends State<WatchRegScreen> {
+class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
   String? _chosenValue;
   Position? _position;
   String _longitude = LONGITUDE;
@@ -141,7 +141,7 @@ class _WatchRegScreenState extends State<WatchRegScreen> {
                     Future.delayed(const Duration(seconds: 1)).then((_) {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (_) {
-                        return const RegisterScreen();
+                            return const RegisterMenuScreen();
                       }));
                     });
                   })

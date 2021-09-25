@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   imageUrl: ImageConstants.IMG_PLACEHOLDER,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const RegisterScreen();
+                      return const RegisterMenuScreen();
                     }));
                   }),
               spacer(),

@@ -8,19 +8,19 @@ import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
 
-class ArmsRegScreen extends StatefulWidget {
-  const ArmsRegScreen({Key? key}) : super(key: key);
+class ArmsRegFormScreen extends StatefulWidget {
+  const ArmsRegFormScreen({Key? key}) : super(key: key);
 
   @override
-  State<ArmsRegScreen> createState() => _ArmsRegScreenState();
+  State<ArmsRegFormScreen> createState() => _ArmsRegFormScreenState();
 }
 
-class _ArmsRegScreenState extends State<ArmsRegScreen> {
+class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
   String? _chosenValue;
 
   final List<String> _armsRegTypes = <String>[
     "शस्त्र परवानाधारक",
-    "स्फोटक पदार्थ विक्री ",
+    "स्फोटक पदार्थ विक्री",
     "स्फोटक जवळ बाळगणारे",
     "स्फोटक उडविणारे"
   ];
@@ -123,10 +123,7 @@ class _ArmsRegScreenState extends State<ArmsRegScreen> {
                     onTap: () {
                       showSnackBar(context, SAVED);
                       Future.delayed(const Duration(seconds: 1)).then((_) {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) {
-                          return const RegisterScreen();
-                        }));
+                        Navigator.pop(context);
                       });
                     })
               ],

@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,
-                child: const LogoWidget());
+                child: const LogoWidget(logoSize: 250));
           }),
     ));
   }

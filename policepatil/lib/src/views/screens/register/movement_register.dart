@@ -9,14 +9,14 @@ import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:policepatil/src/views/widgets/attach_button.dart';
 
-class MovementRegScreen extends StatefulWidget {
-  const MovementRegScreen({Key? key}) : super(key: key);
+class MovementRegFormScreen extends StatefulWidget {
+  const MovementRegFormScreen({Key? key}) : super(key: key);
 
   @override
-  State<MovementRegScreen> createState() => _MovementRegScreenState();
+  State<MovementRegFormScreen> createState() => _MovementRegFormScreenState();
 }
 
-class _MovementRegScreenState extends State<MovementRegScreen> {
+class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
   String? _movementValue;
   String? _movementSubValue;
   var _isIssue;
@@ -199,7 +199,7 @@ class _MovementRegScreenState extends State<MovementRegScreen> {
                     Future.delayed(const Duration(seconds: 1)).then((_) {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (_) {
-                        return const RegisterScreen();
+                            return const RegisterMenuScreen();
                       }));
                     });
                   }),

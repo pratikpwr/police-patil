@@ -1,17 +1,21 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
 
-class CollectRegScreen extends StatefulWidget {
-  const CollectRegScreen({Key? key}) : super(key: key);
+class CollectRegFormScreen extends StatefulWidget {
+  const CollectRegFormScreen({Key? key}) : super(key: key);
 
   @override
-  State<CollectRegScreen> createState() => _CollectRegScreenState();
+  State<CollectRegFormScreen> createState() => _CollectRegFormScreenState();
 }
 
-class _CollectRegScreenState extends State<CollectRegScreen> {
+class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
   String? _chosenValue;
 
   final List<String> _collectionType = <String>[
@@ -24,6 +28,14 @@ class _CollectRegScreenState extends State<CollectRegScreen> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+
+  Position? _position;
+  String _longitude = LONGITUDE;
+  String _latitude = LATITUDE;
+
+  String _photoName = "फोटो जोडा";
+  File? _photoImage;
+  final picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +66,27 @@ class _CollectRegScreenState extends State<CollectRegScreen> {
                 spacer(),
                 buildTextField(_addressController, PLACE),
                 spacer(),
+                AttachButton(
+                    text: SELECT_LOCATION,
+                    icon: Icons.location_on_rounded,
+                    onTap: () async {
+                      _position = await determinePosition();
+                      setState(() {
+                        _longitude = _position!.longitude.toString();
+                        _latitude = _position!.latitude.toString();
+                      });
+                    }),
+                spacer(),
                 buildDateTextField(context, _dateController, DATE),
                 spacer(),
                 buildTextField(_detailsController, "जप्ती मालाचे वर्णन"),
+                spacer(),
+                AttachButton(
+                  text: _photoName,
+                  onTap: () {
+                    getImage(context, _photoImage);
+                  },
+                ),
                 spacer(),
                 CustomButton(
                     text: DO_REGISTER,
@@ -65,7 +95,7 @@ class _CollectRegScreenState extends State<CollectRegScreen> {
                       Future.delayed(const Duration(seconds: 1)).then((_) {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (_) {
-                          return const RegisterScreen();
+                          return const RegisterMenuScreen();
                         }));
                       });
                     })
@@ -73,5 +103,54 @@ class _CollectRegScreenState extends State<CollectRegScreen> {
             )),
       ),
     );
+  }
+
+  Future getImage(BuildContext ctx, File? _image) async {
+    await showDialog(
+        context: ctx,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              'फोटो काढा अथवा गॅलरी मधून निवडा',
+              style: GoogleFonts.poppins(fontSize: 14),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.camera);
+                    setState(() {
+                      if (pickedImage != null) {
+                        _image = File(pickedImage.path);
+                      } else {
+                        debugPrint('No image selected.');
+                      }
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(
+                    'कॅमेरा',
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  )),
+              TextButton(
+                  onPressed: () async {
+                    final pickedImage =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    setState(() {
+                      if (pickedImage != null) {
+                        _image = File(pickedImage.path);
+                      } else {
+                        debugPrint('No image selected.');
+                      }
+                    });
+                    Navigator.pop(ctx);
+                  },
+                  child: Text(
+                    'गॅलरी',
+                    style: GoogleFonts.poppins(fontSize: 14),
+                  ))
+            ],
+          );
+        });
   }
 }
