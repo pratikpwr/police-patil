@@ -22,8 +22,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getUserData({required userId}) async {
-    String path = ApiConstants.GET_USER_DATA + userId;
+  static Future<Response> getUserData({required int userId}) async {
+    String path = ApiConstants.GET_USER_DATA + "$userId";
 
     Response response = await RestApiHandlerData.getData(path);
     return response;

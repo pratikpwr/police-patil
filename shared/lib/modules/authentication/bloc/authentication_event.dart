@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'authentication_bloc.dart';
 
 abstract class AuthenticationEvent extends Equatable {
   const AuthenticationEvent();
@@ -11,8 +11,6 @@ abstract class AuthenticationEvent extends Equatable {
 class AppLoadedUp extends AuthenticationEvent {}
 
 class UserLogOut extends AuthenticationEvent {}
-
-class GetUserData extends AuthenticationEvent {}
 
 class UserLogin extends AuthenticationEvent {
   final String email;

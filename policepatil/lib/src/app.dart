@@ -10,7 +10,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (ctx) => AuthenticationBloc())],
+      providers: [
+        BlocProvider(create: (ctx) => AuthenticationBloc()),
+        BlocProvider(create: (ctx) => ProfileBloc()),
+      ],
       child: const MaterialApp(
           title: STR_APP_NAME,
           debugShowCheckedModeBanner: false,

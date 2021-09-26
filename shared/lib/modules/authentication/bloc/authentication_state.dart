@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:shared/modules/authentication/models/user.dart';
+part of 'authentication_bloc.dart';
 
 abstract class AuthenticationState extends Equatable {
   const AuthenticationState();
@@ -17,15 +16,6 @@ class AuthenticationLoading extends AuthenticationState {}
 class AuthenticationStart extends AuthenticationState {}
 
 class UserLogoutState extends AuthenticationState {}
-
-class SetUserData extends AuthenticationState {
-  final UserModel user;
-
-  const SetUserData({required this.user});
-
-  @override
-  List<Object> get props => [user];
-}
 
 class AuthenticationNotAuthenticated extends AuthenticationState {}
 

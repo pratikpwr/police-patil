@@ -3,14 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
-import 'package:policepatil/src/views/views.dart';
 import 'package:shared/modules/authentication/auth.dart';
+import 'package:shared/shared.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  // late ProfileBloc _profileBloc;
+  //
+  // @override
+  // void initState() {
+  //   _profileBloc = ProfileBlocController().profileBloc;
+  //   _profileBloc.add(GetUserData());
+  //   super.initState();
+  // }
+
+  @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ProfileBloc>(context).add(GetUserData());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -27,50 +42,76 @@ class ProfileScreen extends StatelessWidget {
               icon: const Icon(Icons.logout))
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-              child: Column(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.asset(
-                      ImageConstants.PROFILE_PIC,
-                      width: 150,
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  spacer(),
-                  Text(
-                    "राजेंद्र पाटील",
-                    style: GoogleFonts.poppins(
-                        fontSize: 24, fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    "सासवड, पुणे",
-                    style: GoogleFonts.poppins(
-                        fontSize: 18, fontWeight: FontWeight.w500),
-                  ),
-                  spacer(height: 20),
-                  // buildDetailsRow(Icons.perm_identity, "y585858"),
-                  // spacer(height: 8  ),
-                  buildDetails("मो. नंबर :", "7397447297"),
-                  spacer(height: 8),
-                  buildDetails("पत्ता :", "सासवड, पुणे"),
-                  spacer(height: 8),
-                  buildDetails("नेमणुकीची तारीख :", "12 DEC 2020"),
-                  spacer(height: 8),
-                  buildDetails("नेमणुकीची मुदत :", "11 DEC 2021"),
-                  spacer(height: 8),
-                  buildDetails("पो. ठा. पासून गावाचे अंतर :", "20 कि.मी."),
-                  spacer(),
-                ],
-              ),
-            )),
+      body: BlocListener<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileLoadError) {
+            showSnackBar(context, state.error);
+          }
+        },
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is ProfileDataLoaded) {
+              print('heelloo');
+              return SafeArea(
+                child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 32, horizontal: 16),
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Image.network(
+                              state.user.photo,
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          spacer(),
+                          Text(
+                            state.user.name,
+                            style: GoogleFonts.poppins(
+                                fontSize: 24, fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            state.user.village,
+                            style: GoogleFonts.poppins(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          ),
+                          spacer(height: 20),
+                          // buildDetailsRow(Icons.perm_identity, "y585858"),
+                          // spacer(height: 8  ),
+                          buildDetails(
+                              "मो. नंबर :", state.user.mobile.toString()),
+                          spacer(height: 8),
+                          buildDetails("पत्ता :", state.user.address),
+                          spacer(height: 8),
+                          buildDetails("नेमणुकीची तारीख :",
+                              state.user.joindate.toIso8601String()),
+                          spacer(height: 8),
+                          buildDetails("नेमणुकीची मुदत :",
+                              state.user.enddate.toIso8601String()),
+                          spacer(height: 8),
+                          buildDetails("पो. ठा. पासून गावाचे अंतर :",
+                              "${state.user.psdistance} कि.मी."),
+                          spacer(),
+                        ],
+                      ),
+                    )),
+              );
+            } else if (state is ProfileLoadError) {
+              return Container();
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }

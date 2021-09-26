@@ -1,11 +1,16 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:shared/modules/authentication/models/user.dart';
-import 'package:shared/shared.dart';
+import 'package:equatable/equatable.dart';
 import 'package:dio/dio.dart';
+import 'package:shared/modules/authentication/models/user.dart';
 import 'package:shared/modules/authentication/resources/authentication_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared/shared.dart';
 
-import 'authentication_bloc_public.dart';
+part 'authentication_event.dart';
+
+part 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -29,16 +34,9 @@ class AuthenticationBloc
       sharedPreferences.setInt('userId', 0);
       yield UserLogoutState();
     }
-    if (event is GetUserData) {
-      int? currentUserId = sharedPreferences.getInt('userId');
-      final data = await authenticationService.getUserData(currentUserId!);
-      final user = UserModel.fromJson(data);
-      yield SetUserData(user: user);
-    }
   }
 
-  Stream<AuthenticationState> _mapAppSignUpLoadedState(
-      AppLoadedUp event) async* {
+  Stream<AuthenticationState> _mapAppSignUpLoadedState(AppLoadedUp event) async* {
     yield AuthenticationLoading();
     try {
       // a simulated delay for splash

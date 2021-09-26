@@ -1,4 +1,5 @@
 import 'package:shared/shared.dart';
+import 'authentication_bloc.dart';
 
 class AuthenticationBlocController {
   AuthenticationBlocController._();
