@@ -14,7 +14,7 @@ class ApiSdk {
 
   static Future<Response> loginWithEmailAndPassword(
       {required userAuthData}) async {
-    String path = ApiConstants.SIGN_UP;
+    String path = ApiConstants.LOGIN;
 
     Map<String, dynamic> body = userAuthData;
 
@@ -22,12 +22,10 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getUserData({required userAuthData}) async {
-    String path = ApiConstants.SIGN_UP;
+  static Future<Response> getUserData({required userId}) async {
+    String path = ApiConstants.GET_USER_DATA + userId;
 
-    Map<String, dynamic> body = userAuthData;
-
-    Response response = await RestApiHandlerData.postData(path, body);
+    Response response = await RestApiHandlerData.getData(path);
     return response;
   }
 }

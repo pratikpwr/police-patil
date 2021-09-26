@@ -47,8 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
             if (state is AuthenticationFailure) {
               debugPrint(state.message);
               _showError(state.message);
-            }
-            if (state is AppAuthenticated) {
+            } else if (state is AppAuthenticated) {
               if (kIsWeb) {
                 Navigator.pushReplacementNamed(context, '/admin');
               } else {
@@ -146,11 +145,11 @@ class SignInWidget extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15))),
                   onPressed: () {
-                    // if (_key.currentState!.validate()) {
-                    authenticationBloc.add(UserLogin(
-                        email: _emailController.text,
-                        password: _passwordController.text));
-                    // }
+                    if (_key.currentState!.validate()) {
+                      authenticationBloc.add(UserLogin(
+                          email: _emailController.text,
+                          password: _passwordController.text));
+                    }
                   },
                   child: state is AuthenticationLoading
                       ? const CircularProgressIndicator()

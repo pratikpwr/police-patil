@@ -7,7 +7,7 @@ export 'package:policepatil/src/views/screens/sign_in_screen.dart';
 export 'package:policepatil/src/views/screens/splash_screen.dart';
 export 'package:policepatil/src/views/screens/alert_screen.dart';
 export 'package:policepatil/src/views/screens/bottom_nav_bar.dart';
-export 'package:policepatil/src/views/screens/profile.dart';
+export 'package:policepatil/src/views/screens/profile_screen.dart';
 
 //MANDHAN
 export 'package:policepatil/src/views/screens/mandhan/mandhan_screen.dart';

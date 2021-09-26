@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:shared/modules/authentication/models/user.dart';
 import 'package:shared/shared.dart';
-import 'package:shared/modules/authentication/models/current_user_data.dart';
-
+import 'package:dio/dio.dart';
 import 'package:shared/modules/authentication/resources/authentication_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,15 +25,15 @@ class AuthenticationBloc
       yield* _mapUserLoginState(event);
     }
     if (event is UserLogOut) {
-      sharedPreferences.setString('authtoken', '');
+      sharedPreferences.setString('authToken', '');
       sharedPreferences.setInt('userId', 0);
       yield UserLogoutState();
     }
     if (event is GetUserData) {
       int? currentUserId = sharedPreferences.getInt('userId');
-      final data = await authenticationService.getUserData(currentUserId ?? 4);
-      final currentUserData = CurrentUserData.fromJson(data);
-      yield SetUserData(currentUserData: currentUserData);
+      final data = await authenticationService.getUserData(currentUserId!);
+      final user = UserModel.fromJson(data);
+      yield SetUserData(user: user);
     }
   }
 
@@ -41,9 +41,11 @@ class AuthenticationBloc
       AppLoadedUp event) async* {
     yield AuthenticationLoading();
     try {
-      await Future.delayed(const Duration(seconds: 1)); // a simulated delay
+      // a simulated delay for splash
+      await Future.delayed(const Duration(seconds: 1));
       final SharedPreferences sharedPreferences = await prefs;
-      if (sharedPreferences.getString('authtoken') != null) {
+      String? authToken = sharedPreferences.getString('authToken');
+      if (authToken != "" && authToken != null) {
         yield AppAuthenticated();
       } else {
         yield AuthenticationStart();
@@ -57,22 +59,20 @@ class AuthenticationBloc
     final SharedPreferences sharedPreferences = await prefs;
     yield AuthenticationLoading();
     try {
-      await Future.delayed(
-          const Duration(milliseconds: 300)); // a simulated delay
-      // final data = await authenticationService.loginWithEmailAndPassword(
-      //     event.email, event.password);
-      // if (data["error"] == null) {
-      //   final currentUser = Token.fromJson(data);
-      //   if (currentUser != null) {
-      //     sharedPreferences.setString('authtoken', currentUser.token);
-      //     yield AppAuthenticated();
-      //   } else {
-      //     yield AuthenticationNotAuthenticated();
-      //   }
-      // } else {
-      //   yield AuthenticationFailure(message: data["error"]);
-      // }
-      yield AppAuthenticated();
+      Response response = await authenticationService.loginWithEmailAndPassword(
+          event.email, event.password);
+      if (response.data["message"] == null) {
+        final currentUser = UserModel.fromJson(response.data);
+        if (currentUser != null) {
+          sharedPreferences.setString('authToken', currentUser.accessToken);
+          sharedPreferences.setInt("userId", currentUser.user.id);
+          yield AppAuthenticated();
+        } else {
+          yield AuthenticationNotAuthenticated();
+        }
+      } else {
+        yield AuthenticationFailure(message: response.data["message"]);
+      }
     } catch (e) {
       yield AuthenticationFailure(message: e.toString());
     }

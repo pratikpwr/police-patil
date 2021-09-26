@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:shared/modules/authentication/models/current_user_data.dart';
+import 'package:shared/modules/authentication/models/user.dart';
 
 abstract class AuthenticationState extends Equatable {
   const AuthenticationState();
@@ -19,12 +19,12 @@ class AuthenticationStart extends AuthenticationState {}
 class UserLogoutState extends AuthenticationState {}
 
 class SetUserData extends AuthenticationState {
-  final CurrentUserData currentUserData;
+  final UserModel user;
 
-  const SetUserData({required this.currentUserData});
+  const SetUserData({required this.user});
 
   @override
-  List<Object> get props => [currentUserData];
+  List<Object> get props => [user];
 }
 
 class AuthenticationNotAuthenticated extends AuthenticationState {}

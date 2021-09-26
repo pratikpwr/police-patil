@@ -19,6 +19,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
     GlobalKey<NavigatorState>(),
   ];
 
+  static const List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    AlertScreen(),
+    ProfileScreen()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -33,13 +39,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         return isFirstRouteInCurrentTab;
       },
       child: Scaffold(
-        body: Stack(
-          children: [
-            _buildOffstageNavigator(0),
-            _buildOffstageNavigator(1),
-            _buildOffstageNavigator(2),
-          ],
-        ),
+        body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
@@ -81,7 +81,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context, int index) {
     return {
-      '/': (context) {
+      '/bottomNavBar': (context) {
         return const [HomeScreen(), AlertScreen(), ProfileScreen()]
             .elementAt(index);
       },

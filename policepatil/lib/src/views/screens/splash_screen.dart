@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
       bloc: authenticationBloc,
       listener: (BuildContext context, AuthenticationState state) {
         if (state is AppAuthenticated) {
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushNamed(context, '/bottomNavBar');
         }
         if (state is AuthenticationStart) {
           Navigator.pushNamed(context, '/auth');

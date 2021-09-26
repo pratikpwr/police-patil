@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
+import 'package:shared/modules/authentication/auth.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -16,7 +18,14 @@ class ProfileScreen extends StatelessWidget {
           style: GoogleFonts.poppins(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.logout))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                BlocProvider.of<AuthenticationBloc>(context).add(UserLogOut());
+                Navigator.pushReplacementNamed(context, '/auth');
+              },
+              icon: const Icon(Icons.logout))
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

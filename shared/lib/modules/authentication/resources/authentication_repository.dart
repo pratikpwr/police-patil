@@ -12,8 +12,7 @@ class AuthenticationRepository {
   }
 
   Future<dynamic> getUserData(int id) async {
-    var data = {'id': id};
-    final response = await ApiSdk.getUserData(userAuthData: data);
+    final response = await ApiSdk.getUserData(userId: id);
     return response;
   }
 }
