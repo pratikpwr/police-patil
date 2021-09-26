@@ -61,7 +61,7 @@ class UserData {
         "enddate": enddate.toIso8601String(),
         "psdistance": psdistance,
         "photo": photo,
-        "latitude": latitude ?? "",
+        "latitude": latitude,
         "longitude": longitude,
         "psid": psid,
         "created_at": createdAt.toIso8601String(),

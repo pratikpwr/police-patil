@@ -36,7 +36,8 @@ class AuthenticationBloc
     }
   }
 
-  Stream<AuthenticationState> _mapAppSignUpLoadedState(AppLoadedUp event) async* {
+  Stream<AuthenticationState> _mapAppSignUpLoadedState(
+      AppLoadedUp event) async* {
     yield AuthenticationLoading();
     try {
       // a simulated delay for splash
@@ -64,6 +65,7 @@ class AuthenticationBloc
         if (currentUser != null) {
           sharedPreferences.setString('authToken', currentUser.accessToken);
           sharedPreferences.setInt("userId", currentUser.user.id);
+          sharedPreferences.setInt('policeStationId', currentUser.user.psid);
           yield AppAuthenticated();
         } else {
           yield AuthenticationNotAuthenticated();

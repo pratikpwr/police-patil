@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/screens/register/arms_register.dart';
+import 'package:shared/shared.dart';
 
 class ArmsScreen extends StatelessWidget {
   const ArmsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -16,19 +20,43 @@ class ArmsScreen extends StatelessWidget {
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            physics: const BouncingScrollPhysics(),
-            child: ListView.builder(
-                itemCount: data.length,
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return ArmsDetailWidget(
-                    armsData: data[index],
-                  );
-                })),
+      body: BlocListener<ArmsRegisterBloc, ArmsRegisterState>(
+        listener: (context, state) {
+          if (state is ArmsLoadError) {
+            debugPrint(state.message);
+            showSnackBar(context, state.message);
+          }
+        },
+        child: BlocBuilder<ArmsRegisterBloc, ArmsRegisterState>(
+          builder: (context, state) {
+            if (state is ArmsDataLoading) {
+              return loading();
+            } else if (state is ArmsDataLoaded) {
+              return SafeArea(
+                child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    physics: const BouncingScrollPhysics(),
+                    child: ListView.builder(
+                        itemCount: state.armsList.armsData.length,
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return ArmsDetailWidget(
+                            armsData: state.armsList.armsData[index],
+                          );
+                        })),
+              );
+            } else if (state is ArmsLoadError) {
+              if (state.message == 'Record Empty') {
+                return noRecordFound();
+              } else {
+                return somethingWentWrong();
+              }
+            } else {
+              return somethingWentWrong();
+            }
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -44,7 +72,7 @@ class ArmsScreen extends StatelessWidget {
 
 class ArmsDetailWidget extends StatelessWidget {
   const ArmsDetailWidget({Key? key, required this.armsData}) : super(key: key);
-  final ArmsModel armsData;
+  final ArmsData armsData;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +87,7 @@ class ArmsDetailWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      armsData.prakar,
+                      armsData.type,
                       style: GoogleFonts.poppins(
                           fontSize: 16,
                           color: Colors.blue,
@@ -71,7 +99,7 @@ class ArmsDetailWidget extends StatelessWidget {
                       style: GoogleFonts.poppins(fontSize: 15),
                     ),
                     Text(
-                      armsData.mobNo,
+                      armsData.mobile.toString(),
                       style: GoogleFonts.poppins(fontSize: 14),
                     ),
                     Text(
@@ -79,11 +107,11 @@ class ArmsDetailWidget extends StatelessWidget {
                       style: GoogleFonts.poppins(fontSize: 14),
                     ),
                     Text(
-                      "परवाना क्रमांक : ${armsData.certNo}",
+                      "परवाना क्रमांक : ${armsData.licenceNumber}",
                       style: GoogleFonts.poppins(fontSize: 14),
                     ),
                     Text(
-                      "परवान्याची वैधता कालावधी : ${armsData.certVal}",
+                      "परवान्याची वैधता कालावधी : ${armsData.validity.toIso8601String()}",
                       style: GoogleFonts.poppins(fontSize: 14),
                     ),
                   ],
@@ -101,7 +129,7 @@ class ArmsDetailWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              armsData.prakar,
+              armsData.type,
               style: GoogleFonts.poppins(
                   fontSize: 16,
                   color: Colors.blue,
@@ -118,7 +146,7 @@ class ArmsDetailWidget extends StatelessWidget {
             ),
             const Divider(),
             Text(
-              "परवाना क्रमांक : ${armsData.certNo}4",
+              "परवाना क्रमांक : ${armsData.licenceNumber}",
               style: GoogleFonts.poppins(fontSize: 14),
             ),
           ],
@@ -127,83 +155,3 @@ class ArmsDetailWidget extends StatelessWidget {
     );
   }
 }
-
-class ArmsModel {
-  String prakar;
-  String name;
-  String mobNo;
-  String aadharImage;
-  String address;
-  double lat;
-  double long;
-  String certNo;
-  String certVal;
-  String cerImage;
-
-  ArmsModel(
-      {required this.prakar,
-      required this.name,
-      required this.mobNo,
-      required this.aadharImage,
-      required this.address,
-      required this.lat,
-      required this.long,
-      required this.certNo,
-      required this.certVal,
-      required this.cerImage});
-}
-
-List<ArmsModel> data = [
-  ArmsModel(
-      prakar: "शस्त्र परवानाधारक",
-      name: "प्रतिक सतीश पवार",
-      mobNo: "9168919081",
-      aadharImage:
-          "https://hindi.cdn.zeenews.com/hindi/sites/default/files/2021/05/11/822175-aadhaar-card-1105.jpg",
-      address: "मुळेगाव, जुन्नर, पुणे",
-      lat: 21.484934,
-      long: 123.4279,
-      certNo: "3249856983465984",
-      certVal: "21/10/2022",
-      cerImage:
-          "https://data2.unhcr.org/images/documents/big_aa2c81585e808b644ef70587136c23601d33a2e9.jpg"),
-  ArmsModel(
-      prakar: "स्फोटक पदार्थ विक्री",
-      name: "प्रतिक सतीश पवार",
-      mobNo: "9168919081",
-      aadharImage:
-          "https://hindi.cdn.zeenews.com/hindi/sites/default/files/2021/05/11/822175-aadhaar-card-1105.jpg",
-      address: "मुळेगाव, जुन्नर, पुणे",
-      lat: 21.484934,
-      long: 123.4279,
-      certNo: "3249856983465984",
-      certVal: "21/10/2022",
-      cerImage:
-          "https://data2.unhcr.org/images/documents/big_aa2c81585e808b644ef70587136c23601d33a2e9.jpg"),
-  ArmsModel(
-      prakar: "स्फोटक जवळ बाळगणारे",
-      name: "प्रतिक सतीश पवार",
-      mobNo: "9168919081",
-      aadharImage:
-          "https://hindi.cdn.zeenews.com/hindi/sites/default/files/2021/05/11/822175-aadhaar-card-1105.jpg",
-      address: "मुळेगाव, जुन्नर, पुणे",
-      lat: 21.484934,
-      long: 123.4279,
-      certNo: "3249856983465984",
-      certVal: "21/10/2022",
-      cerImage:
-          "https://data2.unhcr.org/images/documents/big_aa2c81585e808b644ef70587136c23601d33a2e9.jpg"),
-  ArmsModel(
-      prakar: "शस्त्र परवानाधारक",
-      name: "प्रतिक सतीश पवार",
-      mobNo: "9168919081",
-      aadharImage:
-          "https://hindi.cdn.zeenews.com/hindi/sites/default/files/2021/05/11/822175-aadhaar-card-1105.jpg",
-      address: "मुळेगाव, जुन्नर, पुणे",
-      lat: 21.484934,
-      long: 123.4279,
-      certNo: "3249856983465984",
-      certVal: "21/10/2022",
-      cerImage:
-          "https://data2.unhcr.org/images/documents/big_aa2c81585e808b644ef70587136c23601d33a2e9.jpg"),
-];

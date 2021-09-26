@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:policepatil/src/config/constants.dart';
 
 void showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -8,6 +9,30 @@ void showSnackBar(BuildContext context, String message) {
     message,
     style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
   )));
+}
+
+Widget loading() {
+  return const Center(
+    child: CircularProgressIndicator(),
+  );
+}
+
+Widget somethingWentWrong({String? message}) {
+  return Center(
+    child: Text(
+      message ?? SOMETHING_WENT_WRONG,
+      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+    ),
+  );
+}
+
+Widget noRecordFound({String? message}) {
+  return Center(
+    child: Text(
+      message ?? NO_RECORD,
+      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+    ),
+  );
 }
 
 Widget spacer({double? height}) {

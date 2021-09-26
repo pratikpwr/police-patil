@@ -2,14 +2,24 @@ import 'package:api/shared_prefs/shared_const.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalPrefs {
-  static Future<bool> saveUserID(String userID) async {
+  static Future<bool> saveUserID(int userID) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.setString(KEY_USER_ID, userID);
+    return await prefs.setInt(KEY_USER_ID, userID);
   }
 
-  static Future<String?> getUserID() async {
+  static Future<int?> getUserID() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(KEY_USER_ID);
+    return prefs.getInt(KEY_USER_ID);
+  }
+
+  static Future<bool> savePoliceStationID(int userID) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setInt(KEY_POLICE_STATION_ID, userID);
+  }
+
+  static Future<int?> getPoliceStationID() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(KEY_POLICE_STATION_ID);
   }
 
   static Future<bool> saveToken(String userID) async {

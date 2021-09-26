@@ -17,10 +17,10 @@ TextField buildDateTextField(
               minTime: DateTime(2018, 1, 1),
               maxTime: DateTime(2032, 12, 31),
               onChanged: (date) {
-                _controller.text = "${date.day}/${date.month}/${date.year}";
+                _controller.text = "${date.year}-${date.month}-${date.day}";
               },
               onConfirm: (date) {
-                _controller.text = "${date.day}/${date.month}/${date.year}";
+                _controller.text = "${date.year}-${date.month}-${date.day}";
               },
               currentTime: DateTime.now(),
             );

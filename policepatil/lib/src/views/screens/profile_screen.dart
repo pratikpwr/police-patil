@@ -51,11 +51,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             if (state is ProfileLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return loading();
             } else if (state is ProfileDataLoaded) {
-              print('heelloo');
               return SafeArea(
                 child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -107,9 +104,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     )),
               );
             } else if (state is ProfileLoadError) {
-              return Container();
+              return somethingWentWrong();
             }
-            return Container();
+            return somethingWentWrong();
           },
         ),
       ),
@@ -117,16 +114,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget buildDetails(String title, String text) {
-    return Row(
+    return Column(
       children: [
         Text(title,
             style: GoogleFonts.poppins(
                 fontSize: 18,
                 color: Colors.black87,
                 fontWeight: FontWeight.w600)),
-        const SizedBox(
-          width: 12,
-        ),
+        spacer(height: 8),
         Text(
           text,
           style: GoogleFonts.poppins(
