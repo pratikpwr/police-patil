@@ -10,5 +10,5 @@ class ApiConstants {
 
   static const String GET_ARMS_BY_PP = BASE_URL + '/api/arms/showbyppid/';
   static const String GET_ARMS = BASE_URL + '/api/arms';
-  static const String POST_ARMS_BY_PP = BASE_URL + '/api/arms';
+  static const String POST_ARMS_BY_PP = BASE_URL + '/api/arms/save';
 }

@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
             style: GoogleFonts.poppins(
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
           ),
+          automaticallyImplyLeading: false,
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
           ],

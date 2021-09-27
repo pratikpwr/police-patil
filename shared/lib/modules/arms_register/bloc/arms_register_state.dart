@@ -12,9 +12,9 @@ class ArmsRegisterInitial extends ArmsRegisterState {}
 class ArmsDataLoading extends ArmsRegisterState {}
 
 class ArmsDataLoaded extends ArmsRegisterState {
-  final ArmsList armsList;
+  final ArmsResponse armsResponse;
 
-  const ArmsDataLoaded(this.armsList);
+  const ArmsDataLoaded(this.armsResponse);
 }
 
 class ArmsLoadError extends ArmsRegisterState {
@@ -25,10 +25,14 @@ class ArmsLoadError extends ArmsRegisterState {
 
 class ArmsDataSending extends ArmsRegisterState {}
 
-class ArmsDataSent extends ArmsRegisterState {}
-
-class ArmsDataSendError extends ArmsRegisterState {
+class ArmsDataSent extends ArmsRegisterState {
   final String message;
 
-  const ArmsDataSendError(this.message);
+  const ArmsDataSent(this.message);
+}
+
+class ArmsDataSendError extends ArmsRegisterState {
+  final String error;
+
+  const ArmsDataSendError(this.error);
 }

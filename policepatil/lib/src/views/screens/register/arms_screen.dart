@@ -37,12 +37,12 @@ class ArmsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     physics: const BouncingScrollPhysics(),
                     child: ListView.builder(
-                        itemCount: state.armsList.armsData.length,
+                        itemCount: state.armsResponse.data.length,
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           return ArmsDetailWidget(
-                            armsData: state.armsList.armsData[index],
+                            armsData: state.armsResponse.data[index],
                           );
                         })),
               );
@@ -62,7 +62,9 @@ class ArmsScreen extends StatelessWidget {
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (_) {
             return const ArmsRegFormScreen();
-          }));
+          })).then((value) {
+            BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
+          });
         },
         child: const Icon(Icons.add, size: 24),
       ),
@@ -87,7 +89,7 @@ class ArmsDetailWidget extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      armsData.type,
+                      armsData.type!,
                       style: GoogleFonts.poppins(
                           fontSize: 16,
                           color: Colors.blue,
@@ -95,7 +97,7 @@ class ArmsDetailWidget extends StatelessWidget {
                     ),
                     const Divider(),
                     Text(
-                      armsData.name,
+                      armsData.name!,
                       style: GoogleFonts.poppins(fontSize: 15),
                     ),
                     Text(
@@ -103,7 +105,7 @@ class ArmsDetailWidget extends StatelessWidget {
                       style: GoogleFonts.poppins(fontSize: 14),
                     ),
                     Text(
-                      armsData.address,
+                      armsData.address!,
                       style: GoogleFonts.poppins(fontSize: 14),
                     ),
                     Text(
@@ -111,7 +113,7 @@ class ArmsDetailWidget extends StatelessWidget {
                       style: GoogleFonts.poppins(fontSize: 14),
                     ),
                     Text(
-                      "परवान्याची वैधता कालावधी : ${armsData.validity.toIso8601String()}",
+                      "परवान्याची वैधता कालावधी : ${armsData.validity!.toIso8601String()}",
                       style: GoogleFonts.poppins(fontSize: 14),
                     ),
                   ],
@@ -129,7 +131,7 @@ class ArmsDetailWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              armsData.type,
+              armsData.type!,
               style: GoogleFonts.poppins(
                   fontSize: 16,
                   color: Colors.blue,
@@ -137,11 +139,11 @@ class ArmsDetailWidget extends StatelessWidget {
             ),
             const Divider(),
             Text(
-              armsData.name,
+              armsData.name!,
               style: GoogleFonts.poppins(fontSize: 15),
             ),
             Text(
-              armsData.address,
+              armsData.address!,
               style: GoogleFonts.poppins(fontSize: 14),
             ),
             const Divider(),

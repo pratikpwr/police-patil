@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
@@ -21,7 +22,6 @@ class ArmsRegFormScreen extends StatefulWidget {
 
 class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
   String? _chosenValue;
-  ArmsData? armsData;
   final List<String> _armsRegTypes = <String>[
     "शस्त्र परवानाधारक",
     "स्फोटक पदार्थ विक्री",
@@ -43,9 +43,9 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _certificateNoController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _certificateExpiryController =
-  TextEditingController();
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +60,10 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
       body: BlocListener<ArmsRegisterBloc, ArmsRegisterState>(
         listener: (context, state) {
           if (state is ArmsDataSendError) {
-            showSnackBar(context, state.message);
+            showSnackBar(context, state.error);
           }
           if (state is ArmsDataSent) {
-            showSnackBar(context, "Success");
+            showSnackBar(context, state.message);
             Navigator.pop(context);
           }
         },
@@ -83,7 +83,6 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                           onChanged: (String? value) {
                             setState(() {
                               _chosenValue = value;
-                              armsData!.type = value!;
                             });
                           }),
                       spacer(),
@@ -136,16 +135,11 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                         },
                       ),
                       spacer(),
-                      BlocBuilder<ArmsRegisterBloc, ArmsRegisterState>(
-                        builder: (context, state) {
-                          if (state is ArmsDataSending) {
-                            return loading();
-                          } else {
-                            return CustomButton(
-                                text: DO_REGISTER, onTap: _registerArmsData());
-                          }
-                        },
-                      )
+                      CustomButton(
+                          text: DO_REGISTER,
+                          onTap: () {
+                            _registerArmsData();
+                          })
                     ],
                   )),
             );
@@ -156,18 +150,20 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
   }
 
   _registerArmsData() {
-    armsData!.type = _chosenValue!;
-    armsData!.name = _nameController.text;
-    armsData!.mobile = int.parse(_phoneController.text);
-    armsData!.aadhar = "add aadhar logic";
-    armsData!.address = _addressController.text;
-    armsData!.latitude = double.parse(_latitude);
-    armsData!.longitude = double.parse(_longitude);
-    armsData!.licenceNumber = _certificateNoController.text;
-    armsData!.validity = DateTime.parse(_certificateExpiryController.text);
-    armsData!.licencephoto = "add licence photo";
+    DateFormat format = DateFormat("yyyy-MM-dd");
+    ArmsData armsData = ArmsData(
+        type: _chosenValue!,
+        name: _nameController.text,
+        mobile: int.parse(_phoneController.text),
+        aadhar: "add aadhar logic",
+        address: _addressController.text,
+        latitude: double.parse(_latitude),
+        longitude: double.parse(_longitude),
+        validity: format.parse(_certificateExpiryController.text),
+        licencephoto: "add licence photo",
+        licenceNumber: _certificateNoController.text);
 
-    BlocProvider.of<ArmsRegisterBloc>(context).add(AddArmsData(armsData!));
+    BlocProvider.of<ArmsRegisterBloc>(context).add(AddArmsData(armsData));
   }
 
   Future getImage(BuildContext ctx, File? _image) async {
@@ -183,7 +179,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
               TextButton(
                   onPressed: () async {
                     final pickedImage =
-                    await picker.pickImage(source: ImageSource.camera);
+                        await picker.pickImage(source: ImageSource.camera);
                     setState(() {
                       if (pickedImage != null) {
                         _image = File(pickedImage.path);
@@ -200,7 +196,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
               TextButton(
                   onPressed: () async {
                     final pickedImage =
-                    await picker.pickImage(source: ImageSource.gallery);
+                        await picker.pickImage(source: ImageSource.gallery);
                     setState(() {
                       if (pickedImage != null) {
                         _image = File(pickedImage.path);

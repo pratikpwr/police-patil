@@ -43,7 +43,7 @@ class ApiSdk {
       {required Map<String, dynamic> body}) async {
     String path = ApiConstants.POST_ARMS_BY_PP;
 
-    Response response = await RestApiHandlerData.putData(path, body);
+    Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }
 

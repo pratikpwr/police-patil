@@ -27,8 +27,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         int? userId = sharedPrefs.getInt('userId');
         Response response = await _repository.getUserData(userId!);
-        if (response.data["message"] == null) {
-          UserData user = UserData.fromJson(response.data);
+        if (response.data["error"] == null) {
+          UserData user = UserData.fromJson(response.data["data"]);
           yield ProfileDataLoaded(user);
         } else {
           yield ProfileLoadError(response.data["message"].toString());

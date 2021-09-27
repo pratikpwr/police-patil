@@ -24,7 +24,7 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
       yield* _mapGetArmsDataState(event);
     }
     if (event is AddArmsData) {
-      _mapAddArmsDataState(event);
+      yield* _mapAddArmsDataState(event);
     }
   }
 
@@ -37,10 +37,10 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
           await _armsRepository.getArmsRegisterByPP(userId: userId!);
 
       if (_response.statusCode! < 400) {
-        final _armsList = ArmsList.fromJson(_response.data);
-        yield ArmsDataLoaded(_armsList);
+        final _armsResponse = ArmsResponse.fromJson(_response.data);
+        yield ArmsDataLoaded(_armsResponse);
       } else {
-        yield ArmsLoadError(_response.data["message"]);
+        yield ArmsLoadError(_response.data["error"]);
       }
     } catch (err) {
       yield ArmsLoadError(err.toString());
@@ -57,11 +57,10 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
       Response _response =
           await _armsRepository.addArmsData(armsData: event.armsData);
 
-      if (_response.statusCode! < 400) {
-        //Todo
-        yield ArmsDataSent();
+      if (_response.data["message"] != null) {
+        yield ArmsDataSent(_response.data["message"]);
       } else {
-        yield ArmsDataSendError(_response.data["message"]);
+        yield ArmsDataSendError(_response.data["error"]);
       }
     } catch (err) {
       yield ArmsDataSendError(err.toString());

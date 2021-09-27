@@ -60,7 +60,7 @@ class AuthenticationBloc
     try {
       Response response = await authenticationService.loginWithEmailAndPassword(
           event.email, event.password);
-      if (response.data["message"] == null) {
+      if (response.data["error"] == null) {
         final currentUser = UserModel.fromJson(response.data);
         if (currentUser != null) {
           sharedPreferences.setString('authToken', currentUser.accessToken);
@@ -71,7 +71,7 @@ class AuthenticationBloc
           yield AuthenticationNotAuthenticated();
         }
       } else {
-        yield AuthenticationFailure(message: response.data["message"]);
+        yield AuthenticationFailure(message: response.data["error"]);
       }
     } catch (e) {
       yield AuthenticationFailure(message: e.toString());

@@ -26,88 +26,115 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<ProfileBloc>(context).add(GetUserData());
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          PROFILE,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            PROFILE,
+            style: GoogleFonts.poppins(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(UserLogOut());
+                  Navigator.pushReplacementNamed(context, '/auth');
+                },
+                icon: const Icon(Icons.logout))
+          ],
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                BlocProvider.of<AuthenticationBloc>(context).add(UserLogOut());
-                Navigator.pushReplacementNamed(context, '/auth');
-              },
-              icon: const Icon(Icons.logout))
-        ],
-      ),
-      body: BlocListener<ProfileBloc, ProfileState>(
-        listener: (context, state) {
-          if (state is ProfileLoadError) {
-            showSnackBar(context, state.error);
-          }
-        },
-        child: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            if (state is ProfileLoading) {
-              return loading();
-            } else if (state is ProfileDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 32, horizontal: 16),
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: Image.network(
-                              state.user.photo,
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          spacer(),
-                          Text(
-                            state.user.name,
-                            style: GoogleFonts.poppins(
-                                fontSize: 24, fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            state.user.village,
-                            style: GoogleFonts.poppins(
-                                fontSize: 18, fontWeight: FontWeight.w500),
-                          ),
-                          spacer(height: 20),
-                          // buildDetailsRow(Icons.perm_identity, "y585858"),
-                          // spacer(height: 8  ),
-                          buildDetails(
-                              "मो. नंबर :", state.user.mobile.toString()),
-                          spacer(height: 8),
-                          buildDetails("पत्ता :", state.user.address),
-                          spacer(height: 8),
-                          buildDetails("नेमणुकीची तारीख :",
-                              state.user.joindate.toIso8601String()),
-                          spacer(height: 8),
-                          buildDetails("नेमणुकीची मुदत :",
-                              state.user.enddate.toIso8601String()),
-                          spacer(height: 8),
-                          buildDetails("पो. ठा. पासून गावाचे अंतर :",
-                              "${state.user.psdistance} कि.मी."),
-                          spacer(),
-                        ],
-                      ),
-                    )),
-              );
-            } else if (state is ProfileLoadError) {
-              return somethingWentWrong();
+        body: BlocListener<ProfileBloc, ProfileState>(
+          listener: (context, state) {
+            if (state is ProfileLoadError) {
+              showSnackBar(context, state.error);
             }
-            return somethingWentWrong();
           },
+          child: BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              if (state is ProfileLoading) {
+                return loading();
+              } else if (state is ProfileDataLoaded) {
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 32, horizontal: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image.network(
+                                      state.user.photo,
+                                      width: 150,
+                                      height: 150,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  spacer(),
+                                  Text(
+                                    state.user.name,
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                  Text(
+                                    state.user.village,
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            spacer(height: 20),
+                            // buildDetailsRow(Icons.perm_identity, "y585858"),
+                            // spacer(height: 8  ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                buildDetails(
+                                    "मो. नंबर :", state.user.mobile.toString()),
+                                spacer(height: 12),
+                                buildDetails("पत्ता :", state.user.address),
+                                spacer(height: 12),
+                                buildDetails(
+                                    "नेमणुकीची तारीख :",
+                                    state.user.joindate
+                                        .toIso8601String()
+                                        .substring(0, 10)),
+                                spacer(height: 12),
+                                buildDetails(
+                                    "नेमणुकीची मुदत :",
+                                    state.user.enddate
+                                        .toIso8601String()
+                                        .substring(0, 10)),
+                                spacer(height: 12),
+                                buildDetails("पो. ठा. पासून गावाचे अंतर :",
+                                    "${state.user.psdistance} कि.मी."),
+                                spacer(),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )),
+                );
+              } else if (state is ProfileLoadError) {
+                return somethingWentWrong();
+              }
+              return somethingWentWrong();
+            },
+          ),
         ),
       ),
     );
@@ -115,13 +142,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget buildDetails(String title, String text) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title,
             style: GoogleFonts.poppins(
                 fontSize: 18,
                 color: Colors.black87,
                 fontWeight: FontWeight.w600)),
-        spacer(height: 8),
         Text(
           text,
           style: GoogleFonts.poppins(

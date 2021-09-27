@@ -14,6 +14,7 @@ class AlertScreen extends StatelessWidget {
             style: GoogleFonts.poppins(
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
           ),
+          automaticallyImplyLeading: false,
         ),
         body: SafeArea(
           child: SingleChildScrollView(

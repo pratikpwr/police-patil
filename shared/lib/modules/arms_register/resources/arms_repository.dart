@@ -10,5 +10,6 @@ class ArmsRepository {
   Future<dynamic> addArmsData({required ArmsData armsData}) async {
     final body = armsData.toJson();
     final response = await ApiSdk.postArmsRegister(body: body);
+    return response;
   }
 }

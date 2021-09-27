@@ -1,55 +1,57 @@
-import 'dart:convert';
-
-class ArmsList {
-  ArmsList({
-    required this.armsData,
+class ArmsResponse {
+  ArmsResponse({
+    required this.message,
+    required this.data,
   });
 
-  List<ArmsData> armsData;
+  String message;
+  List<ArmsData> data;
 
-  factory ArmsList.fromJson(Map<String, dynamic> json) => ArmsList(
-        armsData: List<ArmsData>.from(
-            json["armsData"].map((x) => ArmsData.fromJson(x))),
+  factory ArmsResponse.fromJson(Map<String, dynamic> json) => ArmsResponse(
+        message: json["message"],
+        data:
+            List<ArmsData>.from(json["data"].map((x) => ArmsData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "armsData": List<dynamic>.from(armsData.map((x) => x.toJson())),
+        "message": message,
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
 }
 
 class ArmsData {
   ArmsData({
-    required this.id,
-    required this.type,
-    required this.name,
-    required this.mobile,
-    required this.aadhar,
-    required this.address,
-    required this.latitude,
-    required this.longitude,
-    required this.validity,
-    required this.licencephoto,
-    required this.licenceNumber,
-    required this.ppid,
-    required this.psid,
-    required this.createdAt,
-    required this.updatedAt,
+    this.id,
+    this.type,
+    this.name,
+    this.mobile,
+    this.aadhar,
+    this.address,
+    this.latitude,
+    this.longitude,
+    this.validity,
+    this.licencephoto,
+    this.licenceNumber,
+    this.ppid,
+    this.psid,
+    this.createdAt,
+    this.updatedAt,
   });
 
-  int id;
-  String type;
-  String name;
-  int mobile;
-  String aadhar;
-  String address;
-  double latitude;
-  double longitude;
-  String licenceNumber;
-  DateTime validity;
-  String licencephoto;
-  int ppid;
-  int psid;
-  DateTime createdAt;
+  int? id;
+  String? type;
+  String? name;
+  int? mobile;
+  String? aadhar;
+  String? address;
+  double? latitude;
+  double? longitude;
+  String? licenceNumber;
+  DateTime? validity;
+  String? licencephoto;
+  int? ppid;
+  int? psid;
+  DateTime? createdAt;
   DateTime? updatedAt;
 
   factory ArmsData.fromJson(Map<String, dynamic> json) => ArmsData(
@@ -72,7 +74,8 @@ class ArmsData {
             : DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "type": type,
         "name": name,
         "mobile": mobile,
@@ -82,7 +85,7 @@ class ArmsData {
         "longitude": longitude,
         "licencenumber": licenceNumber,
         "validity":
-            "${validity.year.toString().padLeft(4, '0')}-${validity.month.toString().padLeft(2, '0')}-${validity.day.toString().padLeft(2, '0')}",
+            "${validity!.year.toString().padLeft(4, '0')}-${validity!.month.toString().padLeft(2, '0')}-${validity!.day.toString().padLeft(2, '0')}",
         "licencephoto": licencephoto,
         "ppid": ppid,
         "psid": psid
