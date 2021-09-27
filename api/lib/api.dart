@@ -1,5 +1,4 @@
 import 'package:api/api_constants.dart';
-import 'package:api/shared_prefs/shared_prefs.dart';
 import 'package:dio/dio.dart';
 import 'package:api/rest/rest_api_handler_data.dart';
 
@@ -49,6 +48,29 @@ class ApiSdk {
 
   static Future<Response> getArmsByPP({required int userId}) async {
     String path = ApiConstants.GET_ARMS_BY_PP + "$userId";
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> getArms() async {
+    String path = ApiConstants.GET_ARMS;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  // Collect Register
+  static Future<Response> postCollectRegister(
+      {required Map<String, dynamic> body}) async {
+    String path = ApiConstants.POST_COLLECT_BY_PP;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getCollectByPP({required int userId}) async {
+    String path = ApiConstants.GET_COLLECT_BY_PP + "$userId";
 
     Response response = await RestApiHandlerData.getData(path);
     return response;

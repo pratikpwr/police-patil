@@ -20,7 +20,7 @@ export 'package:policepatil/src/views/screens/disaster_management/disaster_manag
 export 'package:policepatil/src/views/screens/disaster_management/disaster_register_screen.dart';
 
 // Police Station
-export 'package:policepatil/src/views/screens/police_station/ps_home_screen.dart';
+export 'package:policepatil/src/views/screens/admin/ps_home_screen.dart';
 
 // Register
 export 'package:policepatil/src/views/screens/register/register_menu_screen.dart';

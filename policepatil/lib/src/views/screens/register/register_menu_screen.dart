@@ -40,7 +40,7 @@ class RegisterMenuScreen extends StatelessWidget {
                   imageUrl: ImageConstants.IMG_COLLECTION,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const CollectRegFormScreen();
+                      return const CollectionScreen();
                     }));
                   }),
               spacer(),

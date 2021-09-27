@@ -88,6 +88,7 @@ class SignInWidget extends StatelessWidget {
     return Center(
       child: Container(
         height: _size.height,
+        color: Colors.white,
         width: _size.width < 450 ? _size.width : 450,
         alignment: Alignment.center,
         padding: const EdgeInsets.all(16.0),

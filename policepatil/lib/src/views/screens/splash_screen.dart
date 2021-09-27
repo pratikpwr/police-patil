@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:policepatil/src/views/views.dart';
@@ -43,6 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
             return Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
+                color: Colors.white,
                 alignment: Alignment.center,
                 child: const LogoWidget(logoSize: 250));
           }),

@@ -1,12 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
+import 'package:shared/modules/collection_register/bloc/collect_register_bloc.dart';
+import 'package:shared/shared.dart';
 
 class CollectRegFormScreen extends StatefulWidget {
   const CollectRegFormScreen({Key? key}) : super(key: key);
@@ -47,62 +51,99 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              children: [
-                spacer(),
-                buildDropButton(
-                    value: _chosenValue,
-                    items: _collectionType,
-                    hint: "जप्ती मालाचा प्रकार निवडा",
-                    onChanged: (String? value) {
-                      setState(() {
-                        _chosenValue = value;
-                      });
-                    }),
-                spacer(),
-                buildTextField(_addressController, PLACE),
-                spacer(),
-                AttachButton(
-                    text: SELECT_LOCATION,
-                    icon: Icons.location_on_rounded,
-                    onTap: () async {
-                      _position = await determinePosition();
-                      setState(() {
-                        _longitude = _position!.longitude.toString();
-                        _latitude = _position!.latitude.toString();
-                      });
-                    }),
-                spacer(),
-                buildDateTextField(context, _dateController, DATE),
-                spacer(),
-                buildTextField(_detailsController, "जप्ती मालाचे वर्णन"),
-                spacer(),
-                AttachButton(
-                  text: _photoName,
-                  onTap: () {
-                    getImage(context, _photoImage);
-                  },
-                ),
-                spacer(),
-                CustomButton(
-                    text: DO_REGISTER,
-                    onTap: () {
-                      showSnackBar(context, SAVED);
-                      Future.delayed(const Duration(seconds: 1)).then((_) {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) {
-                          return const RegisterMenuScreen();
-                        }));
-                      });
-                    })
-              ],
-            )),
+      body: BlocListener<CollectRegisterBloc, CollectRegisterState>(
+        listener: (context, state) {
+          if (state is CollectionDataSendError) {
+            showSnackBar(context, state.error);
+          }
+          if (state is CollectionDataSent) {
+            showSnackBar(context, state.message);
+            Navigator.pop(context);
+          }
+        },
+        child: BlocBuilder<CollectRegisterBloc, CollectRegisterState>(
+          builder: (context, state) {
+            return SafeArea(
+              child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Column(
+                    children: [
+                      spacer(),
+                      buildDropButton(
+                          value: _chosenValue,
+                          items: _collectionType,
+                          hint: "जप्ती मालाचा प्रकार निवडा",
+                          onChanged: (String? value) {
+                            setState(() {
+                              _chosenValue = value;
+                            });
+                          }),
+                      spacer(),
+                      buildTextField(_addressController, PLACE),
+                      spacer(),
+                      AttachButton(
+                          text: SELECT_LOCATION,
+                          icon: Icons.location_on_rounded,
+                          onTap: () async {
+                            _position = await determinePosition();
+                            setState(() {
+                              _longitude = _position!.longitude.toString();
+                              _latitude = _position!.latitude.toString();
+                            });
+                          }),
+                      spacer(),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("$LONGITUDE: $_longitude",
+                              style: GoogleFonts.poppins(fontSize: 14)),
+                          const SizedBox(width: 12),
+                          Text("$LATITUDE: $_latitude",
+                              style: GoogleFonts.poppins(fontSize: 14)),
+                        ],
+                      ),
+                      spacer(),
+                      buildDateTextField(context, _dateController, DATE),
+                      spacer(),
+                      buildTextField(_detailsController, "जप्ती मालाचे वर्णन"),
+                      spacer(),
+                      AttachButton(
+                        text: _photoName,
+                        onTap: () {
+                          getImage(context, _photoImage);
+                        },
+                      ),
+                      spacer(),
+                      CustomButton(
+                          text: DO_REGISTER,
+                          onTap: () {
+                            _registerCollectionData();
+                          })
+                    ],
+                  )),
+            );
+          },
+        ),
       ),
     );
+  }
+
+  _registerCollectionData() {
+    DateFormat format = DateFormat("yyyy-MM-dd");
+    CollectionData collectionData = CollectionData(
+      type: _chosenValue!,
+      address: _addressController.text,
+      date: format.parse(_dateController.text),
+      description: _detailsController.text,
+      latitude: double.parse(_latitude),
+      longitude: double.parse(_longitude),
+      photo: "jsdjjbksbvk",
+    );
+
+    BlocProvider.of<CollectRegisterBloc>(context)
+        .add(AddCollectionData(collectionData));
   }
 
   Future getImage(BuildContext ctx, File? _image) async {

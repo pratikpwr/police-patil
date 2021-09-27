@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => AuthenticationBloc()),
         BlocProvider(create: (ctx) => ProfileBloc()),
         BlocProvider(create: (ctx) => ArmsRegisterBloc()),
+        BlocProvider(create: (ctx) => CollectRegisterBloc()),
       ],
       child: const MaterialApp(
           title: STR_APP_NAME,
