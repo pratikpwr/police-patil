@@ -17,14 +17,22 @@ class _ArmsWidgetState extends State<ArmsWidget> {
   ArmsResponse? armsResponse;
   bool isLoading = true;
 
-  getArmsData() async {
+  Future<ArmsResponse> getArmsData() async {
     try {
       Response response = await ApiSdk.getArms();
       armsResponse = ArmsResponse.fromJson(response.data);
+      print(armsResponse.toString());
+
       isLoading = false;
     } catch (e) {
       print(e.toString());
     }
+    return armsResponse!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -52,13 +60,17 @@ class _ArmsWidgetState extends State<ArmsWidget> {
                     ],
                   ),
                 ),
-                isLoading
-                    ? ListView.builder(
+                FutureBuilder(
+                  future: getArmsData(),
+                  builder: (context, snap) {
+                    return ListView.builder(
+                        shrinkWrap: true,
                         itemCount: armsResponse!.data.length,
                         itemBuilder: (context, index) {
                           return buildSmallDetail(armsResponse!.data[index]);
-                        })
-                    : const Center(child: CircularProgressIndicator())
+                        });
+                  },
+                )
               ],
             )
           : Column(),
