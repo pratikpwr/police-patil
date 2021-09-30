@@ -1,29 +1,29 @@
 // To parse this JSON data, do
 //
-//     final missingResponse = missingResponseFromJson(jsonString);
+//     final illegalResponse = illegalResponseFromJson(jsonString);
 
 import 'dart:convert';
 
-MissingResponse missingResponseFromJson(String str) =>
-    MissingResponse.fromJson(json.decode(str));
+IllegalResponse illegalResponseFromJson(String str) =>
+    IllegalResponse.fromJson(json.decode(str));
 
-String missingResponseToJson(MissingResponse data) =>
+String illegalResponseToJson(IllegalResponse data) =>
     json.encode(data.toJson());
 
-class MissingResponse {
-  MissingResponse({
+class IllegalResponse {
+  IllegalResponse({
     this.message,
     this.data,
   });
 
   String? message;
-  List<MissingData>? data;
+  List<IllegalData>? data;
 
-  factory MissingResponse.fromJson(Map<String, dynamic> json) =>
-      MissingResponse(
+  factory IllegalResponse.fromJson(Map<String, dynamic> json) =>
+      IllegalResponse(
         message: json["message"],
-        data: List<MissingData>.from(
-            json["data"].map((x) => MissingData.fromJson(x))),
+        data: List<IllegalData>.from(
+            json["data"].map((x) => IllegalData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,19 +32,15 @@ class MissingResponse {
       };
 }
 
-class MissingData {
-  MissingData({
+class IllegalData {
+  IllegalData({
     this.id,
-    this.isAdult,
+    this.type,
     this.name,
-    this.age,
-    this.gender,
-    this.aadhar,
     this.photo,
     this.address,
     this.latitude,
     this.longitude,
-    this.missingDate,
     this.ppid,
     this.psid,
     this.createdAt,
@@ -52,33 +48,25 @@ class MissingData {
   });
 
   int? id;
-  bool? isAdult;
+  String? type;
   String? name;
-  int? age;
-  String? gender;
-  String? aadhar;
   String? photo;
   String? address;
   double? latitude;
   double? longitude;
-  DateTime? missingDate;
   int? ppid;
   int? psid;
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  factory MissingData.fromJson(Map<String, dynamic> json) => MissingData(
+  factory IllegalData.fromJson(Map<String, dynamic> json) => IllegalData(
         id: json["id"],
-        isAdult: json["isadult"] == 1 ? true : false,
+        type: json["type"],
         name: json["name"],
-        age: json["age"],
-        gender: json["gender"],
-        aadhar: json["aadhar"],
         photo: json["photo"],
         address: json["address"],
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
-        missingDate: DateTime.parse(json["missingdate"]),
         ppid: json["ppid"],
         psid: json["psid"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -86,17 +74,12 @@ class MissingData {
       );
 
   Map<String, dynamic> toJson() => {
-        "isadult": isAdult,
+        "type": type,
         "name": name,
-        "age": age,
-        "gender": gender,
-        "aadhar": aadhar,
         "photo": photo,
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
-        "missingdate":
-            "${missingDate!.year.toString().padLeft(4, '0')}-${missingDate!.month.toString().padLeft(2, '0')}-${missingDate!.day.toString().padLeft(2, '0')}",
         "ppid": ppid,
         "psid": psid
       };
