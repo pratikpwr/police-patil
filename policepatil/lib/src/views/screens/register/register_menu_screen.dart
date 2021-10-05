@@ -49,7 +49,7 @@ class RegisterMenuScreen extends StatelessWidget {
                   imageUrl: ImageConstants.IMG_MOVEMENT,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const MovementRegFormScreen();
+                      return const MovementScreen();
                     }));
                   }),
               spacer(),
@@ -58,7 +58,7 @@ class RegisterMenuScreen extends StatelessWidget {
                   imageUrl: ImageConstants.IMG_WATCH,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const WatchRegFormScreen();
+                      return const WatchScreen();
                     }));
                   }),
               spacer(),
@@ -76,7 +76,7 @@ class RegisterMenuScreen extends StatelessWidget {
                   imageUrl: ImageConstants.IMG_PLACES,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const SocialPlacesRegFormScreen();
+                      return const SocialPlaceScreen();
                     }));
                   }),
               spacer(),
@@ -85,7 +85,7 @@ class RegisterMenuScreen extends StatelessWidget {
                   imageUrl: ImageConstants.IMG_ILLEGAL,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const IllegalWorksFormScreen();
+                      return const IllegalScreen();
                     }));
                   }),
             ],

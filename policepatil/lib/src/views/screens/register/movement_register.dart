@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:policepatil/src/views/widgets/attach_button.dart';
+import 'package:shared/shared.dart';
 
 class MovementRegFormScreen extends StatefulWidget {
   const MovementRegFormScreen({Key? key}) : super(key: key);
@@ -70,145 +73,170 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            children: [
-              spacer(),
-              buildDropButton(
-                  value: _movementValue,
-                  items: _movementRegTypes,
-                  hint: "हालचाली प्रकार निवडा",
-                  onChanged: (String? value) {
-                    setState(() {
-                      _movementValue = value;
-                      _movementSubRegTypes = _getSubList(_movementValue);
-                    });
-                  }),
-              spacer(),
-              _movementValue != null
-                  ? buildDropButton(
-                  value: _movementSubValue,
-                  items: _movementSubRegTypes!,
-                  hint: "हालचाली उपप्रकार निवडा",
-                  onChanged: (String? value) {
-                    setState(() {
-                      _movementSubValue = value;
-                    });
-                  })
-                  : spacer(height: 0),
-              spacer(),
-              buildTextField(_placeController, PLACE),
-              spacer(),
-              AttachButton(
-                  text: SELECT_LOCATION,
-                  icon: Icons.location_on_rounded,
-                  onTap: () async {
-                    _position = await determinePosition();
-                    setState(() {
-                      _longitude = _position!.longitude.toString();
-                      _latitude = _position!.latitude.toString();
-                    });
-                  }),
-              spacer(),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text("$LONGITUDE: $_longitude",
-                      style: GoogleFonts.poppins(fontSize: 16)),
-                  const SizedBox(width: 12),
-                  Text("$LATITUDE: $_latitude",
-                      style: GoogleFonts.poppins(fontSize: 16)),
-                ],
-              ),
-              spacer(),
-              buildDateTextField(context, _dateController, DATE),
-              spacer(),
-              buildTimeTextField(context, _timeController, TIME),
-              spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "काही वाद आहेत का ?",
-                    style: GoogleFonts.poppins(fontSize: 14),
-                  ),
-                  Row(
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                              value: YES,
-                              groupValue: _isIssue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isIssue = value;
-                                });
-                              }),
-                          Text(
-                            YES,
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 18,
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                              value: NO,
-                              groupValue: _isIssue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isIssue = value;
-                                });
-                              }),
-                          Text(
-                            NO,
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              spacer(),
-              buildTextField(_countController, "उपस्थित लोकसंख्या"),
-              spacer(),
-              buildTextField(
-                _otherController,
-                "घटनेची सविस्तर माहिती",
-              ),
-              spacer(),
-              AttachButton(
-                text: _photoName,
-                onTap: () {
-                  getImage(context, _photoImage);
-                },
-              ),
-              spacer(),
-              CustomButton(
-                  text: "रजिस्टर करा",
+      body: BlocListener<MovementRegisterBloc, MovementRegisterState>(
+        listener: (context, state) {
+          if (state is MovementDataSendError) {
+            showSnackBar(context, state.error);
+          }
+          if (state is MovementDataSent) {
+            showSnackBar(context, state.message);
+            Navigator.pop(context);
+          }
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              children: [
+                spacer(),
+                buildDropButton(
+                    value: _movementValue,
+                    items: _movementRegTypes,
+                    hint: "हालचाली प्रकार निवडा",
+                    onChanged: (String? value) {
+                      setState(() {
+                        _movementValue = value;
+                        _movementSubRegTypes = _getSubList(_movementValue);
+                      });
+                    }),
+                spacer(),
+                _movementValue != null
+                    ? buildDropButton(
+                        value: _movementSubValue,
+                        items: _movementSubRegTypes!,
+                        hint: "हालचाली उपप्रकार निवडा",
+                        onChanged: (String? value) {
+                          setState(() {
+                            _movementSubValue = value;
+                          });
+                        })
+                    : spacer(height: 0),
+                spacer(),
+                buildTextField(_placeController, PLACE),
+                spacer(),
+                AttachButton(
+                    text: SELECT_LOCATION,
+                    icon: Icons.location_on_rounded,
+                    onTap: () async {
+                      _position = await determinePosition();
+                      setState(() {
+                        _longitude = _position!.longitude.toString();
+                        _latitude = _position!.latitude.toString();
+                      });
+                    }),
+                spacer(),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("$LONGITUDE: $_longitude",
+                        style: GoogleFonts.poppins(fontSize: 14)),
+                    const SizedBox(width: 12),
+                    Text("$LATITUDE: $_latitude",
+                        style: GoogleFonts.poppins(fontSize: 14)),
+                  ],
+                ),
+                spacer(),
+                buildDateTextField(context, _dateController, DATE),
+                spacer(),
+                buildTimeTextField(context, _timeController, TIME),
+                spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      IS_ISSUE,
+                      style: GoogleFonts.poppins(fontSize: 14),
+                    ),
+                    Row(
+                      children: [
+                        Row(
+                          children: [
+                            Radio(
+                                value: YES,
+                                groupValue: _isIssue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _isIssue = value;
+                                  });
+                                }),
+                            Text(
+                              YES,
+                              style: GoogleFonts.poppins(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 18,
+                        ),
+                        Row(
+                          children: [
+                            Radio(
+                                value: NO,
+                                groupValue: _isIssue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _isIssue = value;
+                                  });
+                                }),
+                            Text(
+                              NO,
+                              style: GoogleFonts.poppins(fontSize: 14),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                spacer(),
+                buildTextField(_countController, ATTENDANCE),
+                spacer(),
+                buildTextField(
+                  _otherController,
+                  MOVEMENT_DESCRIPTION,
+                ),
+                spacer(),
+                AttachButton(
+                  text: _photoName,
                   onTap: () {
-                    showSnackBar(context, "सेव झाले");
-                    Future.delayed(const Duration(seconds: 1)).then((_) {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) {
-                            return const RegisterMenuScreen();
-                      }));
-                    });
-                  }),
-              spacer()
-            ],
+                    getImage(context, _photoImage);
+                  },
+                ),
+                spacer(),
+                CustomButton(
+                    text: DO_REGISTER,
+                    onTap: () {
+                      _registerMovementData();
+                    }),
+                spacer()
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  _registerMovementData() {
+    DateFormat _format = DateFormat("yyyy-MM-dd HH:mm");
+
+    MovementData _movementData = MovementData(
+        type: _movementValue,
+        subtype: _movementSubValue,
+        address: _placeController.text,
+        latitude: double.parse(_latitude),
+        longitude: double.parse(_longitude),
+        datetime:
+            _format.parse(_dateController.text + " " + _timeController.text),
+        issue: _isIssue == YES ? 1 : 0,
+        attendance: int.parse(_countController.text),
+        description: _otherController.text,
+        photo: "dfssd");
+
+    BlocProvider.of<MovementRegisterBloc>(context)
+        .add(AddMovementData(_movementData));
   }
 
   List<String> _getSubList(String? movementValue) {

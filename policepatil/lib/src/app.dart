@@ -15,6 +15,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => ProfileBloc()),
         BlocProvider(create: (ctx) => ArmsRegisterBloc()),
         BlocProvider(create: (ctx) => CollectRegisterBloc()),
+        BlocProvider(create: (ctx) => MovementRegisterBloc()),
+        BlocProvider(create: (ctx) => WatchRegisterBloc()),
+        BlocProvider(create: (ctx) => CrimeRegisterBloc()),
+        BlocProvider(create: (ctx) => DeathRegisterBloc()),
+        BlocProvider(create: (ctx) => FireRegisterBloc()),
+        BlocProvider(create: (ctx) => MissingRegisterBloc()),
+        BlocProvider(create: (ctx) => PublicPlaceRegisterBloc()),
+        BlocProvider(create: (ctx) => IllegalRegisterBloc()),
       ],
       child: const MaterialApp(
           title: STR_APP_NAME,
@@ -25,3 +33,5 @@ class MyApp extends StatelessWidget {
 }
 
 // TODO : Change com.dcdevelopers.policepatil to  com.punerural.policepatil
+
+// TODO: no record error

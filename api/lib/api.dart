@@ -38,8 +38,7 @@ class ApiSdk {
   }
 
   // ARMS Register
-  static Future<Response> postArmsRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postArmsRegister({required body}) async {
     String path = ApiConstants.POST_ARMS_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);
@@ -61,8 +60,7 @@ class ApiSdk {
   }
 
   // Collect Register
-  static Future<Response> postCollectRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postCollectRegister({required dynamic body}) async {
     String path = ApiConstants.POST_COLLECT_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);

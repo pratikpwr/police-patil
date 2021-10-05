@@ -10,6 +10,7 @@ class WatchRepository {
   Future<dynamic> addWatchData({required WatchData watchData}) async {
     final body = watchData.toJson();
     final response = await ApiSdk.postWatchRegister(body: body);
+    print(response.toString());
     return response;
   }
 }

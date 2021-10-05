@@ -72,28 +72,29 @@ class PlaceData {
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
         photo: json["photo"],
-        isCCTV: json["iscctv"],
-        isIssue: json["isissue"],
+        isCCTV: json["iscctv"] == 1 ? true : false,
+        isIssue: json["isissue"] == 1 ? true : false,
         issueReason: json["issuereason"],
         issueCondition: json["issuecondition"],
-        isCrimeRegistered: json["crimeregisterd"],
+        isCrimeRegistered: json["crimeregisterd"] == 1 ? true : false,
         ppid: json["ppid"],
         psid: json["psid"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "place": place,
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
         "photo": photo,
-        "iscctv": isCCTV,
-        "isissue": isIssue,
+        "iscctv": isCCTV! ? 1 : 0,
+        "isissue": isIssue! ? 1 : 0,
         "issuereason": issueReason,
         "issuecondition": issueCondition,
-        "crimeregisterd": isCrimeRegistered,
+        "crimeregisterd": isCrimeRegistered! ? 1 : 0,
         "ppid": ppid,
         "psid": psid
       };

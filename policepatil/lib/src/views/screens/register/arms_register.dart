@@ -92,8 +92,59 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                       spacer(),
                       AttachButton(
                         text: _fileName,
-                        onTap: () {
-                          getImage(context, _fileImage);
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'फोटो काढा अथवा गॅलरी मधून निवडा',
+                                    style: GoogleFonts.poppins(fontSize: 14),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () async {
+                                          final pickedImage =
+                                              await picker.pickImage(
+                                                  source: ImageSource.camera);
+                                          setState(() {
+                                            if (pickedImage != null) {
+                                              _fileImage =
+                                                  File(pickedImage.path);
+                                            } else {
+                                              debugPrint('No image selected.');
+                                            }
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          'कॅमेरा',
+                                          style:
+                                              GoogleFonts.poppins(fontSize: 14),
+                                        )),
+                                    TextButton(
+                                        onPressed: () async {
+                                          final pickedImage =
+                                              await picker.pickImage(
+                                                  source: ImageSource.gallery);
+                                          setState(() {
+                                            if (pickedImage != null) {
+                                              _fileImage =
+                                                  File(pickedImage.path);
+                                            } else {
+                                              debugPrint('No image selected.');
+                                            }
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          'गॅलरी',
+                                          style:
+                                              GoogleFonts.poppins(fontSize: 14),
+                                        ))
+                                  ],
+                                );
+                              });
                         },
                       ),
                       spacer(),
@@ -130,8 +181,59 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                       spacer(),
                       AttachButton(
                         text: _photoName,
-                        onTap: () {
-                          getImage(context, _photoImage);
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'फोटो काढा अथवा गॅलरी मधून निवडा',
+                                    style: GoogleFonts.poppins(fontSize: 14),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () async {
+                                          final pickedImage =
+                                              await picker.pickImage(
+                                                  source: ImageSource.camera);
+                                          setState(() {
+                                            if (pickedImage != null) {
+                                              _photoImage =
+                                                  File(pickedImage.path);
+                                            } else {
+                                              debugPrint('No image selected.');
+                                            }
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          'कॅमेरा',
+                                          style:
+                                              GoogleFonts.poppins(fontSize: 14),
+                                        )),
+                                    TextButton(
+                                        onPressed: () async {
+                                          final pickedImage =
+                                              await picker.pickImage(
+                                                  source: ImageSource.gallery);
+                                          setState(() {
+                                            if (pickedImage != null) {
+                                              _photoImage =
+                                                  File(pickedImage.path);
+                                            } else {
+                                              debugPrint('No image selected.');
+                                            }
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          'गॅलरी',
+                                          style:
+                                              GoogleFonts.poppins(fontSize: 14),
+                                        ))
+                                  ],
+                                );
+                              });
                         },
                       ),
                       spacer(),
@@ -155,12 +257,12 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
         type: _chosenValue!,
         name: _nameController.text,
         mobile: int.parse(_phoneController.text),
-        aadhar: "add aadhar logic",
+        aadhar: _fileImage?.path,
         address: _addressController.text,
         latitude: double.parse(_latitude),
         longitude: double.parse(_longitude),
         validity: format.parse(_certificateExpiryController.text),
-        licencephoto: "add licence photo",
+        licencephoto: _photoImage?.path,
         licenceNumber: _certificateNoController.text);
 
     BlocProvider.of<ArmsRegisterBloc>(context).add(AddArmsData(armsData));

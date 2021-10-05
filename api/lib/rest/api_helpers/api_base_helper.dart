@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:api/shared_prefs/shared_prefs.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
@@ -10,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'api_exception.dart';
 
 class ApiBaseHelper {
-  Dio dio = new Dio();
+  Dio dio = Dio();
 
   static Future<bool> checkConnection() async {
     if (kIsWeb) return true;
@@ -27,7 +26,7 @@ class ApiBaseHelper {
       dio.options.headers['content-Type'] = 'application/json';
       dio.options.headers['Authorization'] = 'Bearer $token';
       response = await dio.get(url);
-      // debugPrint(response.data.toString());
+      debugPrint(response.data.toString());
     } on SocketException {
       throw FetchDataException('No Internet connection.');
     }
@@ -51,7 +50,7 @@ class ApiBaseHelper {
           },
         ),
       );
-      // debugPrint(response.data.toString());
+      debugPrint(response.data.toString());
     } on SocketException {
       throw FetchDataException('No Internet connection.');
     }

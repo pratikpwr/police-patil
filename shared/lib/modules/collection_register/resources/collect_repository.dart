@@ -1,5 +1,6 @@
 import 'package:api/api.dart';
 import 'package:shared/modules/collection_register/models/collect_model.dart';
+import 'package:dio/dio.dart';
 
 class CollectRepository {
   Future<dynamic> getCollectionsRegisterByPP({required int userId}) async {
@@ -9,8 +10,11 @@ class CollectRepository {
 
   Future<dynamic> addCollectionsData(
       {required CollectionData collectionData}) async {
-    final body = collectionData.toJson();
-    final response = await ApiSdk.postCollectRegister(body: body);
+    Map<String, dynamic> _body = collectionData.toJson();
+
+    _body['photo'] = await MultipartFile.fromFile(_body['photo']);
+    FormData _formData = FormData.fromMap(_body);
+    final response = await ApiSdk.postCollectRegister(body: _formData);
     return response;
   }
 }

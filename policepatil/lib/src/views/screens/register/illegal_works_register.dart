@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:shared/shared.dart';
 import '../../views.dart';
 
 class IllegalWorksFormScreen extends StatefulWidget {
@@ -48,77 +50,95 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(
-              children: [
-                spacer(),
-                buildDropButton(
-                    value: _chosenValue,
-                    items: _watchRegTypes,
-                    hint: "अवैद्य धंदे प्रकार निवडा",
-                    onChanged: (String? value) {
-                      setState(() {
-                        _chosenValue = value;
-                      });
-                    }),
-                spacer(),
-                buildTextField(_nameController, NAME),
-                spacer(),
-                AttachButton(
-                  text: _photoName,
-                  onTap: () {
-                    getImage(context, _photoImage);
-                  },
-                ),
-                spacer(),
-                buildTextField(_addressController, ADDRESS),
-                spacer(),
-                AttachButton(
-                    text: SELECT_LOCATION,
-                    icon: Icons.location_on_rounded,
-                    onTap: () async {
-                      _position = await determinePosition();
-                      setState(() {
-                        _longitude = _position!.longitude.toString();
-                        _latitude = _position!.latitude.toString();
-                      });
-                    }),
-                spacer(),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: BlocListener<IllegalRegisterBloc, IllegalRegisterState>(
+          listener: (context, state) {
+            if (state is IllegalDataSendError) {
+              showSnackBar(context, state.error);
+            }
+            if (state is IllegalDataSent) {
+              showSnackBar(context, state.message);
+              Navigator.pop(context);
+            }
+          },
+          child: SafeArea(
+            child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
                   children: [
-                    Text("$LONGITUDE: $_longitude",
-                        style: GoogleFonts.poppins(fontSize: 14)),
-                    const SizedBox(width: 12),
-                    Text("$LATITUDE: $_latitude",
-                        style: GoogleFonts.poppins(fontSize: 14)),
+                    spacer(),
+                    buildDropButton(
+                        value: _chosenValue,
+                        items: _watchRegTypes,
+                        hint: "अवैद्य धंदे प्रकार निवडा",
+                        onChanged: (String? value) {
+                          setState(() {
+                            _chosenValue = value;
+                          });
+                        }),
+                    spacer(),
+                    buildTextField(_nameController, NAME),
+                    spacer(),
+                    AttachButton(
+                      text: _photoName,
+                      onTap: () {
+                        getImage(context, _photoImage);
+                      },
+                    ),
+                    spacer(),
+                    buildTextField(_addressController, ADDRESS),
+                    spacer(),
+                    AttachButton(
+                        text: SELECT_LOCATION,
+                        icon: Icons.location_on_rounded,
+                        onTap: () async {
+                          _position = await determinePosition();
+                          setState(() {
+                            _longitude = _position!.longitude.toString();
+                            _latitude = _position!.latitude.toString();
+                          });
+                        }),
+                    spacer(),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("$LONGITUDE: $_longitude",
+                            style: GoogleFonts.poppins(fontSize: 14)),
+                        const SizedBox(width: 12),
+                        Text("$LATITUDE: $_latitude",
+                            style: GoogleFonts.poppins(fontSize: 14)),
+                      ],
+                    ),
+                    spacer(),
+                    _chosenValue == _watchRegTypes[3] ||
+                            _chosenValue == _watchRegTypes[4]
+                        ? buildTextField(_vehicleNoController, VEHICLE_NO)
+                        : spacer(height: 0),
+                    spacer(),
+                    CustomButton(
+                        text: DO_REGISTER,
+                        onTap: () {
+                          _registerIllegalData();
+                        })
                   ],
-                ),
-                spacer(),
-                _chosenValue == _watchRegTypes[3] ||
-                        _chosenValue == _watchRegTypes[4]
-                    ? buildTextField(_vehicleNoController, VEHICLE_NO)
-                    : spacer(height: 0),
-                spacer(),
-                CustomButton(
-                    text: DO_REGISTER,
-                    onTap: () {
-                      showSnackBar(context, SAVED);
-                      Future.delayed(const Duration(seconds: 1)).then((_) {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (_) {
-                              return const RegisterMenuScreen();
-                        }));
-                      });
-                    })
-              ],
-            )),
-      ),
+                )),
+          )),
     );
+  }
+
+  _registerIllegalData() {
+    IllegalData _illegalData = IllegalData(
+      type: _chosenValue,
+      name: _nameController.text,
+      photo: "sjhdfs",
+      address: _addressController.text,
+      latitude: double.parse(_latitude),
+      longitude: double.parse(_longitude),
+    );
+
+    BlocProvider.of<IllegalRegisterBloc>(context)
+        .add(AddIllegalData(_illegalData));
   }
 
   Future getImage(BuildContext ctx, File? _image) async {

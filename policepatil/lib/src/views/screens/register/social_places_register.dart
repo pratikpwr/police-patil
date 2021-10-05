@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:shared/shared.dart';
 
 import '../../views.dart';
 
@@ -54,225 +56,247 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Column(children: [
-              spacer(),
-              buildDropButton(
-                  value: _chosenValue,
-              items: _socialPlaceTypes,
-              hint: "सार्वजनिक महत्त्वाचे स्थळ निवडा",
-              onChanged: (String? value) {
-                setState(() {
-                  _chosenValue = value;
-                });
-              }),
-          spacer(),
-          buildTextField(_placeController, PLACE),
-          spacer(),
-          AttachButton(
-              text: SELECT_LOCATION,
-              icon: Icons.location_on_rounded,
-              onTap: () async {
-                _position = await determinePosition();
-                setState(() {
-                  _longitude = _position!.longitude.toString();
-                  _latitude = _position!.latitude.toString();
-                });
-              }),
-          spacer(),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("$LONGITUDE: $_longitude",
-                  style: GoogleFonts.poppins(fontSize: 14)),
-              const SizedBox(width: 12),
-              Text("$LATITUDE: $_latitude",
-                  style: GoogleFonts.poppins(fontSize: 14)),
-            ],
-          ),
-          spacer(),
-          AttachButton(
-            text: _photoName,
-            onTap: () {
-              getImage(context, _photoImage);
-            },
-          ),
-          spacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "सीसीटीव्ही बसवला आहे का ?",
-                style: GoogleFonts.poppins(fontSize: 14),
-              ),
-              Row(
-                children: [
-                  Row(
-                        children: [
-                          Radio(
-                              value: YES,
-                              groupValue: _isCCTV,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isCCTV = value;
-                                });
-                              }),
-                          Text(
-                            YES,
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 18,
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                              value: NO,
-                              groupValue: _isCCTV,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isCCTV = value;
-                                });
-                              }),
-                          Text(
-                            NO,
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "काही वाद आहेत का ?",
-                    style: GoogleFonts.poppins(fontSize: 14),
-                  ),
-                  Row(
+      body: BlocListener<PublicPlaceRegisterBloc, PublicPlaceRegisterState>(
+        listener: (context, state) {
+          if (state is PublicPlaceDataSendError) {
+            showSnackBar(context, state.error);
+          }
+          if (state is PublicPlaceDataSent) {
+            showSnackBar(context, state.message);
+            Navigator.pop(context);
+          }
+        },
+        child: SafeArea(
+            child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(children: [
+            spacer(),
+            buildDropButton(
+                value: _chosenValue,
+                items: _socialPlaceTypes,
+                hint: "सार्वजनिक महत्त्वाचे स्थळ निवडा",
+                onChanged: (String? value) {
+                  setState(() {
+                    _chosenValue = value;
+                  });
+                }),
+            spacer(),
+            buildTextField(_placeController, PLACE),
+            spacer(),
+            AttachButton(
+                text: SELECT_LOCATION,
+                icon: Icons.location_on_rounded,
+                onTap: () async {
+                  _position = await determinePosition();
+                  setState(() {
+                    _longitude = _position!.longitude.toString();
+                    _latitude = _position!.latitude.toString();
+                  });
+                }),
+            spacer(),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text("$LONGITUDE: $_longitude",
+                    style: GoogleFonts.poppins(fontSize: 14)),
+                const SizedBox(width: 12),
+                Text("$LATITUDE: $_latitude",
+                    style: GoogleFonts.poppins(fontSize: 14)),
+              ],
+            ),
+            spacer(),
+            AttachButton(
+              text: _photoName,
+              onTap: () {
+                getImage(context, _photoImage);
+              },
+            ),
+            spacer(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "सीसीटीव्ही बसवला आहे का ?",
+                  style: GoogleFonts.poppins(fontSize: 14),
+                ),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Radio(
+                            value: YES,
+                            groupValue: _isCCTV,
+                            onChanged: (value) {
+                              setState(() {
+                                _isCCTV = value;
+                              });
+                            }),
+                        Text(
+                          YES,
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 18,
+                    ),
+                    Row(
+                      children: [
+                        Radio(
+                            value: NO,
+                            groupValue: _isCCTV,
+                            onChanged: (value) {
+                              setState(() {
+                                _isCCTV = value;
+                              });
+                            }),
+                        Text(
+                          NO,
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+            spacer(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "काही वाद आहेत का ?",
+                  style: GoogleFonts.poppins(fontSize: 14),
+                ),
+                Row(
+                  children: [
+                    Row(
+                      children: [
+                        Radio(
+                            value: YES,
+                            groupValue: _isIssue,
+                            onChanged: (value) {
+                              setState(() {
+                                _isIssue = value;
+                              });
+                            }),
+                        Text(
+                          YES,
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      width: 18,
+                    ),
+                    Row(
+                      children: [
+                        Radio(
+                            value: NO,
+                            groupValue: _isIssue,
+                            onChanged: (value) {
+                              setState(() {
+                                _isIssue = value;
+                              });
+                            }),
+                        Text(
+                          NO,
+                          style: GoogleFonts.poppins(fontSize: 14),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ),
+            spacer(),
+            _isIssue == YES
+                ? Column(
                     children: [
-                      Row(
+                      buildTextField(_reasonController, "वादाचे कारण"),
+                      spacer(),
+                      buildTextField(_situationController, "वादाची सद्यस्थिती"),
+                      spacer(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Radio(
-                              value: YES,
-                              groupValue: _isIssue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isIssue = value;
-                                });
-                              }),
                           Text(
-                            YES,
+                            "गुन्हा दाखल आहे का ?",
                             style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 18,
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                              value: NO,
-                              groupValue: _isIssue,
-                              onChanged: (value) {
-                                setState(() {
-                                  _isIssue = value;
-                                });
-                              }),
-                          Text(
-                            NO,
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              spacer(),
-              _isIssue == YES
-                  ? Column(
-                children: [
-                  buildTextField(_reasonController, "वादाचे कारण"),
-                  spacer(),
-                  buildTextField(_situationController, "वादाची सद्यस्थिती"),
-                  spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "गुन्हा दाखल आहे का ?",
-                        style: GoogleFonts.poppins(fontSize: 14),
-                      ),
-                      Row(
-                        children: [
-                          Row(
-                            children: [
-                              Radio(
-                                  value: YES,
-                                  groupValue: _isCrimeReg,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _isCrimeReg = value;
-                                    });
-                                  }),
-                              Text(
-                                YES,
-                                style: GoogleFonts.poppins(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            width: 18,
                           ),
                           Row(
                             children: [
-                              Radio(
-                                  value: NO,
-                                  groupValue: _isCrimeReg,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _isCrimeReg = value;
-                                    });
-                                  }),
-                              Text(
-                                NO,
-                                style: GoogleFonts.poppins(fontSize: 14),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: YES,
+                                      groupValue: _isCrimeReg,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _isCrimeReg = value;
+                                        });
+                                      }),
+                                  Text(
+                                    YES,
+                                    style: GoogleFonts.poppins(fontSize: 14),
+                                  ),
+                                ],
                               ),
+                              const SizedBox(
+                                width: 18,
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                      value: NO,
+                                      groupValue: _isCrimeReg,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _isCrimeReg = value;
+                                        });
+                                      }),
+                                  Text(
+                                    NO,
+                                    style: GoogleFonts.poppins(fontSize: 14),
+                                  ),
+                                ],
+                              )
                             ],
-                          )
+                          ),
                         ],
                       ),
+                      spacer(),
                     ],
-                  ),
-                  spacer(),
-                ],
-              )
-                  : spacer(height: 0),
-              CustomButton(
-                  text: DO_REGISTER,
-                  onTap: () {
-                    showSnackBar(context, SAVED);
-                    Future.delayed(const Duration(seconds: 1)).then((_) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) {
-                        return const RegisterMenuScreen();
-                  }));
-                });
-              })
-        ]),
-      )),
+                  )
+                : spacer(height: 0),
+            CustomButton(
+                text: DO_REGISTER,
+                onTap: () {
+                  _registerPlaceData();
+                })
+          ]),
+        )),
+      ),
     );
+  }
+
+  _registerPlaceData() {
+    PlaceData _placeData = PlaceData(
+        place: _chosenValue,
+        address: _placeController.text,
+        latitude: double.parse(_latitude),
+        longitude: double.parse(_longitude),
+        photo: "dfjsf",
+        isCCTV: _isCCTV == YES ? true : false,
+        isIssue: _isIssue == YES ? true : false,
+        issueReason: _reasonController.text,
+        issueCondition: _situationController.text,
+        isCrimeRegistered: _isCrimeReg == YES ? true : false);
+
+    BlocProvider.of<PublicPlaceRegisterBloc>(context)
+        .add(AddPublicPlaceData(_placeData));
   }
 
   Future getImage(BuildContext ctx, File? _image) async {
