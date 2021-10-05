@@ -1,5 +1,6 @@
 import 'package:api/api.dart';
 import 'package:shared/modules/public_place_register/models/public_place_model.dart';
+import 'package:dio/dio.dart';
 
 class PlaceRepository {
   Future<dynamic> getPlaceRegisterByPP({required int userId}) async {
@@ -8,8 +9,10 @@ class PlaceRepository {
   }
 
   Future<dynamic> addPlaceData({required PlaceData placeData}) async {
-    final body = placeData.toJson();
-    final response = await ApiSdk.postPlaceRegister(body: body);
+    Map<String, dynamic> _body = placeData.toJson();
+    _body['photo'] = await MultipartFile.fromFile(_body['photo']);
+    FormData _formData = FormData.fromMap(_body);
+    final response = await ApiSdk.postPlaceRegister(body: _formData);
     return response;
   }
 }

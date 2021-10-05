@@ -24,7 +24,7 @@ class WatchScreen extends StatelessWidget {
       body: BlocListener<WatchRegisterBloc, WatchRegisterState>(
         listener: (context, state) {
           if (state is WatchLoadError) {
-            showSnackBar(context, state.message);
+            showSnackBar(context, state.message.substring(0, 200));
           }
         },
         child: BlocBuilder<WatchRegisterBloc, WatchRegisterState>(

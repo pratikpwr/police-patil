@@ -75,8 +75,7 @@ class ApiSdk {
   }
 
   // Movement Register
-  static Future<Response> postMovementRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postMovementRegister({required body}) async {
     String path = ApiConstants.POST_MOVEMENT_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);
@@ -91,8 +90,7 @@ class ApiSdk {
   }
 
   //  Register
-  static Future<Response> postWatchRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postWatchRegister({required body}) async {
     String path = ApiConstants.POST_WATCH_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);
@@ -107,8 +105,7 @@ class ApiSdk {
   }
 
   //  Register
-  static Future<Response> postCrimeRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postCrimeRegister({required body}) async {
     String path = ApiConstants.POST_CRIME_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);
@@ -123,8 +120,7 @@ class ApiSdk {
   }
 
   //  Register
-  static Future<Response> postFireRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postFireRegister({required body}) async {
     String path = ApiConstants.POST_FIRE_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);
@@ -139,8 +135,7 @@ class ApiSdk {
   }
 
   //  Register
-  static Future<Response> postDeathRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postDeathRegister({required body}) async {
     String path = ApiConstants.POST_DEATH_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);
@@ -155,8 +150,7 @@ class ApiSdk {
   }
 
   //  Register
-  static Future<Response> postMissingRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postMissingRegister({required body}) async {
     String path = ApiConstants.POST_MISSING_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);
@@ -171,8 +165,7 @@ class ApiSdk {
   }
 
   //  Register
-  static Future<Response> postPlaceRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postPlaceRegister({required body}) async {
     String path = ApiConstants.POST_PUBLIC_PLACE_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);
@@ -187,8 +180,7 @@ class ApiSdk {
   }
 
   //  Register
-  static Future<Response> postIllegalRegister(
-      {required Map<String, dynamic> body}) async {
+  static Future<Response> postIllegalRegister({required body}) async {
     String path = ApiConstants.POST_ILLEGAL_WORK_BY_PP;
 
     Response response = await RestApiHandlerData.postData(path, body);

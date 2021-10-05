@@ -1,5 +1,6 @@
 import 'package:api/api.dart';
 import 'package:shared/modules/illegal_register/models/illegal_model.dart';
+import 'package:dio/dio.dart';
 
 class IllegalRepository {
   Future<dynamic> getIllegalRegisterByPP({required int userId}) async {
@@ -8,8 +9,10 @@ class IllegalRepository {
   }
 
   Future<dynamic> addIllegalData({required IllegalData illegalData}) async {
-    final body = illegalData.toJson();
-    final response = await ApiSdk.postIllegalRegister(body: body);
+    Map<String, dynamic> _body = illegalData.toJson();
+    _body['photo'] = await MultipartFile.fromFile(_body['photo']);
+    FormData _formData = FormData.fromMap(_body);
+    final response = await ApiSdk.postIllegalRegister(body: _formData);
     return response;
   }
 }

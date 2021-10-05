@@ -81,8 +81,61 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
                     spacer(),
                     AttachButton(
                       text: _photoName,
-                      onTap: () {
-                        getImage(context, _photoImage);
+                      onTap: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                  'फोटो काढा अथवा गॅलरी मधून निवडा',
+                                  style: GoogleFonts.poppins(fontSize: 14),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () async {
+                                        final pickedImage =
+                                            await picker.pickImage(
+                                                source: ImageSource.camera);
+                                        setState(() {
+                                          if (pickedImage != null) {
+                                            _photoName = pickedImage.name;
+                                            _photoImage =
+                                                File(pickedImage.path);
+                                          } else {
+                                            debugPrint('No image selected.');
+                                          }
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'कॅमेरा',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14),
+                                      )),
+                                  TextButton(
+                                      onPressed: () async {
+                                        final pickedImage =
+                                            await picker.pickImage(
+                                                source: ImageSource.gallery);
+                                        setState(() {
+                                          if (pickedImage != null) {
+                                            _photoName = pickedImage.name;
+                                            _photoImage =
+                                                File(pickedImage.path);
+                                          } else {
+                                            debugPrint('No image selected.');
+                                          }
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'गॅलरी',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14),
+                                      ))
+                                ],
+                              );
+                            });
                       },
                     ),
                     spacer(),
@@ -131,7 +184,7 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
     IllegalData _illegalData = IllegalData(
       type: _chosenValue,
       name: _nameController.text,
-      photo: "sjhdfs",
+      photo: _photoImage?.path,
       address: _addressController.text,
       latitude: double.parse(_latitude),
       longitude: double.parse(_longitude),
@@ -139,54 +192,5 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
 
     BlocProvider.of<IllegalRegisterBloc>(context)
         .add(AddIllegalData(_illegalData));
-  }
-
-  Future getImage(BuildContext ctx, File? _image) async {
-    await showDialog(
-        context: ctx,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'फोटो काढा अथवा गॅलरी मधून निवडा',
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () async {
-                    final pickedImage =
-                        await picker.pickImage(source: ImageSource.camera);
-                    setState(() {
-                      if (pickedImage != null) {
-                        _image = File(pickedImage.path);
-                      } else {
-                        debugPrint('No image selected.');
-                      }
-                    });
-                    Navigator.pop(ctx);
-                  },
-                  child: Text(
-                    'कॅमेरा',
-                    style: GoogleFonts.poppins(fontSize: 14),
-                  )),
-              TextButton(
-                  onPressed: () async {
-                    final pickedImage =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    setState(() {
-                      if (pickedImage != null) {
-                        _image = File(pickedImage.path);
-                      } else {
-                        debugPrint('No image selected.');
-                      }
-                    });
-                    Navigator.pop(ctx);
-                  },
-                  child: Text(
-                    'गॅलरी',
-                    style: GoogleFonts.poppins(fontSize: 14),
-                  ))
-            ],
-          );
-        });
   }
 }
