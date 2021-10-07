@@ -22,6 +22,13 @@ class ArmsRegFormScreen extends StatefulWidget {
 
 class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
   String? _chosenValue;
+  String? _weaponCondition;
+  final List<String> _weaponCondTypes = <String>[
+    "परवाना धारकाकडे शस्त्र आहे",
+    "पो. ठा. कडे जमा",
+    "गहाळ",
+    "फक्त परवाना आहे शस्त्र नाही",
+  ];
   final List<String> _armsRegTypes = <String>[
     "शस्त्र परवानाधारक",
     "स्फोटक पदार्थ विक्री",
@@ -30,8 +37,8 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
   ];
 
   Position? _position;
-  String _longitude = LONGITUDE;
-  String _latitude = LATITUDE;
+  double _longitude = 0.00;
+  double _latitude = 0.00;
 
   String _fileName = 'आधार कार्ड जोडा';
   String _photoName = "परवान्याचा फोटो जोडा";
@@ -44,6 +51,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _certificateNoController =
       TextEditingController();
+  final TextEditingController _uIDController = TextEditingController();
   final TextEditingController _certificateExpiryController =
       TextEditingController();
 
@@ -58,262 +66,225 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
         ),
       ),
       body: BlocListener<ArmsRegisterBloc, ArmsRegisterState>(
-        listener: (context, state) {
-          if (state is ArmsDataSendError) {
-            showSnackBar(context, state.error);
-          }
-          if (state is ArmsDataSent) {
-            showSnackBar(context, state.message);
-            Navigator.pop(context);
-          }
-        },
-        child: BlocBuilder<ArmsRegisterBloc, ArmsRegisterState>(
-          builder: (context, state) {
-            return SafeArea(
-              child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      spacer(),
-                      buildDropButton(
-                          value: _chosenValue,
-                          items: _armsRegTypes,
-                          hint: "प्रकार निवडा",
-                          onChanged: (String? value) {
-                            setState(() {
-                              _chosenValue = value;
+          listener: (context, state) {
+            if (state is ArmsDataSendError) {
+              showSnackBar(context, state.error);
+            }
+            if (state is ArmsDataSent) {
+              showSnackBar(context, state.message);
+              Navigator.pop(context);
+            }
+          },
+          child: SafeArea(
+            child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    spacer(),
+                    buildDropButton(
+                        value: _chosenValue,
+                        items: _armsRegTypes,
+                        hint: "प्रकार निवडा",
+                        onChanged: (String? value) {
+                          setState(() {
+                            _chosenValue = value;
+                          });
+                        }),
+                    spacer(),
+                    buildTextField(_nameController, NAME),
+                    spacer(),
+                    buildTextField(_phoneController, MOB_NO),
+                    spacer(),
+                    AttachButton(
+                      text: _fileName,
+                      onTap: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                  'फोटो काढा अथवा गॅलरी मधून निवडा',
+                                  style: GoogleFonts.poppins(fontSize: 14),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () async {
+                                        final pickedImage =
+                                            await picker.pickImage(
+                                                source: ImageSource.camera);
+                                        setState(() {
+                                          if (pickedImage != null) {
+                                            _fileImage = File(pickedImage.path);
+                                          } else {
+                                            debugPrint('No image selected.');
+                                          }
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'कॅमेरा',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14),
+                                      )),
+                                  TextButton(
+                                      onPressed: () async {
+                                        final pickedImage =
+                                            await picker.pickImage(
+                                                source: ImageSource.gallery);
+                                        setState(() {
+                                          if (pickedImage != null) {
+                                            _fileImage = File(pickedImage.path);
+                                          } else {
+                                            debugPrint('No image selected.');
+                                          }
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'गॅलरी',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14),
+                                      ))
+                                ],
+                              );
                             });
-                          }),
-                      spacer(),
-                      buildTextField(_nameController, NAME),
-                      spacer(),
-                      buildTextField(_phoneController, MOB_NO),
-                      spacer(),
-                      AttachButton(
-                        text: _fileName,
-                        onTap: () async {
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'फोटो काढा अथवा गॅलरी मधून निवडा',
-                                    style: GoogleFonts.poppins(fontSize: 14),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () async {
-                                          final pickedImage =
-                                              await picker.pickImage(
-                                                  source: ImageSource.camera);
-                                          setState(() {
-                                            if (pickedImage != null) {
-                                              _fileImage =
-                                                  File(pickedImage.path);
-                                            } else {
-                                              debugPrint('No image selected.');
-                                            }
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          'कॅमेरा',
-                                          style:
-                                              GoogleFonts.poppins(fontSize: 14),
-                                        )),
-                                    TextButton(
-                                        onPressed: () async {
-                                          final pickedImage =
-                                              await picker.pickImage(
-                                                  source: ImageSource.gallery);
-                                          setState(() {
-                                            if (pickedImage != null) {
-                                              _fileImage =
-                                                  File(pickedImage.path);
-                                            } else {
-                                              debugPrint('No image selected.');
-                                            }
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          'गॅलरी',
-                                          style:
-                                              GoogleFonts.poppins(fontSize: 14),
-                                        ))
-                                  ],
-                                );
-                              });
-                        },
-                      ),
-                      spacer(),
-                      buildTextField(_addressController, ADDRESS),
-                      spacer(),
-                      AttachButton(
-                          text: SELECT_LOCATION,
-                          icon: Icons.location_on_rounded,
-                          onTap: () async {
-                            _position = await determinePosition();
-                            setState(() {
-                              _longitude = _position!.longitude.toString();
-                              _latitude = _position!.latitude.toString();
-                            });
-                          }),
-                      spacer(),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      },
+                    ),
+                    spacer(),
+                    buildTextField(_addressController, ADDRESS),
+                    spacer(),
+                    if (_chosenValue != "शस्त्र परवानाधारक")
+                      Column(
                         children: [
-                          Text("$LONGITUDE: $_longitude",
-                              style: GoogleFonts.poppins(fontSize: 14)),
-                          const SizedBox(width: 12),
-                          Text("$LATITUDE: $_latitude",
-                              style: GoogleFonts.poppins(fontSize: 14)),
+                          AttachButton(
+                              text: SELECT_LOCATION,
+                              icon: Icons.location_on_rounded,
+                              onTap: () async {
+                                _position = await determinePosition();
+                                setState(() {
+                                  _longitude = _position!.longitude;
+                                  _latitude = _position!.latitude;
+                                });
+                              }),
+                          spacer(),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text("$LONGITUDE: $_longitude",
+                                  style: GoogleFonts.poppins(fontSize: 14)),
+                              const SizedBox(width: 12),
+                              Text("$LATITUDE: $_latitude",
+                                  style: GoogleFonts.poppins(fontSize: 14)),
+                            ],
+                          ),
                         ],
                       ),
-                      spacer(),
-                      buildTextField(
-                          _certificateNoController, "परवाना क्रमांक"),
-                      spacer(),
-                      buildDateTextField(context, _certificateExpiryController,
-                          "परवान्याची वैधता कालावधी"),
-                      spacer(),
-                      AttachButton(
-                        text: _photoName,
-                        onTap: () async {
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'फोटो काढा अथवा गॅलरी मधून निवडा',
-                                    style: GoogleFonts.poppins(fontSize: 14),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () async {
-                                          final pickedImage =
-                                              await picker.pickImage(
-                                                  source: ImageSource.camera);
-                                          setState(() {
-                                            if (pickedImage != null) {
-                                              _photoImage =
-                                                  File(pickedImage.path);
-                                            } else {
-                                              debugPrint('No image selected.');
-                                            }
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          'कॅमेरा',
-                                          style:
-                                              GoogleFonts.poppins(fontSize: 14),
-                                        )),
-                                    TextButton(
-                                        onPressed: () async {
-                                          final pickedImage =
-                                              await picker.pickImage(
-                                                  source: ImageSource.gallery);
-                                          setState(() {
-                                            if (pickedImage != null) {
-                                              _photoImage =
-                                                  File(pickedImage.path);
-                                            } else {
-                                              debugPrint('No image selected.');
-                                            }
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          'गॅलरी',
-                                          style:
-                                              GoogleFonts.poppins(fontSize: 14),
-                                        ))
-                                  ],
-                                );
-                              });
-                        },
-                      ),
-                      spacer(),
-                      CustomButton(
-                          text: DO_REGISTER,
-                          onTap: () {
-                            _registerArmsData();
-                          })
-                    ],
-                  )),
-            );
-          },
-        ),
-      ),
+                    spacer(),
+                    if (_chosenValue == "शस्त्र परवानाधारक")
+                      buildTextField(_uIDController, "युआईडी क्रमांक"),
+                    spacer(),
+                    buildTextField(_certificateNoController, "परवाना क्रमांक"),
+                    spacer(),
+                    buildDateTextField(context, _certificateExpiryController,
+                        "परवान्याची वैधता कालावधी"),
+                    spacer(),
+                    if (_chosenValue == "शस्त्र परवानाधारक")
+                      buildDropButton(
+                          value: _weaponCondition,
+                          items: _weaponCondTypes,
+                          hint: "शस्त्राची सद्यस्तिथी निवडा",
+                          onChanged: (String? value) {
+                            setState(() {
+                              _weaponCondition = value;
+                            });
+                          }),
+                    spacer(),
+                    AttachButton(
+                      text: _photoName,
+                      onTap: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                  'फोटो काढा अथवा गॅलरी मधून निवडा',
+                                  style: GoogleFonts.poppins(fontSize: 14),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () async {
+                                        final pickedImage =
+                                            await picker.pickImage(
+                                                source: ImageSource.camera);
+                                        setState(() {
+                                          if (pickedImage != null) {
+                                            _photoImage =
+                                                File(pickedImage.path);
+                                          } else {
+                                            debugPrint('No image selected.');
+                                          }
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'कॅमेरा',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14),
+                                      )),
+                                  TextButton(
+                                      onPressed: () async {
+                                        final pickedImage =
+                                            await picker.pickImage(
+                                                source: ImageSource.gallery);
+                                        setState(() {
+                                          if (pickedImage != null) {
+                                            _photoImage =
+                                                File(pickedImage.path);
+                                          } else {
+                                            debugPrint('No image selected.');
+                                          }
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        'गॅलरी',
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 14),
+                                      ))
+                                ],
+                              );
+                            });
+                      },
+                    ),
+                    spacer(),
+                    CustomButton(
+                        text: DO_REGISTER,
+                        onTap: () {
+                          _registerArmsData();
+                        })
+                  ],
+                )),
+          )),
     );
   }
 
   _registerArmsData() {
     DateFormat format = DateFormat("yyyy-MM-dd");
+    // TODO : add uid field and weapon condition dropdown
     ArmsData armsData = ArmsData(
         type: _chosenValue!,
         name: _nameController.text,
         mobile: int.parse(_phoneController.text),
         aadhar: _fileImage?.path,
         address: _addressController.text,
-        latitude: double.parse(_latitude),
-        longitude: double.parse(_longitude),
+        latitude: _latitude,
+        longitude: _longitude,
         validity: format.parse(_certificateExpiryController.text),
         licencephoto: _photoImage?.path,
         licenceNumber: _certificateNoController.text);
 
     BlocProvider.of<ArmsRegisterBloc>(context).add(AddArmsData(armsData));
-  }
-
-  Future getImage(BuildContext ctx, File? _image) async {
-    await showDialog(
-        context: ctx,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              'फोटो काढा अथवा गॅलरी मधून निवडा',
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () async {
-                    final pickedImage =
-                        await picker.pickImage(source: ImageSource.camera);
-                    setState(() {
-                      if (pickedImage != null) {
-                        _image = File(pickedImage.path);
-                      } else {
-                        debugPrint('No image selected.');
-                      }
-                    });
-                    Navigator.pop(ctx);
-                  },
-                  child: Text(
-                    'कॅमेरा',
-                    style: GoogleFonts.poppins(fontSize: 14),
-                  )),
-              TextButton(
-                  onPressed: () async {
-                    final pickedImage =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    setState(() {
-                      if (pickedImage != null) {
-                        _image = File(pickedImage.path);
-                      } else {
-                        debugPrint('No image selected.');
-                      }
-                    });
-                    Navigator.pop(ctx);
-                  },
-                  child: Text(
-                    'गॅलरी',
-                    style: GoogleFonts.poppins(fontSize: 14),
-                  ))
-            ],
-          );
-        });
   }
 }

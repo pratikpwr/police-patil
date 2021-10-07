@@ -4,8 +4,8 @@ import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/views.dart';
 
-class CrimesRegScreen extends StatelessWidget {
-  const CrimesRegScreen({Key? key}) : super(key: key);
+class CrimesRegMenuScreen extends StatelessWidget {
+  const CrimesRegMenuScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class CrimesRegScreen extends StatelessWidget {
           children: [
             RegistersButton(
               text: CRIMES,
-              imageUrl: ImageConstants.IMG_CRIMES_SUB,
+              imageUrl: ImageConstants.IMG_CRIMES,
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
                   return const CrimesScreen();
@@ -44,7 +44,7 @@ class CrimesRegScreen extends StatelessWidget {
             spacer(),
             RegistersButton(
               text: DEATHS,
-              imageUrl: ImageConstants.IMG_DEATH,
+              imageUrl: ImageConstants.IMG_CRIMES_SUB,
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (_) {
                   return const DeathScreen();

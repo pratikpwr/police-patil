@@ -35,9 +35,9 @@ class ApiConstants {
   static const String GET_FIRE = BASE_URL + '/api/fire';
   static const String POST_FIRE_BY_PP = BASE_URL + '/api/fire ';
 
-  static const String GET_DEATH_BY_PP = BASE_URL + '/api/seize/showbyppid/';
-  static const String GET_DEATH = BASE_URL + '/api/seize';
-  static const String POST_DEATH_BY_PP = BASE_URL + '/api/seize';
+  static const String GET_DEATH_BY_PP = BASE_URL + '/api/death/showbyppid/';
+  static const String GET_DEATH = BASE_URL + '/api/death';
+  static const String POST_DEATH_BY_PP = BASE_URL + '/api/death';
 
   static const String GET_MISSING_BY_PP = BASE_URL + '/api/missing/showbyppid/';
   static const String GET_MISSING = BASE_URL + '/api/missing';

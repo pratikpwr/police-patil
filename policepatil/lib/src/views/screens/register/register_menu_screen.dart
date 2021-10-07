@@ -67,7 +67,7 @@ class RegisterMenuScreen extends StatelessWidget {
                   imageUrl: ImageConstants.IMG_CRIMES,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const CrimesRegScreen();
+                      return const CrimesRegMenuScreen();
                     }));
                   }),
               spacer(),

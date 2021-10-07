@@ -28,7 +28,7 @@ TextField buildDateTextField(
             );
           },
         ),
-        hintText: "dd/mm/yyyy",
+        hintText: "yyyy-mm-dd",
         label: Text(hint,
             style:
                 GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500)),

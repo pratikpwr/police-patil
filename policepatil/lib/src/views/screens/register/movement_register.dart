@@ -26,14 +26,15 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
   List<String>? _movementSubRegTypes;
 
   Position? _position;
-  String _longitude = LONGITUDE;
-  String _latitude = LATITUDE;
+  double _longitude = 0.00;
+  double _latitude = 0.00;
 
   String _photoName = "हालचालीचा फोटो जोडा";
   File? _photoImage;
   final picker = ImagePicker();
 
   final TextEditingController _countController = TextEditingController();
+  final TextEditingController _leaderController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
@@ -49,14 +50,21 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
     "आंदोलने",
     "सभा",
     "निवडणुका",
+    "इतर"
     // "राजकीय संघर्ष/वाद-विवाद"
   ];
   final List<String> _religionMovements = <String>[
     "यात्रा/उत्सव",
     "घेण्यात येणारे कार्यक्रम",
+    "इतर"
     // "धार्मिक प्रसंगी उद्भवणारे वाद-विवाद"
   ];
-  final List<String> _castMovements = <String>["कार्यक्रम", "जातीय वाद-विवाद"];
+  final List<String> _castMovements = <String>[
+    "कार्यक्रम",
+    "जातीय वाद-विवाद",
+    "जातीय आंदोलने",
+    "इतर"
+  ];
   final List<String> _culturalMovements = <String>[
     "जयंती/पुण्यतिथी",
     "सण/उत्सव",
@@ -121,8 +129,8 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                     onTap: () async {
                       _position = await determinePosition();
                       setState(() {
-                        _longitude = _position!.longitude.toString();
-                        _latitude = _position!.latitude.toString();
+                        _longitude = _position!.longitude;
+                        _latitude = _position!.latitude;
                       });
                     }),
                 spacer(),
@@ -190,6 +198,9 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                     ),
                   ],
                 ),
+                spacer(),
+                buildTextField(
+                    _leaderController, "नेतृत्त्व करणाऱ्या  व्यक्तीचे नाव"),
                 spacer(),
                 buildTextField(_countController, ATTENDANCE),
                 spacer(),
@@ -266,13 +277,16 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
 
   _registerMovementData() {
     DateFormat _format = DateFormat("yyyy-MM-dd HH:mm");
-
+    /* TODO : add leader field - can add multiple persons up to 5
+              movement type - happened or going to happen
+              use date option according to it
+    */
     MovementData _movementData = MovementData(
         type: _movementValue,
         subtype: _movementSubValue,
         address: _placeController.text,
-        latitude: double.parse(_latitude),
-        longitude: double.parse(_longitude),
+        latitude: _latitude,
+        longitude: _longitude,
         datetime:
             _format.parse(_dateController.text + " " + _timeController.text),
         issue: _isIssue == YES ? 1 : 0,

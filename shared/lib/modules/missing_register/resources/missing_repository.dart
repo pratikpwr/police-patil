@@ -1,5 +1,6 @@
 import 'package:api/api.dart';
 import 'package:shared/modules/missing_register/models/missing_model.dart';
+import 'package:dio/dio.dart';
 
 class MissingRepository {
   Future<dynamic> getMissingRegisterByPP({required int userId}) async {
@@ -8,8 +9,11 @@ class MissingRepository {
   }
 
   Future<dynamic> addMissingData({required MissingData missingData}) async {
-    final body = missingData.toJson();
-    final response = await ApiSdk.postMissingRegister(body: body);
+    Map<String, dynamic> _body = missingData.toJson();
+    _body['aadhar'] = await MultipartFile.fromFile(_body['aadhar']);
+    _body['photo'] = await MultipartFile.fromFile(_body['photo']);
+    FormData _formData = FormData.fromMap(_body);
+    final response = await ApiSdk.postMissingRegister(body: _formData);
     return response;
   }
 }
