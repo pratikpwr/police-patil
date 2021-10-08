@@ -10,6 +10,7 @@ import 'package:shared/shared.dart';
 class AlertScreen extends StatelessWidget {
   const AlertScreen({Key? key}) : super(key: key);
 
+// TODO : will need pagination here
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<AlertBloc>(context).add(GetAlerts());
@@ -60,23 +61,11 @@ class AlertScreen extends StatelessWidget {
 class AlertDetailsWidget extends StatelessWidget {
   final AlertData alertData;
 
-  AlertDetailsWidget({Key? key, required this.alertData}) : super(key: key);
+  const AlertDetailsWidget({Key? key, required this.alertData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // code to get videoId from youtube url
-    String? videoId = youtubeUrlToId(alertData.videoLink!);
-
-    print(videoId);
-    YoutubePlayerController controller = YoutubePlayerController(
-      initialVideoId: videoId!,
-      params: YoutubePlayerParams(
-        playlist: [videoId!],
-        showControls: true,
-        showFullscreenButton: true,
-      ),
-    );
-
     return InkWell(
       onTap: () async {
         if (alertData.otherLink != null) {
@@ -93,17 +82,15 @@ class AlertDetailsWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Todo see doc button
-            // if video then dont show photo
+            // if video then don't show photo
             if (alertData.photo != null && !(alertData.videoLink != null))
               CachedNetworkImage(
                 imageUrl: alertData.photo!,
-                height: 120,
+                width: double.infinity,
+                height: 180,
               ),
             if (alertData.videoLink != null)
-              YoutubePlayerIFrame(
-                controller: controller,
-                aspectRatio: 16 / 9,
-              ),
+              VideoPlayerWidget(videoUrl: alertData.videoLink!),
             spacer(),
             Text(
               alertData.title!,
@@ -119,6 +106,32 @@ class AlertDetailsWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class VideoPlayerWidget extends StatelessWidget {
+  final String videoUrl;
+
+  const VideoPlayerWidget({
+    Key? key,
+    required this.videoUrl,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String? videoId = youtubeUrlToId(videoUrl);
+    YoutubePlayerController controller = YoutubePlayerController(
+      initialVideoId: videoId!,
+      params: YoutubePlayerParams(
+        playlist: [videoId],
+        showControls: true,
+        showFullscreenButton: true,
+      ),
+    );
+    return YoutubePlayerIFrame(
+      controller: controller,
+      aspectRatio: 16 / 9,
     );
   }
 }

@@ -12,8 +12,8 @@ void showSnackBar(BuildContext context, String message) {
   )));
 }
 
-String? youtubeUrlToId(String url, {bool trimWhitespaces = true}) {
-  if (!url.contains("http") && (url.length == 11)) return url;
+String? youtubeUrlToId(String? url, {bool trimWhitespaces = true}) {
+  if (!url!.contains("http") && (url.length == 11)) return url;
   if (trimWhitespaces) url = url.trim();
 
   for (var exp in [
