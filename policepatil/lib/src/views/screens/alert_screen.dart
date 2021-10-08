@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:shared/shared.dart';
 
 class AlertScreen extends StatelessWidget {
@@ -58,36 +60,64 @@ class AlertScreen extends StatelessWidget {
 class AlertDetailsWidget extends StatelessWidget {
   final AlertData alertData;
 
-  const AlertDetailsWidget({Key? key, required this.alertData})
-      : super(key: key);
+  AlertDetailsWidget({Key? key, required this.alertData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: GREY_BACKGROUND_COLOR),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Todo network image
-          // Todo add youtube player
-          // Todo onTap for external link
-          // Todo see doc button
-          Text(
-            alertData.title!,
-            style:
-                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          const Divider(),
-          Text(
-            alertData.date!.toIso8601String().substring(0, 10),
-            style:
-                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-        ],
+    // code to get videoId from youtube url
+    String? videoId = youtubeUrlToId(alertData.videoLink!);
+
+    print(videoId);
+    YoutubePlayerController controller = YoutubePlayerController(
+      initialVideoId: videoId!,
+      params: YoutubePlayerParams(
+        playlist: [videoId!],
+        showControls: true,
+        showFullscreenButton: true,
+      ),
+    );
+
+    return InkWell(
+      onTap: () async {
+        if (alertData.otherLink != null) {
+          launchUrl(alertData.otherLink!);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: GREY_BACKGROUND_COLOR),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Todo see doc button
+            // if video then dont show photo
+            if (alertData.photo != null && !(alertData.videoLink != null))
+              CachedNetworkImage(
+                imageUrl: alertData.photo!,
+                height: 120,
+              ),
+            if (alertData.videoLink != null)
+              YoutubePlayerIFrame(
+                controller: controller,
+                aspectRatio: 16 / 9,
+              ),
+            spacer(),
+            Text(
+              alertData.title!,
+              style: GoogleFonts.poppins(
+                  fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const Divider(),
+            Text(
+              alertData.date!.toIso8601String().substring(0, 10),
+              style: GoogleFonts.poppins(
+                  fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -74,8 +75,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
-                                    child: Image.network(
-                                      state.user.photo,
+                                    child: CachedNetworkImage(
+                                      imageUrl: state.user.photo,
                                       width: 150,
                                       height: 150,
                                       fit: BoxFit.cover,

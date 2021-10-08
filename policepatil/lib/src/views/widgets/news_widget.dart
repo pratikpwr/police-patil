@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:shared/shared.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ImpNewsWidget extends StatelessWidget {
   const ImpNewsWidget({Key? key}) : super(key: key);
@@ -92,30 +93,36 @@ class NewsDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: GREY_BACKGROUND_COLOR),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Todo onTap for external link
-          // Todo see doc button
-          Text(
-            newsData.title!,
-            maxLines: 3,
-            style:
-                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          const Divider(),
-          Text(
-            newsData.date!.toIso8601String().substring(0, 10),
-            style:
-                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-        ],
+    return InkWell(
+      onTap: () async {
+        if (newsData.link != null) {
+          launchUrl(newsData.link!);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: GREY_BACKGROUND_COLOR),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Todo see doc button
+            Text(
+              newsData.title!,
+              maxLines: 3,
+              style: GoogleFonts.poppins(
+                  fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            const Divider(),
+            Text(
+              newsData.date!.toIso8601String().substring(0, 10),
+              style: GoogleFonts.poppins(
+                  fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
       ),
     );
   }
