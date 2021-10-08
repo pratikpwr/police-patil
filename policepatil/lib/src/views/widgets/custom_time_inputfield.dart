@@ -15,10 +15,10 @@ TextField buildTimeTextField(
               context,
               showTitleActions: true,
               onChanged: (date) {
-                _controller.text = "${date.hour}:${date.minute}";
+                _controller.text = "${date.hour}:${date.minute}:${date.second}";
               },
               onConfirm: (date) {
-                _controller.text = "${date.hour}:${date.minute}";
+                _controller.text = "${date.hour}:${date.minute}:${date.second}";
               },
               currentTime: DateTime.now(),
             );

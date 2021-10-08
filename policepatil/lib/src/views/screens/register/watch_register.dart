@@ -23,8 +23,8 @@ class WatchRegFormScreen extends StatefulWidget {
 class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
   String? _chosenValue;
   Position? _position;
-  String _longitude = LONGITUDE;
-  String _latitude = LATITUDE;
+  double _longitude = 0.00;
+  double _latitude = 0.00;
   final List<String> _watchRegTypes = <String>[
     "भटक्या टोळी",
     "सराईत गुन्हेगार",
@@ -59,6 +59,7 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
       body: BlocListener<WatchRegisterBloc, WatchRegisterState>(
         listener: (context, state) {
           if (state is WatchDataSendError) {
+            debugPrint(state.error);
             showSnackBar(context, state.error);
           }
           if (state is WatchDataSent) {
@@ -205,8 +206,8 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
                     onTap: () async {
                       _position = await determinePosition();
                       setState(() {
-                        _longitude = _position!.longitude.toString();
-                        _latitude = _position!.latitude.toString();
+                        _longitude = _position!.longitude;
+                        _latitude = _position!.latitude;
                       });
                     }),
                 spacer(),
@@ -294,7 +295,8 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
                     text: DO_REGISTER,
                     onTap: () {
                       _registerWatchData();
-                    })
+                    }),
+                spacer()
               ],
             ),
           ),
@@ -311,8 +313,8 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
         photo: _photoImage?.path,
         aadhar: _fileImage?.path,
         address: _addressController.text,
-        latitude: double.parse(_latitude),
-        longitude: double.parse(_longitude),
+        latitude: _latitude,
+        longitude: _longitude,
         description: _otherController.text,
         otherPhoto: _otherPhotoImage?.path);
 

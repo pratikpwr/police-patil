@@ -10,6 +10,7 @@ class FireRepository {
 
   Future<dynamic> addFireData({required FireData fireData}) async {
     Map<String, dynamic> _body = fireData.toJson();
+    print(_body.toString());
     _body['photo'] = await MultipartFile.fromFile(_body['photo']);
     FormData _formData = FormData.fromMap(_body);
     final response = await ApiSdk.postFireRegister(body: _formData);

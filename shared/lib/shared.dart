@@ -10,6 +10,8 @@ export 'package:shared/modules/crime_register/crime_register.dart';
 export 'package:shared/modules/watch_register/watch_register.dart';
 export 'package:shared/modules/illegal_register/illegal_register.dart';
 export 'package:shared/modules/movement_register/movement_register.dart';
+export 'package:shared/modules/news/news.dart';
+export 'package:shared/modules/alert_wall/alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<SharedPreferences> prefs = SharedPreferences.getInstance();

@@ -84,7 +84,7 @@ class DeathData {
       );
 
   Map<String, dynamic> toJson() => {
-        "isknown": isKnown,
+        "isknown": isKnown! ? 1 : 0,
         "name": name,
         "gender": gender,
         "address": address,

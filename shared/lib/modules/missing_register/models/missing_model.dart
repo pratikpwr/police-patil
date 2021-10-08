@@ -86,7 +86,7 @@ class MissingData {
       );
 
   Map<String, dynamic> toJson() => {
-        "isadult": isAdult,
+        "isadult": isAdult! ? 1 : 0,
         "name": name,
         "age": age,
         "gender": gender,

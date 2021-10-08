@@ -160,12 +160,12 @@ class _FireRegFormScreenState extends State<FireRegFormScreen> {
   }
 
   _registerFireData() {
-    DateFormat _format = DateFormat("yyyy-MM-dd HH:mm");
+    DateFormat _format = DateFormat("yyyy-MM-dd");
     FireData _fireData = FireData(
         address: _placeController.text,
         latitude: _latitude,
         longitude: _longitude,
-        date: _format.parse(_dateController.text + " " + _timeController.text),
+        date: _format.parse(_dateController.text),
         time: _timeController.text,
         reason: _reasonController.text,
         loss: _lossController.text,

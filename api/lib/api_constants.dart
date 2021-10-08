@@ -52,4 +52,10 @@ class ApiConstants {
       BASE_URL + '/api/illegalwork/showbyppid/';
   static const String GET_ILLEGAL_WORK = BASE_URL + '/api/illegalwork';
   static const String POST_ILLEGAL_WORK_BY_PP = BASE_URL + '/api/illegalwork';
+
+  static const String GET_NEWS = BASE_URL + "/api/news";
+  static const String POST_NEWS = BASE_URL + "/api/news";
+
+  static const String GET_ALERTS = BASE_URL + "/api/alert";
+  static const String POST_ALERTS = BASE_URL + "/api/alert";
 }

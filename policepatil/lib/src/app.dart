@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => MissingRegisterBloc()),
         BlocProvider(create: (ctx) => PublicPlaceRegisterBloc()),
         BlocProvider(create: (ctx) => IllegalRegisterBloc()),
+        BlocProvider(create: (ctx) => AlertBloc()),
       ],
       child: const MaterialApp(
           title: STR_APP_NAME,

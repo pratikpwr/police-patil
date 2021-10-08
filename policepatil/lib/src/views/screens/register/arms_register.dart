@@ -115,6 +115,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                                                 source: ImageSource.camera);
                                         setState(() {
                                           if (pickedImage != null) {
+                                            _fileName = pickedImage.name;
                                             _fileImage = File(pickedImage.path);
                                           } else {
                                             debugPrint('No image selected.');
@@ -134,6 +135,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                                                 source: ImageSource.gallery);
                                         setState(() {
                                           if (pickedImage != null) {
+                                            _fileName = pickedImage.name;
                                             _fileImage = File(pickedImage.path);
                                           } else {
                                             debugPrint('No image selected.');
@@ -220,6 +222,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                                                 source: ImageSource.camera);
                                         setState(() {
                                           if (pickedImage != null) {
+                                            _photoName = pickedImage.name;
                                             _photoImage =
                                                 File(pickedImage.path);
                                           } else {
@@ -240,6 +243,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                                                 source: ImageSource.gallery);
                                         setState(() {
                                           if (pickedImage != null) {
+                                            _photoName = pickedImage.name;
                                             _photoImage =
                                                 File(pickedImage.path);
                                           } else {
@@ -263,7 +267,8 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                         text: DO_REGISTER,
                         onTap: () {
                           _registerArmsData();
-                        })
+                        }),
+                    spacer()
                   ],
                 )),
           )),

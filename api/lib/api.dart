@@ -193,4 +193,18 @@ class ApiSdk {
     Response response = await RestApiHandlerData.getData(path);
     return response;
   }
+
+  static Future<Response> getNews() async {
+    String path = ApiConstants.GET_NEWS;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> getAlerts() async {
+    String path = ApiConstants.GET_ALERTS;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
 }

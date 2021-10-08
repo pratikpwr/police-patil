@@ -31,7 +31,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           UserData user = UserData.fromJson(response.data["data"]);
           yield ProfileDataLoaded(user);
         } else {
-          yield ProfileLoadError(response.data["message"].toString());
+          yield ProfileLoadError(response.data["error"].toString());
         }
       } catch (e) {
         yield ProfileLoadError(e.toString());
