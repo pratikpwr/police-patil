@@ -16,7 +16,7 @@ class DisasterManageToolsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          DISASTER_HELPER,
+          DISASTER_TOOLS,
           style: GoogleFonts.poppins(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),

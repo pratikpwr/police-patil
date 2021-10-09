@@ -46,6 +46,10 @@ class ToolsData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() =>
-      {"name": name, "quantity": quantity, "ppid": ppid, "psid": psid};
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "quantity": quantity.toString(),
+        "ppid": ppid,
+        "psid": psid
+      };
 }
