@@ -207,4 +207,46 @@ class ApiSdk {
     Response response = await RestApiHandlerData.getData(path);
     return response;
   }
+
+  static Future<Response> postDisasterHelper({required body}) async {
+    String path = ApiConstants.POST_DISASTER_HELPER;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getDisasterHelperByPP({required int userId}) async {
+    String path = ApiConstants.GET_DISASTER_HELPER_BY_PP + "$userId";
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> postDisasterTools({required body}) async {
+    String path = ApiConstants.POST_DISASTER_TOOLS;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getDisasterToolsByPP({required int userId}) async {
+    String path = ApiConstants.GET_DISASTER_TOOLS_BY_PP + "$userId";
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> postDisasterRegister({required body}) async {
+    String path = ApiConstants.POST_DISASTER;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getDisasterByPP({required int userId}) async {
+    String path = ApiConstants.GET_DISASTERS_BY_PP + "$userId";
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
 }

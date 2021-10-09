@@ -16,8 +16,12 @@ export 'package:policepatil/src/views/screens/mandhan/self_certificate_screen.da
 
 //MANAGEMENT
 export 'package:policepatil/src/views/screens/disaster_management/disaster_manage_menu.dart';
-export 'package:policepatil/src/views/screens/disaster_management/disaster_manage_screen.dart';
+export 'package:policepatil/src/views/screens/disaster_management/disaster_helper_screen.dart';
+export 'package:policepatil/src/views/screens/disaster_management/disaster_tools_screen.dart';
 export 'package:policepatil/src/views/screens/disaster_management/disaster_register_screen.dart';
+export 'package:policepatil/src/views/screens/disaster_management/disaster_helper_register.dart';
+export 'package:policepatil/src/views/screens/disaster_management/disaster_register.dart';
+export 'package:policepatil/src/views/screens/disaster_management/disaster_tools_register.dart';
 
 // Police Station
 export 'package:policepatil/src/views/screens/admin/ps_home_screen.dart';

@@ -25,20 +25,29 @@ class DisasterMenuScreen extends StatelessWidget {
           children: [
             spacer(),
             RegistersButton(
-                text: DISASTER_MANAGEMENT + " नियोजन",
-                imageUrl: ImageConstants.IMG_DISASTER_HELPER,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    return const DisasterManageScreen();
-                  }));
-                }),
-            spacer(),
-            RegistersButton(
-                text: "आपत्ती रजिस्टर करा",
+                text: REGISTER_DISASTER,
                 imageUrl: ImageConstants.IMG_DISASTER_MANAGE,
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (_) {
                     return const DisasterRegScreen();
+                  }));
+                }),
+            spacer(),
+            RegistersButton(
+                text: DISASTER_HELPER,
+                imageUrl: ImageConstants.IMG_DISASTER_HELPER,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return const DisasterManageHelperScreen();
+                  }));
+                }),
+            spacer(),
+            RegistersButton(
+                text: DISASTER_TOOLS,
+                imageUrl: ImageConstants.IMG_DISASTER_TOOLS,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return const DisasterManageToolsScreen();
                   }));
                 }),
             spacer(),
