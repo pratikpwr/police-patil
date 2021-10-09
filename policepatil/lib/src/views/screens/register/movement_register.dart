@@ -106,6 +106,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                       setState(() {
                         _movementValue = value;
                         _movementSubRegTypes = _getSubList(_movementValue);
+                        _movementSubValue = null;
                       });
                     }),
                 spacer(),

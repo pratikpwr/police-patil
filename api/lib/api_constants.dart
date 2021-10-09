@@ -60,12 +60,12 @@ class ApiConstants {
   static const String POST_ALERTS = BASE_URL + "/api/alert";
 
   static const String GET_DISASTER_HELPER_BY_PP =
-      BASE_URL + "/api/disaster/helper/showbyppid/";
-  static const String POST_DISASTER_HELPER = BASE_URL + "/api/disaster/helper";
+      BASE_URL + "/api/disasterhelper/showbyppid/";
+  static const String POST_DISASTER_HELPER = BASE_URL + "/api/disasterhelper";
 
   static const String GET_DISASTER_TOOLS_BY_PP =
-      BASE_URL + "/api/disaster/tools/showbyppid/";
-  static const String POST_DISASTER_TOOLS = BASE_URL + "/api/disaster/tools";
+      BASE_URL + "/api/disastertools/showbyppid/";
+  static const String POST_DISASTER_TOOLS = BASE_URL + "/api/disastertools";
 
   static const String GET_DISASTERS_BY_PP =
       BASE_URL + "/api/disaster/showbyppid/";

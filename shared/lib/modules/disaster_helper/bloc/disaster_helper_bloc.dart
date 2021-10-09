@@ -38,7 +38,7 @@ class DisasterHelperBloc
       Response _response = await _helperRepository
           .getDisasterHelperRegisterByPP(userId: userId!);
       if (_response.statusCode! < 400) {
-        final _helperResponse = HelperResponse();
+        final _helperResponse = HelperResponse.fromJson(_response.data);
         yield HelperDataLoaded(_helperResponse);
       } else {
         yield HelperLoadError(_response.data["error"]);
@@ -53,8 +53,8 @@ class DisasterHelperBloc
     yield HelperDataSending();
     try {
       final sharedPrefs = await SharedPreferences.getInstance();
-      // event.disasterData.ppid = sharedPrefs.getInt('userId')!;
-      // event.disasterData.psid = sharedPrefs.getInt('policeStationId')!;
+      event.helperData.ppid = sharedPrefs.getInt('userId')!;
+      event.helperData.psid = sharedPrefs.getInt('policeStationId')!;
 
       Response _response = await _helperRepository.addDisasterHelperData(
           helperData: event.helperData);

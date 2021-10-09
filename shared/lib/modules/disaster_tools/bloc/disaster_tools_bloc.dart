@@ -36,7 +36,7 @@ class DisasterToolsBloc extends Bloc<DisasterToolsEvent, DisasterToolsState> {
       Response _response =
           await _toolsRepository.getDisasterToolsRegisterByPP(userId: userId!);
       if (_response.statusCode! < 400) {
-        final _toolsResponse = ToolsResponse();
+        final _toolsResponse = ToolsResponse.fromJson(_response.data);
         yield ToolsDataLoaded(_toolsResponse);
       } else {
         yield ToolsLoadError(_response.data["error"]);
@@ -51,8 +51,8 @@ class DisasterToolsBloc extends Bloc<DisasterToolsEvent, DisasterToolsState> {
     yield ToolsDataSending();
     try {
       final sharedPrefs = await SharedPreferences.getInstance();
-      // event.disasterData.ppid = sharedPrefs.getInt('userId')!;
-      // event.disasterData.psid = sharedPrefs.getInt('policeStationId')!;
+      event.toolsData.ppid = sharedPrefs.getInt('userId')!;
+      event.toolsData.psid = sharedPrefs.getInt('policeStationId')!;
 
       Response _response = await _toolsRepository.addDisasterToolsData(
           toolsData: event.toolsData);

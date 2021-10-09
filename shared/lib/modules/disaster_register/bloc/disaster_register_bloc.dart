@@ -37,7 +37,7 @@ class DisasterRegisterBloc
       Response _response =
           await _disasterRepository.getDisasterRegisterByPP(userId: userId!);
       if (_response.statusCode! < 400) {
-        final _disasterResponse = DisasterResponse();
+        final _disasterResponse = DisasterResponse.fromJson(_response.data);
         yield DisasterDataLoaded(_disasterResponse);
       } else {
         yield DisasterLoadError(_response.data["error"]);
@@ -52,8 +52,8 @@ class DisasterRegisterBloc
     yield DisasterDataSending();
     try {
       final sharedPrefs = await SharedPreferences.getInstance();
-      // event.disasterData.ppid = sharedPrefs.getInt('userId')!;
-      // event.disasterData.psid = sharedPrefs.getInt('policeStationId')!;
+      event.disasterData.ppid = sharedPrefs.getInt('userId')!;
+      event.disasterData.psid = sharedPrefs.getInt('policeStationId')!;
 
       Response _response = await _disasterRepository.addDisasterData(
           disasterData: event.disasterData);
