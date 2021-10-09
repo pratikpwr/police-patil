@@ -34,8 +34,8 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
   final TextEditingController _addressController = TextEditingController();
 
   Position? _position;
-  String _longitude = LONGITUDE;
-  String _latitude = LATITUDE;
+  double _longitude = 0.00;
+  double _latitude = 0.00;
 
   String _photoName = "फोटो जोडा";
   File? _photoImage;
@@ -88,8 +88,8 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
                           onTap: () async {
                             _position = await determinePosition();
                             setState(() {
-                              _longitude = _position!.longitude.toString();
-                              _latitude = _position!.latitude.toString();
+                              _longitude = _position!.longitude;
+                              _latitude = _position!.latitude;
                             });
                           }),
                       spacer(),
@@ -188,8 +188,8 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
       address: _addressController.text,
       date: _format.parse(_dateController.text),
       description: _detailsController.text,
-      latitude: double.parse(_latitude),
-      longitude: double.parse(_longitude),
+      latitude: _latitude,
+      longitude: _longitude,
       photo: _photoImage?.path,
     );
 

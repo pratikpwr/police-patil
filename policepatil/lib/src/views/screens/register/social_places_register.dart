@@ -23,8 +23,8 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
   String? _chosenValue;
 
   Position? _position;
-  String _longitude = LONGITUDE;
-  String _latitude = LATITUDE;
+  double _longitude = 0.00;
+  double _latitude = 0.00;
 
   File? _photoImage;
   String _photoName = "फोटो जोडा";
@@ -90,8 +90,8 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
                 onTap: () async {
                   _position = await determinePosition();
                   setState(() {
-                    _longitude = _position!.longitude.toString();
-                    _latitude = _position!.latitude.toString();
+                    _longitude = _position!.longitude;
+                    _latitude = _position!.latitude;
                   });
                 }),
             spacer(),
@@ -333,8 +333,8 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
     PlaceData _placeData = PlaceData(
         place: _chosenValue,
         address: _placeController.text,
-        latitude: double.parse(_latitude),
-        longitude: double.parse(_longitude),
+        latitude: _latitude,
+        longitude: _longitude,
         photo: _photoImage?.path,
         isCCTV: _isCCTV == YES ? true : false,
         isIssue: _isIssue == YES ? true : false,

@@ -21,8 +21,8 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
   String? _chosenValue;
 
   Position? _position;
-  String _longitude = LONGITUDE;
-  String _latitude = LATITUDE;
+  double _longitude = 0.00;
+  double _latitude = 0.00;
 
   File? _photoImage;
   String _photoName = "फोटो जोडा";
@@ -147,8 +147,8 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
                         onTap: () async {
                           _position = await determinePosition();
                           setState(() {
-                            _longitude = _position!.longitude.toString();
-                            _latitude = _position!.latitude.toString();
+                            _longitude = _position!.longitude;
+                            _latitude = _position!.latitude;
                           });
                         }),
                     spacer(),
@@ -186,8 +186,8 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
       name: _nameController.text,
       photo: _photoImage?.path,
       address: _addressController.text,
-      latitude: double.parse(_latitude),
-      longitude: double.parse(_longitude),
+      latitude: _latitude,
+      longitude: _longitude,
     );
 
     BlocProvider.of<IllegalRegisterBloc>(context)
