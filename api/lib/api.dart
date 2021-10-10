@@ -249,4 +249,11 @@ class ApiSdk {
     Response response = await RestApiHandlerData.getData(path);
     return response;
   }
+
+  static Future<Response> getKayade() async {
+    String path = ApiConstants.GET_KAYADE;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
 }

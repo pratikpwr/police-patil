@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => PublicPlaceRegisterBloc()),
         BlocProvider(create: (ctx) => IllegalRegisterBloc()),
         BlocProvider(create: (ctx) => AlertBloc()),
+        BlocProvider(create: (ctx) => KayadeBloc()),
         BlocProvider(create: (ctx) => DisasterRegisterBloc()),
         BlocProvider(create: (ctx) => DisasterHelperBloc()),
         BlocProvider(create: (ctx) => DisasterToolsBloc()),

@@ -71,7 +71,7 @@ class ApiConstants {
       BASE_URL + "/api/disaster/showbyppid/";
   static const String POST_DISASTER = BASE_URL + "/api/disaster";
 
-  static const String GET_RULES = BASE_URL + "api/rules";
+  static const String GET_KAYADE = BASE_URL + "/api/kayade";
 
-  static const String POST_APP_VERSION = BASE_URL + "api";
+  static const String POST_APP_VERSION = BASE_URL + "/api";
 }

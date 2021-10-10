@@ -24,7 +24,9 @@ class AlertScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
         ),
         body: BlocListener<AlertBloc, AlertState>(listener: (context, state) {
-          if (state is AlertLoadError) {}
+          if (state is AlertLoadError) {
+            showSnackBar(context, state.error);
+          }
         }, child: BlocBuilder<AlertBloc, AlertState>(
           builder: (context, state) {
             if (state is AlertLoading) {

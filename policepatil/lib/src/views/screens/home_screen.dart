@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/views/screens/kayade_screen.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
@@ -67,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   text: LAWS,
                   imageUrl: ImageConstants.IMG_HAMMER,
                   onTap: () {
-                    // Navigator.push(context, MaterialPageRoute(builder: (_) {
-                    //   return const MandhanScreen();
-                    // }));
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const KayadeScreen();
+                    }));
                   }),
               spacer(),
               RegistersButton(
