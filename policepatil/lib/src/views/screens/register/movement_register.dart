@@ -228,6 +228,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                                         source: ImageSource.camera);
                                     setState(() {
                                       if (pickedImage != null) {
+                                        _photoName = pickedImage.name;
                                         _photoImage = File(pickedImage.path);
                                       } else {
                                         debugPrint('No image selected.');
@@ -245,6 +246,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                                         source: ImageSource.gallery);
                                     setState(() {
                                       if (pickedImage != null) {
+                                        _photoName = pickedImage.name;
                                         _photoImage = File(pickedImage.path);
                                       } else {
                                         debugPrint('No image selected.');
@@ -290,7 +292,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
         longitude: _longitude,
         datetime:
             _format.parse(_dateController.text + " " + _timeController.text),
-        issue: _isIssue == YES ? 1 : 0,
+        issue: _isIssue,
         attendance: int.parse(_countController.text),
         description: _otherController.text,
         photo: _photoImage?.path);

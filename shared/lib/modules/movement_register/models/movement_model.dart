@@ -58,7 +58,7 @@ class MovementData {
   double? latitude;
   double? longitude;
   DateTime? datetime;
-  int? issue;
+  bool? issue;
   int? attendance;
   String? description;
   String? photo;
@@ -75,7 +75,7 @@ class MovementData {
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
         datetime: DateTime.parse(json["datetime"]),
-        issue: json["issue"],
+        issue: json["essue"] == 1 ? true : false,
         attendance: json["attendance"],
         description: json["description"],
         photo: json["photo"],
@@ -92,7 +92,7 @@ class MovementData {
         "latitude": latitude,
         "longitude": longitude,
         "datetime": datetime!.toIso8601String(),
-        "issue": issue,
+        "essue": issue! ? 1 : 0,
         "attendance": attendance,
         "description": description,
         "photo": photo,

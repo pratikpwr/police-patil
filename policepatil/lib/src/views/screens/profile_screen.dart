@@ -7,22 +7,8 @@ import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:shared/modules/authentication/auth.dart';
 import 'package:shared/shared.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
-
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  // late ProfileBloc _profileBloc;
-  //
-  // @override
-  // void initState() {
-  //   _profileBloc = ProfileBlocController().profileBloc;
-  //   _profileBloc.add(GetUserData());
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  BlocProvider.of<AuthenticationBloc>(context)
-                      .add(UserLogOut());
-                  Navigator.pushReplacementNamed(context, '/auth');
+                  _logout(context);
                 },
                 icon: const Icon(Icons.logout))
           ],
@@ -139,6 +123,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  _logout(BuildContext context) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              "लॉग आऊट करायचे ?",
+              style: GoogleFonts.poppins(fontSize: 15),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthenticationBloc>(context)
+                        .add(UserLogOut());
+                    Navigator.pushReplacementNamed(context, '/auth');
+                  },
+                  child: Text(
+                    YES,
+                    style: GoogleFonts.poppins(fontSize: 15),
+                  )),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    NO,
+                    style: GoogleFonts.poppins(fontSize: 15),
+                  ))
+            ],
+          );
+        });
   }
 
   Widget buildDetails(String title, String text) {

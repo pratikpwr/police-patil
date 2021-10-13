@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
-import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -20,7 +19,6 @@ class KayadeScreen extends StatelessWidget {
             style: GoogleFonts.poppins(
                 color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
           ),
-          automaticallyImplyLeading: false,
         ),
         body: BlocListener<KayadeBloc, KayadeState>(listener: (context, state) {
           if (state is KayadeLoadError) {

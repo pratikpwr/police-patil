@@ -24,7 +24,7 @@ TextField buildTimeTextField(
             );
           },
         ),
-        hintText: "mm:hh",
+        hintText: "hh:mm",
         label: Text(hint,
             style:
                 GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500)),
