@@ -32,26 +32,26 @@ class DeathScreen extends StatelessWidget {
             if (state is DeathDataLoading) {
               return loading();
             } else if (state is DeathDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.deathResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return DeathDetailWidget(
-                            deathData: state.deathResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is DeathLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.deathResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.deathResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return DeathDetailWidget(
+                              deathData: state.deathResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is DeathLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

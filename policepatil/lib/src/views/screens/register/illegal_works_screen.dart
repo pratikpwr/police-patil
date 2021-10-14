@@ -31,26 +31,26 @@ class IllegalScreen extends StatelessWidget {
             if (state is IllegalDataLoading) {
               return loading();
             } else if (state is IllegalDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.illegalResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return IllegalDetailWidget(
-                            illegalData: state.illegalResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is IllegalLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.illegalResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.illegalResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return IllegalDetailWidget(
+                              illegalData: state.illegalResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is IllegalLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

@@ -38,5 +38,3 @@ class MyApp extends StatelessWidget {
 }
 
 // TODO : Change com.dcdevelopers.policepatil to  com.punerural.policepatil
-
-// TODO: no record error - http 404 not found error

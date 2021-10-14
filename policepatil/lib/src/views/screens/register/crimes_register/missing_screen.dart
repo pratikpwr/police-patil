@@ -32,26 +32,26 @@ class MissingScreen extends StatelessWidget {
             if (state is MissingDataLoading) {
               return loading();
             } else if (state is MissingDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.missingResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return MissingDetailWidget(
-                            missingData: state.missingResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is MissingLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.missingResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.missingResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return MissingDetailWidget(
+                              missingData: state.missingResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is MissingLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

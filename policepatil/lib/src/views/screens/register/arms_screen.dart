@@ -32,26 +32,26 @@ class ArmsScreen extends StatelessWidget {
             if (state is ArmsDataLoading) {
               return loading();
             } else if (state is ArmsDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.armsResponse.data.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return ArmsDetailWidget(
-                            armsData: state.armsResponse.data[index],
-                          );
-                        })),
-              );
-            } else if (state is ArmsLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.armsResponse.data.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.armsResponse.data.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return ArmsDetailWidget(
+                              armsData: state.armsResponse.data[index],
+                            );
+                          })),
+                );
               }
+            } else if (state is ArmsLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

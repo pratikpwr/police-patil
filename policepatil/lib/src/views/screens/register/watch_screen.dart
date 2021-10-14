@@ -32,26 +32,26 @@ class WatchScreen extends StatelessWidget {
             if (state is WatchDataLoading) {
               return loading();
             } else if (state is WatchDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.watchResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return WatchDetailWidget(
-                            watchData: state.watchResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is WatchLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.watchResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.watchResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return WatchDetailWidget(
+                              watchData: state.watchResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is WatchLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

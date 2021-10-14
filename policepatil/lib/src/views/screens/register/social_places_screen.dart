@@ -32,26 +32,26 @@ class SocialPlaceScreen extends StatelessWidget {
             if (state is PublicPlaceDataLoading) {
               return loading();
             } else if (state is PublicPlaceDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.placeResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return PlaceDetailWidget(
-                            placeData: state.placeResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is PublicPlaceLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.placeResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.placeResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return PlaceDetailWidget(
+                              placeData: state.placeResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is PublicPlaceLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

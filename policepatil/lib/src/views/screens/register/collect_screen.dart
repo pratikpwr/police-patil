@@ -32,27 +32,28 @@ class CollectionScreen extends StatelessWidget {
             if (state is CollectionDataLoading) {
               return loading();
             } else if (state is CollectionDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.collectionResponse.collectData!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return CollectionDetailWidget(
-                            collect:
-                                state.collectionResponse.collectData![index],
-                          );
-                        })),
-              );
-            } else if (state is CollectionLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.collectionResponse.collectData!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount:
+                              state.collectionResponse.collectData!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return CollectionDetailWidget(
+                              collect:
+                                  state.collectionResponse.collectData![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is CollectionLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

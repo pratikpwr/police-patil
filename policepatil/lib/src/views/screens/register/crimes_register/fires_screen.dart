@@ -32,26 +32,26 @@ class FiresScreen extends StatelessWidget {
             if (state is FireDataLoading) {
               return loading();
             } else if (state is FireDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.fireResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return FireDetailWidget(
-                            fireData: state.fireResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is FireLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.fireResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.fireResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return FireDetailWidget(
+                              fireData: state.fireResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is FireLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

@@ -33,26 +33,26 @@ class CrimesScreen extends StatelessWidget {
             if (state is CrimeDataLoading) {
               return loading();
             } else if (state is CrimeDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.crimeResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return CrimeDetailWidget(
-                            crimesData: state.crimeResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is CrimeLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.crimeResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.crimeResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return CrimeDetailWidget(
+                              crimesData: state.crimeResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is CrimeLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

@@ -32,27 +32,28 @@ class MovementScreen extends StatelessWidget {
             if (state is MovementDataLoading) {
               return loading();
             } else if (state is MovementDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.movementResponse.movementData!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return MovementDetailWidget(
-                            movementData:
-                                state.movementResponse.movementData![index],
-                          );
-                        })),
-              );
-            } else if (state is MovementLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.movementResponse.movementData!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount:
+                              state.movementResponse.movementData!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return MovementDetailWidget(
+                              movementData:
+                                  state.movementResponse.movementData![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is MovementLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }
