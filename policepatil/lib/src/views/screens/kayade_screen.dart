@@ -91,6 +91,7 @@ class PDFViewScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           kayadeData.title!,
+          overflow: TextOverflow.ellipsis,
           style: GoogleFonts.poppins(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
         ),

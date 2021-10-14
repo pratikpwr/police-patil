@@ -32,26 +32,26 @@ class AlertScreen extends StatelessWidget {
             if (state is AlertLoading) {
               return loading();
             } else if (state is AlertLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.alertResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return AlertDetailsWidget(
-                            alertData: state.alertResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is AlertLoadError) {
-              if (state.error == 'Record Empty') {
+              if (state.alertResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.alertResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return AlertDetailsWidget(
+                              alertData: state.alertResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is AlertLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

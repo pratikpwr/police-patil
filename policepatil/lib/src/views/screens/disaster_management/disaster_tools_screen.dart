@@ -33,26 +33,26 @@ class DisasterManageToolsScreen extends StatelessWidget {
             if (state is ToolsDataLoading) {
               return loading();
             } else if (state is ToolsDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.toolsResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return ToolsDetailWidget(
-                            helperData: state.toolsResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is ToolsLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.toolsResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.toolsResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return ToolsDetailWidget(
+                              helperData: state.toolsResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is ToolsLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }

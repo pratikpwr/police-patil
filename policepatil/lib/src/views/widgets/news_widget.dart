@@ -49,33 +49,33 @@ class ImpNewsWidget extends StatelessWidget {
                 if (state is NewsLoading) {
                   return loading();
                 } else if (state is NewsLoaded) {
-                  return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      child: CarouselSlider(
-                        options: CarouselOptions(
-                            viewportFraction: 0.8,
-                            // enlargeCenterPage: true,
-                            disableCenter: true,
-                            scrollDirection: Axis.vertical,
-                            autoPlay: true,
-                            enableInfiniteScroll: true),
-                        items:
-                            state.newsResponse.data!.map((NewsData newsData) {
-                          return Builder(
-                            builder: (BuildContext context) {
-                              return NewsDetailsWidget(
-                                newsData: newsData,
-                              );
-                            },
-                          );
-                        }).toList(),
-                      ));
-                } else if (state is NewsLoadError) {
-                  if (state.error == 'Record Empty') {
+                  if (state.newsResponse.data!.isEmpty) {
                     return noRecordFound();
                   } else {
-                    return somethingWentWrong();
+                    return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                              viewportFraction: 0.8,
+                              // enlargeCenterPage: true,
+                              disableCenter: true,
+                              scrollDirection: Axis.vertical,
+                              autoPlay: true,
+                              enableInfiniteScroll: true),
+                          items:
+                              state.newsResponse.data!.map((NewsData newsData) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return NewsDetailsWidget(
+                                  newsData: newsData,
+                                );
+                              },
+                            );
+                          }).toList(),
+                        ));
                   }
+                } else if (state is NewsLoadError) {
+                  return somethingWentWrong();
                 } else {
                   return somethingWentWrong();
                 }

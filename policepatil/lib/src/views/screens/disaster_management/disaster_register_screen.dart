@@ -33,26 +33,26 @@ class DisasterRegScreen extends StatelessWidget {
             if (state is DisasterDataLoading) {
               return loading();
             } else if (state is DisasterDataLoaded) {
-              return SafeArea(
-                child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    physics: const BouncingScrollPhysics(),
-                    child: ListView.builder(
-                        itemCount: state.disasterResponse.data!.length,
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return DisasterDetailWidget(
-                            disasterData: state.disasterResponse.data![index],
-                          );
-                        })),
-              );
-            } else if (state is DisasterLoadError) {
-              if (state.message == 'Record Empty') {
+              if (state.disasterResponse.data!.isEmpty) {
                 return noRecordFound();
               } else {
-                return somethingWentWrong();
+                return SafeArea(
+                  child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      physics: const BouncingScrollPhysics(),
+                      child: ListView.builder(
+                          itemCount: state.disasterResponse.data!.length,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return DisasterDetailWidget(
+                              disasterData: state.disasterResponse.data![index],
+                            );
+                          })),
+                );
               }
+            } else if (state is DisasterLoadError) {
+              return somethingWentWrong();
             } else {
               return somethingWentWrong();
             }
