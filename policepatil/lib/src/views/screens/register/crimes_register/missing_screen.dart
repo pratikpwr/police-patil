@@ -30,10 +30,10 @@ class MissingScreen extends StatelessWidget {
         child: BlocBuilder<MissingRegisterBloc, MissingRegisterState>(
           builder: (context, state) {
             if (state is MissingDataLoading) {
-              return loading();
+              return Loading();
             } else if (state is MissingDataLoaded) {
               if (state.missingResponse.data!.isEmpty) {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -51,9 +51,9 @@ class MissingScreen extends StatelessWidget {
                 );
               }
             } else if (state is MissingLoadError) {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         ),

@@ -23,9 +23,6 @@ export 'package:policepatil/src/views/screens/disaster_management/disaster_helpe
 export 'package:policepatil/src/views/screens/disaster_management/disaster_register.dart';
 export 'package:policepatil/src/views/screens/disaster_management/disaster_tools_register.dart';
 
-// Police Station
-export 'package:policepatil/src/views/screens/admin/ps_home_screen.dart';
-
 // Register
 export 'package:policepatil/src/views/screens/register/register_menu_screen.dart';
 export 'package:policepatil/src/views/screens/register/arms_register.dart';

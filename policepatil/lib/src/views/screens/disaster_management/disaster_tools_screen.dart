@@ -31,10 +31,10 @@ class DisasterManageToolsScreen extends StatelessWidget {
         child: BlocBuilder<DisasterToolsBloc, DisasterToolsState>(
           builder: (context, state) {
             if (state is ToolsDataLoading) {
-              return loading();
+              return Loading();
             } else if (state is ToolsDataLoaded) {
               if (state.toolsResponse.data!.isEmpty) {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -52,9 +52,9 @@ class DisasterManageToolsScreen extends StatelessWidget {
                 );
               }
             } else if (state is ToolsLoadError) {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         ),

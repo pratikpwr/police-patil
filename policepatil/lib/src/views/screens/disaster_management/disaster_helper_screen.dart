@@ -31,10 +31,10 @@ class DisasterManageHelperScreen extends StatelessWidget {
         child: BlocBuilder<DisasterHelperBloc, DisasterHelperState>(
           builder: (context, state) {
             if (state is HelperDataLoading) {
-              return loading();
+              return Loading();
             } else if (state is HelperDataLoaded) {
               if (state.helperResponse.data!.isEmpty) {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -52,9 +52,9 @@ class DisasterManageHelperScreen extends StatelessWidget {
                 );
               }
             } else if (state is HelperLoadError) {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         ),

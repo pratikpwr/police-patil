@@ -30,10 +30,10 @@ class FiresScreen extends StatelessWidget {
         child: BlocBuilder<FireRegisterBloc, FireRegisterState>(
           builder: (context, state) {
             if (state is FireDataLoading) {
-              return loading();
+              return Loading();
             } else if (state is FireDataLoaded) {
               if (state.fireResponse.data!.isEmpty) {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -51,9 +51,9 @@ class FiresScreen extends StatelessWidget {
                 );
               }
             } else if (state is FireLoadError) {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         ),

@@ -26,6 +26,7 @@ class AttachButton extends StatelessWidget {
           children: [
             Text(
               text,
+              overflow: TextOverflow.ellipsis,
               style: GoogleFonts.poppins(
                   color: PRIMARY_COLOR,
                   fontWeight: FontWeight.w500,

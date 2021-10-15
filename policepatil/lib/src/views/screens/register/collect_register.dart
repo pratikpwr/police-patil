@@ -112,58 +112,12 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
                       AttachButton(
                         text: _photoName,
                         onTap: () async {
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'फोटो काढा अथवा गॅलरी मधून निवडा',
-                                    style: GoogleFonts.poppins(fontSize: 14),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () async {
-                                          final pickedImage =
-                                              await picker.pickImage(
-                                                  source: ImageSource.camera);
-                                          setState(() {
-                                            if (pickedImage != null) {
-                                              _photoImage =
-                                                  File(pickedImage.path);
-                                            } else {
-                                              debugPrint('No image selected.');
-                                            }
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          'कॅमेरा',
-                                          style:
-                                              GoogleFonts.poppins(fontSize: 14),
-                                        )),
-                                    TextButton(
-                                        onPressed: () async {
-                                          final pickedImage =
-                                              await picker.pickImage(
-                                                  source: ImageSource.gallery);
-                                          setState(() {
-                                            if (pickedImage != null) {
-                                              _photoImage =
-                                                  File(pickedImage.path);
-                                            } else {
-                                              debugPrint('No image selected.');
-                                            }
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          'गॅलरी',
-                                          style:
-                                              GoogleFonts.poppins(fontSize: 14),
-                                        ))
-                                  ],
-                                );
-                              });
+                          var result =
+                              await getFileFromDevice(context, _photoName);
+                          setState(() {
+                            _photoName = result[0];
+                            _photoImage = result[1];
+                          });
                         },
                       ),
                       spacer(),

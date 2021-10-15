@@ -29,10 +29,10 @@ class IllegalScreen extends StatelessWidget {
         child: BlocBuilder<IllegalRegisterBloc, IllegalRegisterState>(
           builder: (context, state) {
             if (state is IllegalDataLoading) {
-              return loading();
+              return Loading();
             } else if (state is IllegalDataLoaded) {
               if (state.illegalResponse.data!.isEmpty) {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -50,9 +50,9 @@ class IllegalScreen extends StatelessWidget {
                 );
               }
             } else if (state is IllegalLoadError) {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         ),

@@ -30,10 +30,10 @@ class AlertScreen extends StatelessWidget {
         }, child: BlocBuilder<AlertBloc, AlertState>(
           builder: (context, state) {
             if (state is AlertLoading) {
-              return loading();
+              return Loading();
             } else if (state is AlertLoaded) {
               if (state.alertResponse.data!.isEmpty) {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -51,9 +51,9 @@ class AlertScreen extends StatelessWidget {
                 );
               }
             } else if (state is AlertLoadError) {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         )));

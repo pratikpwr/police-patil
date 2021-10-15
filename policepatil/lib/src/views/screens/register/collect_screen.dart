@@ -30,10 +30,10 @@ class CollectionScreen extends StatelessWidget {
         child: BlocBuilder<CollectRegisterBloc, CollectRegisterState>(
           builder: (context, state) {
             if (state is CollectionDataLoading) {
-              return loading();
+              return Loading();
             } else if (state is CollectionDataLoaded) {
               if (state.collectionResponse.collectData!.isEmpty) {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -53,9 +53,9 @@ class CollectionScreen extends StatelessWidget {
                 );
               }
             } else if (state is CollectionLoadError) {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         ),

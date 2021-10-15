@@ -47,10 +47,10 @@ class ImpNewsWidget extends StatelessWidget {
             BlocBuilder<NewsBloc, NewsState>(
               builder: (context, state) {
                 if (state is NewsLoading) {
-                  return loading();
+                  return Loading();
                 } else if (state is NewsLoaded) {
                   if (state.newsResponse.data!.isEmpty) {
-                    return noRecordFound();
+                    return NoRecordFound();
                   } else {
                     return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.3,
@@ -75,9 +75,9 @@ class ImpNewsWidget extends StatelessWidget {
                         ));
                   }
                 } else if (state is NewsLoadError) {
-                  return somethingWentWrong();
+                  return SomethingWentWrong();
                 } else {
-                  return somethingWentWrong();
+                  return SomethingWentWrong();
                 }
               },
             ),

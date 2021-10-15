@@ -40,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
           child: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
               if (state is ProfileLoading) {
-                return loading();
+                return Loading();
               } else if (state is ProfileDataLoaded) {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -115,9 +115,9 @@ class ProfileScreen extends StatelessWidget {
                       )),
                 );
               } else if (state is ProfileLoadError) {
-                return somethingWentWrong();
+                return SomethingWentWrong();
               }
-              return somethingWentWrong();
+              return SomethingWentWrong();
             },
           ),
         ),

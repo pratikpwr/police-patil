@@ -1,6 +1,11 @@
+// ignore_for_file: must_be_immutable
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:policepatil/src/config/constants.dart';
 
@@ -10,6 +15,59 @@ void showSnackBar(BuildContext context, String message) {
     message,
     style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
   )));
+}
+
+Future<List<dynamic>> getFileFromDevice(
+    BuildContext context, String title) async {
+  File? _fileImage;
+  final picker = ImagePicker();
+  await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'फोटो काढा अथवा गॅलरी मधून निवडा',
+            style: GoogleFonts.poppins(fontSize: 14),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () async {
+                  final pickedImage =
+                      await picker.pickImage(source: ImageSource.camera);
+
+                  if (pickedImage != null) {
+                    title = pickedImage.name;
+                    _fileImage = File(pickedImage.path);
+                  } else {
+                    debugPrint('No image selected.');
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'कॅमेरा',
+                  style: GoogleFonts.poppins(fontSize: 14),
+                )),
+            TextButton(
+                onPressed: () async {
+                  final pickedImage =
+                      await picker.pickImage(source: ImageSource.gallery);
+
+                  if (pickedImage != null) {
+                    title = pickedImage.name;
+                    _fileImage = File(pickedImage.path);
+                  } else {
+                    debugPrint('No image selected.');
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'गॅलरी',
+                  style: GoogleFonts.poppins(fontSize: 14),
+                ))
+          ],
+        );
+      });
+  return [title, _fileImage];
 }
 
 String? youtubeUrlToId(String? url, {bool trimWhitespaces = true}) {
@@ -30,28 +88,45 @@ String? youtubeUrlToId(String? url, {bool trimWhitespaces = true}) {
   return null;
 }
 
-Widget loading() {
-  return const Center(
-    child: CircularProgressIndicator(),
-  );
+class Loading extends StatelessWidget {
+  const Loading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
 }
 
-Widget somethingWentWrong({String? message}) {
-  return Center(
-    child: Text(
-      message ?? SOMETHING_WENT_WRONG,
-      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
-    ),
-  );
+class SomethingWentWrong extends StatelessWidget {
+  SomethingWentWrong({Key? key, this.message}) : super(key: key);
+  String? message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        message ?? SOMETHING_WENT_WRONG,
+        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
 }
 
-Widget noRecordFound({String? message}) {
-  return Center(
-    child: Text(
-      message ?? NO_RECORD,
-      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
-    ),
-  );
+class NoRecordFound extends StatelessWidget {
+  NoRecordFound({Key? key, this.message}) : super(key: key);
+  String? message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        message ?? NO_RECORD,
+        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
 }
 
 Widget spacer({double? height}) {

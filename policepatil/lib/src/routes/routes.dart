@@ -11,8 +11,6 @@ Route routes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const BottomNavBar());
     case '/auth':
       return MaterialPageRoute(builder: (_) => const SignInScreen());
-    case '/admin':
-      return MaterialPageRoute(builder: (_) => const PSHomeScreen());
     default:
       return MaterialPageRoute(builder: (_) => const SplashScreen());
   }

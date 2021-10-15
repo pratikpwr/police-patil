@@ -27,7 +27,7 @@ class KayadeScreen extends StatelessWidget {
         }, child: BlocBuilder<KayadeBloc, KayadeState>(
           builder: (context, state) {
             if (state is KayadeLoading) {
-              return loading();
+              return Loading();
             } else if (state is KayadeLoaded) {
               return SafeArea(
                 child: SingleChildScrollView(
@@ -69,12 +69,12 @@ class KayadeScreen extends StatelessWidget {
               );
             } else if (state is KayadeLoadError) {
               if (state.error == 'Record Empty') {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
-                return somethingWentWrong();
+                return SomethingWentWrong();
               }
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         )));

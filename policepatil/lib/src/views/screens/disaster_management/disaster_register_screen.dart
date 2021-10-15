@@ -31,10 +31,10 @@ class DisasterRegScreen extends StatelessWidget {
         child: BlocBuilder<DisasterRegisterBloc, DisasterRegisterState>(
           builder: (context, state) {
             if (state is DisasterDataLoading) {
-              return loading();
+              return Loading();
             } else if (state is DisasterDataLoaded) {
               if (state.disasterResponse.data!.isEmpty) {
-                return noRecordFound();
+                return NoRecordFound();
               } else {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -52,9 +52,9 @@ class DisasterRegScreen extends StatelessWidget {
                 );
               }
             } else if (state is DisasterLoadError) {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             } else {
-              return somethingWentWrong();
+              return SomethingWentWrong();
             }
           },
         ),
