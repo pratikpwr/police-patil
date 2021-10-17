@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:policepatil/src/views/widgets/attach_button.dart';
 import 'package:shared/shared.dart';
@@ -30,8 +30,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
   double _latitude = 0.00;
 
   String _photoName = "हालचालीचा फोटो जोडा";
-  File? _photoImage;
-  final picker = ImagePicker();
+  File? _photo;
 
   final TextEditingController _countController = TextEditingController();
   final TextEditingController _leaderController = TextEditingController();
@@ -213,54 +212,12 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                 AttachButton(
                   text: _photoName,
                   onTap: () async {
-                    await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'फोटो काढा अथवा गॅलरी मधून निवडा',
-                              style: GoogleFonts.poppins(fontSize: 14),
-                            ),
-                            actions: [
-                              TextButton(
-                                  onPressed: () async {
-                                    final pickedImage = await picker.pickImage(
-                                        source: ImageSource.camera);
-                                    setState(() {
-                                      if (pickedImage != null) {
-                                        _photoName = pickedImage.name;
-                                        _photoImage = File(pickedImage.path);
-                                      } else {
-                                        debugPrint('No image selected.');
-                                      }
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'कॅमेरा',
-                                    style: GoogleFonts.poppins(fontSize: 14),
-                                  )),
-                              TextButton(
-                                  onPressed: () async {
-                                    final pickedImage = await picker.pickImage(
-                                        source: ImageSource.gallery);
-                                    setState(() {
-                                      if (pickedImage != null) {
-                                        _photoName = pickedImage.name;
-                                        _photoImage = File(pickedImage.path);
-                                      } else {
-                                        debugPrint('No image selected.');
-                                      }
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    'गॅलरी',
-                                    style: GoogleFonts.poppins(fontSize: 14),
-                                  ))
-                            ],
-                          );
-                        });
+                    getFileFromDevice(context).then((pickedFile) {
+                      setState(() {
+                        _photo = pickedFile;
+                        _photoName = getFileName(pickedFile!.path);
+                      });
+                    });
                   },
                 ),
                 spacer(),
@@ -295,7 +252,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
         issue: _isIssue,
         attendance: int.parse(_countController.text),
         description: _otherController.text,
-        photo: _photoImage?.path);
+        photo: _photo?.path);
 
     BlocProvider.of<MovementRegisterBloc>(context)
         .add(AddMovementData(_movementData));

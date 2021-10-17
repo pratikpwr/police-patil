@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,59 +16,6 @@ void showSnackBar(BuildContext context, String message) {
     message,
     style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
   )));
-}
-
-Future<List<dynamic>> getFileFromDevice(
-    BuildContext context, String title) async {
-  File? _fileImage;
-  final picker = ImagePicker();
-  await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'फोटो काढा अथवा गॅलरी मधून निवडा',
-            style: GoogleFonts.poppins(fontSize: 14),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () async {
-                  final pickedImage =
-                      await picker.pickImage(source: ImageSource.camera);
-
-                  if (pickedImage != null) {
-                    title = pickedImage.name;
-                    _fileImage = File(pickedImage.path);
-                  } else {
-                    debugPrint('No image selected.');
-                  }
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'कॅमेरा',
-                  style: GoogleFonts.poppins(fontSize: 14),
-                )),
-            TextButton(
-                onPressed: () async {
-                  final pickedImage =
-                      await picker.pickImage(source: ImageSource.gallery);
-
-                  if (pickedImage != null) {
-                    title = pickedImage.name;
-                    _fileImage = File(pickedImage.path);
-                  } else {
-                    debugPrint('No image selected.');
-                  }
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  'गॅलरी',
-                  style: GoogleFonts.poppins(fontSize: 14),
-                ))
-          ],
-        );
-      });
-  return [title, _fileImage];
 }
 
 String? youtubeUrlToId(String? url, {bool trimWhitespaces = true}) {

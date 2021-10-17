@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/modules/collection_register/bloc/collect_register_bloc.dart';
 import 'package:shared/shared.dart';
@@ -38,8 +38,7 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
   double _latitude = 0.00;
 
   String _photoName = "फोटो जोडा";
-  File? _photoImage;
-  final picker = ImagePicker();
+  File? _photo;
 
   @override
   Widget build(BuildContext context) {
@@ -111,12 +110,12 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
                       spacer(),
                       AttachButton(
                         text: _photoName,
-                        onTap: () async {
-                          var result =
-                              await getFileFromDevice(context, _photoName);
-                          setState(() {
-                            _photoName = result[0];
-                            _photoImage = result[1];
+                        onTap: () {
+                          getFileFromDevice(context).then((pickedFile) {
+                            setState(() {
+                              _photo = pickedFile;
+                              _photoName = getFileName(pickedFile!.path);
+                            });
                           });
                         },
                       ),
@@ -124,7 +123,7 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
                       CustomButton(
                           text: DO_REGISTER,
                           onTap: () {
-                            _registerCollectionData();
+                            _registerCollectionData(context);
                           })
                     ],
                   )),
@@ -135,7 +134,7 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
     );
   }
 
-  _registerCollectionData() {
+  _registerCollectionData(BuildContext context) {
     DateFormat _format = DateFormat("yyyy-MM-dd");
     CollectionData _collectionData = CollectionData(
       type: _chosenValue!,
@@ -144,7 +143,7 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
       description: _detailsController.text,
       latitude: _latitude,
       longitude: _longitude,
-      photo: _photoImage?.path,
+      photo: _photo?.path,
     );
 
     BlocProvider.of<CollectRegisterBloc>(context)

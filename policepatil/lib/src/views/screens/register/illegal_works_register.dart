@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 import '../../views.dart';
 
@@ -24,9 +24,8 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
   double _longitude = 0.00;
   double _latitude = 0.00;
 
-  File? _photoImage;
+  File? _photo;
   String _photoName = "फोटो जोडा";
-  final picker = ImagePicker();
 
   final List<String> _watchRegTypes = <String>[
     "अवैद्य दारू विक्री करणारे",
@@ -82,60 +81,12 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
                     AttachButton(
                       text: _photoName,
                       onTap: () async {
-                        await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(
-                                  'फोटो काढा अथवा गॅलरी मधून निवडा',
-                                  style: GoogleFonts.poppins(fontSize: 14),
-                                ),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () async {
-                                        final pickedImage =
-                                            await picker.pickImage(
-                                                source: ImageSource.camera);
-                                        setState(() {
-                                          if (pickedImage != null) {
-                                            _photoName = pickedImage.name;
-                                            _photoImage =
-                                                File(pickedImage.path);
-                                          } else {
-                                            debugPrint('No image selected.');
-                                          }
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        'कॅमेरा',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 14),
-                                      )),
-                                  TextButton(
-                                      onPressed: () async {
-                                        final pickedImage =
-                                            await picker.pickImage(
-                                                source: ImageSource.gallery);
-                                        setState(() {
-                                          if (pickedImage != null) {
-                                            _photoName = pickedImage.name;
-                                            _photoImage =
-                                                File(pickedImage.path);
-                                          } else {
-                                            debugPrint('No image selected.');
-                                          }
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text(
-                                        'गॅलरी',
-                                        style:
-                                            GoogleFonts.poppins(fontSize: 14),
-                                      ))
-                                ],
-                              );
-                            });
+                        getFileFromDevice(context).then((pickedFile) {
+                          setState(() {
+                            _photo = pickedFile;
+                            _photoName = getFileName(pickedFile!.path);
+                          });
+                        });
                       },
                     ),
                     spacer(),
@@ -184,7 +135,7 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
     IllegalData _illegalData = IllegalData(
       type: _chosenValue,
       name: _nameController.text,
-      photo: _photoImage?.path,
+      photo: _photo?.path,
       address: _addressController.text,
       latitude: _latitude,
       longitude: _longitude,
