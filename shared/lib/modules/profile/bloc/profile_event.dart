@@ -10,9 +10,8 @@ abstract class ProfileEvent extends Equatable {
 class GetUserData extends ProfileEvent {}
 
 class ChangeUserData extends ProfileEvent {
-  final UserData user;
+  final UserClass user;
 
-  // TODO: add photo logic here
   // here you have to return old info if its not updated
   const ChangeUserData(this.user);
 

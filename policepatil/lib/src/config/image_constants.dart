@@ -17,6 +17,7 @@ class ImageConstants {
   static String IMG_WATCH = "assets/watching.png";
   static String IMG_MOVEMENT = "assets/movement.png";
   static String IMG_COLLECTION = "assets/boxes.png";
+  static String IMG_NOTEBOOK = "assets/diary.png";
   static String IMG_ARMS = "assets/rifle.png";
   static String IMG_CRIMES = "assets/police-handcuffs.png";
   static String IMG_PLACES = "assets/cafe.png";

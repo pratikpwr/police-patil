@@ -30,7 +30,7 @@ class ApiSdk {
   }
 
   static Future<Response> updateUserData(
-      {required int userId, required Map<String, dynamic> body}) async {
+      {required int userId, required dynamic body}) async {
     String path = ApiConstants.UPDATE_USER_DATA + "$userId";
 
     Response response = await RestApiHandlerData.putData(path, body);

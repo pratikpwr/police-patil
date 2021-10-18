@@ -15,7 +15,7 @@ const String NOTICE = "सूचना";
 const String HOME = "होम";
 
 // Register Categories
-const String REGISTER = "रजिस्टर";
+const String REGISTER = "नोंदवही "; //"रजिस्टर";
 const String reg1 =
     "परवानाधारक शस्त्र व स्फोटक पदार्थांचा साठा करावयाचे गोडाऊन";
 const String ARMS_COLLECTIONS = "शस्त्र व स्फोटक साठा गोडाऊन";
@@ -38,7 +38,7 @@ const String LONGITUDE = "रेखांश";
 const String LATITUDE = "अक्षांश";
 const String SELECT_LOCATION = "जीपीएस लोकेशन निवडा "; //📌
 const String OTHER_INFO = "इतर माहिती";
-const String DO_REGISTER = "रजिस्टर करा";
+const String DO_REGISTER = "नोंदणी करा";
 const String SAVED = "सेव झाले";
 const String DATE = "दिनांक";
 const String TIME = "वेळ";
@@ -52,6 +52,7 @@ const String CRIMES = "गुन्हे";
 const String DEATHS = "अकस्मात मयत";
 const String BURNS = "अकस्मात जळीत";
 const String MISSING = "मिसिंग";
+const String NONDA = "अभ्यागत नोंदवही";
 const String MANDHAN = "मानधन व भत्ते";
 const String LAWS = "कायदे आणि नियम";
 const String SOMETHING_WENT_WRONG = "क्षमस्व ! काहितरी चुकले ";

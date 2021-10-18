@@ -47,6 +47,13 @@ export 'package:policepatil/src/views/screens/register/crimes_register/fires_scr
 export 'package:policepatil/src/views/screens/register/crimes_register/fires_register_screen.dart';
 export 'package:policepatil/src/views/screens/register/crimes_register/missing_screen.dart';
 export 'package:policepatil/src/views/screens/register/crimes_register/missing_register_screen.dart';
+export 'package:policepatil/src/views/screens/update_user_screen.dart';
+
+// export 'package:policepatil/src/views/screens';
+// export 'package:policepatil/src/views/screens';
+// export 'package:policepatil/src/views/screens';
+// export 'package:policepatil/src/views/screens';
+// export 'package:policepatil/src/views/screens';
 
 // Widgets
 // export 'package:policepatil/src/views/widgets/';

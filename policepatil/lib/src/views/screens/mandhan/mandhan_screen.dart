@@ -8,12 +8,14 @@ import '../../views.dart';
 class MandhanScreen extends StatelessWidget {
   const MandhanScreen({Key? key}) : super(key: key);
 
+  // TODO : Attendance feature
+  // TODO : Meet Register
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        MANDHAN,
+        NONDA,
         style: GoogleFonts.poppins(
             color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
       )),

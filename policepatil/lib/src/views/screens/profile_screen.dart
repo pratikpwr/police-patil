@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
+import 'package:policepatil/src/views/views.dart';
 import 'package:shared/modules/authentication/auth.dart';
 import 'package:shared/shared.dart';
 
@@ -19,8 +21,7 @@ class ProfileScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             PROFILE,
-            style: GoogleFonts.poppins(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+            style: Styles.appBarTextStyle(),
           ),
           automaticallyImplyLeading: false,
           actions: [
@@ -40,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
           child: BlocBuilder<ProfileBloc, ProfileState>(
             builder: (context, state) {
               if (state is ProfileLoading) {
-                return Loading();
+                return const Loading();
               } else if (state is ProfileDataLoaded) {
                 return SafeArea(
                   child: SingleChildScrollView(
@@ -60,7 +61,7 @@ class ProfileScreen extends StatelessWidget {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
                                     child: CachedNetworkImage(
-                                      imageUrl: state.user.photo,
+                                      imageUrl: state.user.photo ?? "",
                                       width: 150,
                                       height: 150,
                                       fit: BoxFit.cover,
@@ -68,13 +69,13 @@ class ProfileScreen extends StatelessWidget {
                                   ),
                                   spacer(),
                                   Text(
-                                    state.user.name,
+                                    state.user.name ?? "-",
                                     style: GoogleFonts.poppins(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Text(
-                                    state.user.village,
+                                    state.user.village ?? "-",
                                     style: GoogleFonts.poppins(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
@@ -91,25 +92,35 @@ class ProfileScreen extends StatelessWidget {
                                 buildDetails(
                                     "मो. नंबर :", state.user.mobile.toString()),
                                 spacer(height: 12),
-                                buildDetails("पत्ता :", state.user.address),
-                                spacer(height: 12),
                                 buildDetails(
-                                    "नेमणुकीची तारीख :",
-                                    state.user.joindate
-                                        .toIso8601String()
-                                        .substring(0, 10)),
+                                    "पत्ता :", state.user.address ?? "-"),
                                 spacer(height: 12),
-                                buildDetails(
-                                    "नेमणुकीची मुदत :",
-                                    state.user.enddate
-                                        .toIso8601String()
-                                        .substring(0, 10)),
+                                buildDetails("नेमणुकीची तारीख :",
+                                    showDate(state.user.joindate!)),
+                                spacer(height: 12),
+                                buildDetails("नेमणुकीची मुदत :",
+                                    showDate(state.user.enddate!)),
                                 spacer(height: 12),
                                 buildDetails("पो. ठा. पासून गावाचे अंतर :",
                                     "${state.user.psdistance} कि.मी."),
                                 spacer(),
                               ],
                             ),
+                            Center(
+                              child: CustomButton(
+                                  text: "माहिती उपडेट करा",
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (_) {
+                                      return UpdateProfile(
+                                        user: state.user,
+                                      );
+                                    })).then((_) {
+                                      BlocProvider.of<ProfileBloc>(context)
+                                          .add(GetUserData());
+                                    });
+                                  }),
+                            )
                           ],
                         ),
                       )),

@@ -21,10 +21,30 @@ class ProfileLoadError extends ProfileState {
 }
 
 class ProfileDataLoaded extends ProfileState {
-  final UserData user;
+  final UserClass user;
 
   const ProfileDataLoaded(this.user);
 
   @override
   List<Object> get props => [user];
+}
+
+class ProfileUpdating extends ProfileState {}
+
+class ProfileUpdateSuccess extends ProfileState {
+  final String message;
+
+  const ProfileUpdateSuccess(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ProfileUpdateFailed extends ProfileState {
+  final String message;
+
+  const ProfileUpdateFailed(this.message);
+
+  @override
+  List<Object> get props => [message];
 }

@@ -63,8 +63,5 @@ class UserData {
         "photo": photo,
         "latitude": latitude,
         "longitude": longitude,
-        "psid": psid,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
       };
 }

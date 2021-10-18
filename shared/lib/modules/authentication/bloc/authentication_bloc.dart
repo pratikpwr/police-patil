@@ -63,9 +63,9 @@ class AuthenticationBloc
       if (response.data["error"] == null) {
         final currentUser = UserModel.fromJson(response.data);
         if (currentUser != null) {
-          sharedPreferences.setString('authToken', currentUser.accessToken);
-          sharedPreferences.setInt("userId", currentUser.user.id);
-          sharedPreferences.setInt('policeStationId', currentUser.user.psid);
+          sharedPreferences.setString('authToken', currentUser.accessToken!);
+          sharedPreferences.setInt("userId", currentUser.user!.id!);
+          sharedPreferences.setInt('policeStationId', currentUser.user!.psid!);
           yield AppAuthenticated();
         } else {
           yield AuthenticationNotAuthenticated();

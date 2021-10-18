@@ -17,6 +17,20 @@ class Styles {
     );
   }
 
+  static TextStyle appBarTextStyle({
+    Color color = Colors.white,
+    FontWeight fontWeight = FontWeight.w600,
+    double fontSize = 18,
+    FontStyle fontStyle = FontStyle.normal,
+  }) {
+    return GoogleFonts.poppins(
+      fontSize: fontSize,
+      color: color,
+      fontWeight: fontWeight,
+      fontStyle: fontStyle,
+    );
+  }
+
   static TextStyle titleTextStyle({
     Color color = TEXT_COLOR_TITLE,
     FontWeight fontWeight = FontWeight.w500,
