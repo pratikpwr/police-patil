@@ -249,7 +249,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
         longitude: _longitude,
         datetime:
             _format.parse(_dateController.text + " " + _timeController.text),
-        issue: _isIssue,
+        issue: _isIssue == YES ? true : false,
         attendance: int.parse(_countController.text),
         description: _otherController.text,
         photo: _photo?.path);

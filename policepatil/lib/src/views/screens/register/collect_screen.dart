@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/screens/register/collect_register.dart';
+import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
 class CollectionScreen extends StatelessWidget {
@@ -30,7 +33,7 @@ class CollectionScreen extends StatelessWidget {
         child: BlocBuilder<CollectRegisterBloc, CollectRegisterState>(
           builder: (context, state) {
             if (state is CollectionDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is CollectionDataLoaded) {
               if (state.collectionResponse.collectData!.isEmpty) {
                 return NoRecordFound();
@@ -41,13 +44,13 @@ class CollectionScreen extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       child: ListView.builder(
                           itemCount:
-                              state.collectionResponse.collectData!.length,
+                          state.collectionResponse.collectData!.length,
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return CollectionDetailWidget(
                               collect:
-                                  state.collectionResponse.collectData![index],
+                              state.collectionResponse.collectData![index],
                             );
                           })),
                 );
@@ -83,7 +86,9 @@ class CollectionDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        _showDetails(context);
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
@@ -93,30 +98,50 @@ class CollectionDetailWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              collect.type!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            ),
+            Text(collect.type!, style: Styles.primaryTextStyle()),
             const Divider(),
-            Text(
-              collect.description!,
-              style: GoogleFonts.poppins(fontSize: 15),
-            ),
-            Text(
-              collect.address!,
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
-            const Divider(),
-            Text(
-              collect.date!.toIso8601String().substring(0, 10),
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
+            HeadValueText(title: DESCRIPTION, value: collect.description!),
+            HeadValueText(title: ADDRESS, value: "${collect.address}"),
+            HeadValueText(title: DATE, value: showDate(collect.date!)),
           ],
         ),
       ),
     );
+  }
+
+  _showDetails(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        builder: (ctx) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(collect.type!, style: Styles.primaryTextStyle()),
+                  const Divider(),
+                  spacer(height: 8),
+                  HeadValueText(
+                      title: DESCRIPTION, value: collect.description!),
+                  HeadValueText(title: ADDRESS, value: "${collect.address}"),
+                  HeadValueText(title: DATE, value: showDate(collect.date!)),
+                  spacer(height: 8),
+                  Text(
+                    PHOTO,
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${collect.photo!}",
+                    width: 300,
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

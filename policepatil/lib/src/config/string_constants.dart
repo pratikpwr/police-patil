@@ -29,6 +29,7 @@ const String DISASTER_MANAGEMENT = "आपत्ती व्यवस्था�
 
 // const String  = "";
 const String NAME = "नाव";
+const String AADHAR = "आधार कार्ड";
 const String MOB_NO = "मोबाईल नंबर";
 const String AGE = "वय";
 const String ADDRESS = "पत्ता";
@@ -42,6 +43,8 @@ const String SAVED = "सेव झाले";
 const String DATE = "दिनांक";
 const String TIME = "वेळ";
 const String DESCRIPTION = "वर्णन";
+const String PHOTO = "फोटो";
+const String CHOOSE_TYPE = "प्रकार निवडा";
 const String YES = "हो";
 const String NO = "नाही";
 const String VEHICLE_NO = "वाहनांचे क्रमांक";

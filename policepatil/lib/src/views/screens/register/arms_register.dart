@@ -107,7 +107,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                       },
                     ),
                     spacer(),
-                    buildTextField(_addressController, ADDRESS),
+                    buildTextField(_addressController, CHOOSE_TYPE),
                     spacer(),
                     if (_chosenValue != "शस्त्र परवानाधारक")
                       Column(

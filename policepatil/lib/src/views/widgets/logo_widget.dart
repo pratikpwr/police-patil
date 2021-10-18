@@ -24,6 +24,11 @@ class LogoWidget extends StatelessWidget {
               fontSize: logoSize > 150.00 ? 28 : 14,
               fontWeight: FontWeight.w600,
               color: TEXT_COLOR),
+        ),
+        spacer(height: 4),
+        Text(
+          "पुणे ग्रा. पो. उपक्रम",
+          style: GoogleFonts.poppins(fontSize: 12, color: TEXT_COLOR),
         )
       ],
     );

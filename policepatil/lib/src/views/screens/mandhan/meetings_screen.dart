@@ -43,6 +43,11 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
                     });
                   }),
               spacer(),
+              CustomButton(
+                  text: REGISTER,
+                  onTap: () {
+                    Navigator.pop(context);
+                  })
             ],
           ),
         ),

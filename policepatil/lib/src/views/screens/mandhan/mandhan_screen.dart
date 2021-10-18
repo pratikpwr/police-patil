@@ -29,7 +29,7 @@ class MandhanScreen extends StatelessWidget {
                   imageUrl: ImageConstants.IMG_CERTIFICATE,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const SelfCertificateScreen();
+                      return SelfCertificateScreen();
                     }));
                   }),
               spacer(),

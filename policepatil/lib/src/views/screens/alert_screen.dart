@@ -87,7 +87,7 @@ class AlertDetailsWidget extends StatelessWidget {
             // if video then don't show photo
             if (alertData.photo != null && !(alertData.videoLink != null))
               CachedNetworkImage(
-                imageUrl: alertData.photo!,
+                imageUrl: "http://${alertData.photo!}",
                 width: double.infinity,
                 height: 180,
               ),

@@ -11,5 +11,7 @@ const Color PRIMARY_COLOR =
 const Color PRIMARY_COLOR_LIGHT = Color(0xFFf0f6ff);
 
 const Color TEXT_COLOR = Color(0xff424242);
+const Color TEXT_COLOR_TITLE = Color(0xff424242);
+const Color TEXT_COLOR_SUBTITLE = Color(0xff424242);
 const Color SCAFFOLD_COLOR = Color(0xFFE5E5E5);
 const Color GREY_BACKGROUND_COLOR = Color(0xFFEFEDED);

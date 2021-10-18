@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/screens/register/arms_register.dart';
+import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
 class ArmsScreen extends StatelessWidget {
@@ -30,7 +33,7 @@ class ArmsScreen extends StatelessWidget {
         child: BlocBuilder<ArmsRegisterBloc, ArmsRegisterState>(
           builder: (context, state) {
             if (state is ArmsDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is ArmsDataLoaded) {
               if (state.armsResponse.data.isEmpty) {
                 return NoRecordFound();
@@ -80,46 +83,7 @@ class ArmsDetailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (ctx) {
-              return Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-                child: Column(
-                  children: [
-                    Text(
-                      armsData.type!,
-                      style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    const Divider(),
-                    Text(
-                      armsData.name!,
-                      style: GoogleFonts.poppins(fontSize: 15),
-                    ),
-                    Text(
-                      armsData.mobile.toString(),
-                      style: GoogleFonts.poppins(fontSize: 14),
-                    ),
-                    Text(
-                      armsData.address!,
-                      style: GoogleFonts.poppins(fontSize: 14),
-                    ),
-                    Text(
-                      "परवाना क्रमांक : ${armsData.licenceNumber}",
-                      style: GoogleFonts.poppins(fontSize: 14),
-                    ),
-                    Text(
-                      "परवान्याची वैधता कालावधी : ${armsData.validity!.toIso8601String()}",
-                      style: GoogleFonts.poppins(fontSize: 14),
-                    ),
-                  ],
-                ),
-              );
-            });
+        _showDetails(context);
       },
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -132,28 +96,70 @@ class ArmsDetailWidget extends StatelessWidget {
           children: [
             Text(
               armsData.type!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
+              style: Styles.primaryTextStyle(),
             ),
             const Divider(),
-            Text(
-              armsData.name!,
-              style: GoogleFonts.poppins(fontSize: 15),
-            ),
-            Text(
-              armsData.address!,
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
-            const Divider(),
-            Text(
-              "परवाना क्रमांक : ${armsData.licenceNumber}",
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
+            HeadValueText(title: NAME, value: armsData.name!),
+            HeadValueText(title: MOB_NO, value: "${armsData.mobile}"),
+            HeadValueText(title: ADDRESS, value: armsData.address!),
+            HeadValueText(
+                title: "परवाना क्रमांक", value: "${armsData.licenceNumber}"),
           ],
         ),
       ),
     );
+  }
+
+  _showDetails(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        builder: (ctx) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    armsData.type!,
+                    style: Styles.primaryTextStyle(),
+                  ),
+                  const Divider(),
+                  spacer(height: 8),
+                  HeadValueText(title: NAME, value: armsData.name!),
+                  HeadValueText(title: MOB_NO, value: "${armsData.mobile}"),
+                  HeadValueText(title: ADDRESS, value: armsData.address!),
+                  HeadValueText(
+                      title: "परवाना क्रमांक",
+                      value: "${armsData.licenceNumber}"),
+                  HeadValueText(
+                      title: "परवान्याची वैधता कालावधी",
+                      value: armsData.validity!.toIso8601String()),
+                  spacer(height: 8),
+                  Text(
+                    AADHAR,
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${armsData.aadhar!}",
+                    width: 300,
+                  ),
+                  spacer(height: 8),
+                  Text(
+                    "परवान्याचा फोटो",
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${armsData.aadhar!}",
+                    width: 300,
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

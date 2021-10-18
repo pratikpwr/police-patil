@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 import '../../views.dart';
@@ -30,7 +32,7 @@ class WatchScreen extends StatelessWidget {
         child: BlocBuilder<WatchRegisterBloc, WatchRegisterState>(
           builder: (context, state) {
             if (state is WatchDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is WatchDataLoaded) {
               if (state.watchResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -80,7 +82,9 @@ class WatchDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        _showDetails(context);
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
@@ -92,23 +96,70 @@ class WatchDetailWidget extends StatelessWidget {
           children: [
             Text(
               watchData.type!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
+              style: Styles.primaryTextStyle(),
             ),
             const Divider(),
-            Text(
-              watchData.name!,
-              style: GoogleFonts.poppins(fontSize: 15),
-            ),
-            Text(
-              watchData.address!,
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
+            HeadValueText(title: DATE, value: watchData.name!),
+            HeadValueText(title: DESCRIPTION, value: watchData.description!),
+            HeadValueText(title: ADDRESS, value: "${watchData.address}"),
           ],
         ),
       ),
     );
+  }
+
+  _showDetails(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        builder: (ctx) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(watchData.type!, style: Styles.primaryTextStyle()),
+                  const Divider(),
+                  spacer(height: 8),
+                  HeadValueText(title: DATE, value: watchData.name!),
+                  HeadValueText(title: DATE, value: "${watchData.mobile!}"),
+                  HeadValueText(title: ADDRESS, value: "${watchData.address}"),
+                  HeadValueText(
+                      title: DESCRIPTION, value: watchData.description!),
+                  spacer(height: 8),
+                  Text(
+                    PHOTO,
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${watchData.photo!}",
+                    width: 300,
+                  ),
+                  spacer(height: 8),
+                  Text(
+                    AADHAR,
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${watchData.aadhar!}",
+                    width: 300,
+                  ),
+                  spacer(height: 8),
+                  Text(
+                    "इतर फोटो",
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${watchData.otherPhoto!}",
+                    width: 300,
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

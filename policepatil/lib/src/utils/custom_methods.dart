@@ -1,12 +1,8 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:policepatil/src/config/constants.dart';
 
@@ -16,6 +12,10 @@ void showSnackBar(BuildContext context, String message) {
     message,
     style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
   )));
+}
+
+String showDate(DateTime date) {
+  return date.toIso8601String().substring(0, 10);
 }
 
 String? youtubeUrlToId(String? url, {bool trimWhitespaces = true}) {

@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 import '../../../views.dart';
@@ -30,7 +32,7 @@ class MissingScreen extends StatelessWidget {
         child: BlocBuilder<MissingRegisterBloc, MissingRegisterState>(
           builder: (context, state) {
             if (state is MissingDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is MissingDataLoaded) {
               if (state.missingResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -80,7 +82,9 @@ class MissingDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        _showDetails(context);
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
@@ -90,31 +94,62 @@ class MissingDetailWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              missingData.name!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            ),
-            const Divider(),
-            Text(
-              missingData.address!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            ),
-            Text(
-              missingData.missingDate!.toIso8601String(),
-              style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            )
+            HeadValueText(
+                title: "१८ वर्षावरील आहे का ?",
+                value: missingData.isAdult! ? YES : NO),
+            HeadValueText(title: NAME, value: missingData.name ?? "-"),
+            HeadValueText(title: ADDRESS, value: missingData.address ?? "-"),
+            HeadValueText(title: "लिंग", value: missingData.gender ?? "-"),
           ],
         ),
       ),
     );
+  }
+
+  _showDetails(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        builder: (ctx) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeadValueText(
+                      title: "१८ वर्षावरील आहे का ?",
+                      value: missingData.isAdult! ? YES : NO),
+                  HeadValueText(title: NAME, value: missingData.name ?? "-"),
+                  HeadValueText(title: AGE, value: "${missingData.age}"),
+                  HeadValueText(
+                      title: ADDRESS, value: missingData.address ?? "-"),
+                  HeadValueText(
+                      title: "लिंग", value: missingData.gender ?? "-"),
+                  spacer(height: 8),
+                  Text(
+                    PHOTO,
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${missingData.photo!}",
+                    width: 300,
+                  ),
+                  spacer(height: 8),
+                  Text(
+                    AADHAR,
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${missingData.aadhar!}",
+                    width: 300,
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

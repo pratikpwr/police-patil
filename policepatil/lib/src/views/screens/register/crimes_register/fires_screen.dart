@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 import '../../../views.dart';
@@ -79,7 +81,9 @@ class FireDetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        _showDetails(context);
+      },
       child: Container(
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
@@ -89,23 +93,46 @@ class FireDetailWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              fireData.address!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            ),
-            Text(
-              fireData.date!.toIso8601String(),
-              style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            )
+            HeadValueText(title: PLACE, value: fireData.address ?? "-"),
+            HeadValueText(title: DATE, value: showDate(fireData.date!)),
+            HeadValueText(title: "", value: fireData.reason ?? "-"),
+            HeadValueText(title: "", value: fireData.loss ?? "-"),
           ],
         ),
       ),
     );
+  }
+
+  _showDetails(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        builder: (ctx) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeadValueText(title: PLACE, value: fireData.address ?? "-"),
+                  HeadValueText(title: DATE, value: showDate(fireData.date!)),
+                  HeadValueText(title: "", value: fireData.reason ?? "-"),
+                  HeadValueText(title: "", value: fireData.loss ?? "-"),
+                  spacer(height: 8),
+                  Text(
+                    PHOTO,
+                    style: Styles.titleTextStyle(),
+                  ),
+                  CachedNetworkImage(
+                    imageUrl: "http://${fireData.photo!}",
+                    width: 300,
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

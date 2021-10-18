@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/styles.dart';
 import 'package:shared/shared.dart';
 
 import '../../../views.dart';
@@ -91,27 +92,12 @@ class CrimeDetailWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              crimesData.type!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w500),
-            ),
+            Text(crimesData.type!, style: Styles.primaryTextStyle()),
             const Divider(),
-            Text(
-              crimesData.type!,
-              style: GoogleFonts.poppins(fontSize: 15),
-            ),
-            Text(
-              crimesData.registerNumber!,
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
-            const Divider(),
-            Text(
-              crimesData.date!.toIso8601String(),
-              style: GoogleFonts.poppins(fontSize: 14),
-            ),
+            HeadValueText(
+                title: "गुन्हा रजिस्टर नंबर",
+                value: "${crimesData.registerNumber}"),
+            HeadValueText(title: DATE, value: showDate(crimesData.date!)),
           ],
         ),
       ),
