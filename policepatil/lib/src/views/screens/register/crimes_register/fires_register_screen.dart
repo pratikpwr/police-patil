@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
@@ -20,13 +21,7 @@ class FireRegFormScreen extends StatefulWidget {
 
 class _FireRegFormScreenState extends State<FireRegFormScreen> {
   Position? _position;
-  double _longitude = 0.00;
-  double _latitude = 0.00;
-
-  File? _photoImage;
-  String _photoName = "फोटो जोडा";
-  final picker = ImagePicker();
-
+  final _bloc = FireRegisterBloc();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
@@ -68,8 +63,8 @@ class _FireRegFormScreenState extends State<FireRegFormScreen> {
                   onTap: () async {
                     _position = await determinePosition();
                     setState(() {
-                      _longitude = _position!.longitude;
-                      _latitude = _position!.latitude;
+                      _bloc.longitude = _position!.longitude;
+                      _bloc.latitude = _position!.latitude;
                     });
                   }),
               spacer(),
@@ -77,9 +72,9 @@ class _FireRegFormScreenState extends State<FireRegFormScreen> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text("$LONGITUDE: $_longitude",
+                  Text("$LONGITUDE: ${_bloc.longitude}",
                       style: GoogleFonts.poppins(fontSize: 14)),
-                  Text("$LATITUDE: $_latitude",
+                  Text("$LATITUDE: ${_bloc.latitude}",
                       style: GoogleFonts.poppins(fontSize: 14)),
                 ],
               ),
@@ -93,56 +88,14 @@ class _FireRegFormScreenState extends State<FireRegFormScreen> {
               buildTextField(_lossController, "अंदाजे झालेले नुकसान"),
               spacer(),
               AttachButton(
-                text: _photoName,
+                text: _bloc.photoName,
                 onTap: () async {
-                  await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                            'फोटो काढा अथवा गॅलरी मधून निवडा',
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () async {
-                                  final pickedImage = await picker.pickImage(
-                                      source: ImageSource.camera);
-                                  setState(() {
-                                    if (pickedImage != null) {
-                                      _photoName = pickedImage.name;
-                                      _photoImage = File(pickedImage.path);
-                                    } else {
-                                      debugPrint('No image selected.');
-                                    }
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'कॅमेरा',
-                                  style: GoogleFonts.poppins(fontSize: 14),
-                                )),
-                            TextButton(
-                                onPressed: () async {
-                                  final pickedImage = await picker.pickImage(
-                                      source: ImageSource.gallery);
-                                  setState(() {
-                                    if (pickedImage != null) {
-                                      _photoName = pickedImage.name;
-                                      _photoImage = File(pickedImage.path);
-                                    } else {
-                                      debugPrint('No image selected.');
-                                    }
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'गॅलरी',
-                                  style: GoogleFonts.poppins(fontSize: 14),
-                                ))
-                          ],
-                        );
-                      });
+                  getFileFromDevice(context).then((pickedFile) {
+                    setState(() {
+                      _bloc.photo = pickedFile;
+                      _bloc.photoName = getFileName(pickedFile!.path);
+                    });
+                  });
                 },
               ),
               spacer(),
@@ -163,13 +116,13 @@ class _FireRegFormScreenState extends State<FireRegFormScreen> {
     DateFormat _format = DateFormat("yyyy-MM-dd");
     FireData _fireData = FireData(
         address: _placeController.text,
-        latitude: _latitude,
-        longitude: _longitude,
+        latitude: _bloc.latitude,
+        longitude: _bloc.longitude,
         date: _format.parse(_dateController.text),
         time: _timeController.text,
         reason: _reasonController.text,
         loss: _lossController.text,
-        photo: _photoImage?.path);
+        photo: _bloc.photo?.path);
 
     BlocProvider.of<FireRegisterBloc>(context).add(AddFireData(_fireData));
   }

@@ -1,6 +1,4 @@
-// ignore_for_file: prefer_final_fields
-
-import 'dart:io';
+// ignore_for_bloc.file: prefer_final_fields
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,29 +19,9 @@ class ArmsRegFormScreen extends StatefulWidget {
 }
 
 class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
-  String? _chosenValue;
-  String? _weaponCondition;
-  final List<String> _weaponCondTypes = <String>[
-    "परवाना धारकाकडे शस्त्र आहे",
-    "पो. ठा. कडे जमा",
-    "गहाळ",
-    "फक्त परवाना आहे शस्त्र नाही",
-  ];
-  final List<String> _armsRegTypes = <String>[
-    "शस्त्र परवानाधारक",
-    "स्फोटक पदार्थ विक्री",
-    "स्फोटक जवळ बाळगणारे",
-    "स्फोटक उडविणारे"
-  ];
+  final _bloc = ArmsRegisterBloc();
 
   Position? _position;
-  double _longitude = 0.00;
-  double _latitude = 0.00;
-
-  String _fileName = 'आधार कार्ड जोडा';
-  String _photoName = "परवान्याचा फोटो जोडा";
-  File? _file;
-  File? _photo;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -82,12 +60,12 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                   children: [
                     spacer(),
                     buildDropButton(
-                        value: _chosenValue,
-                        items: _armsRegTypes,
+                        value: _bloc.armsValue,
+                        items: _bloc.armsRegTypes,
                         hint: "प्रकार निवडा",
                         onChanged: (String? value) {
                           setState(() {
-                            _chosenValue = value;
+                            _bloc.armsValue = value;
                           });
                         }),
                     spacer(),
@@ -96,12 +74,12 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                     buildTextField(_phoneController, MOB_NO),
                     spacer(),
                     AttachButton(
-                      text: _fileName,
+                      text: _bloc.fileName,
                       onTap: () async {
                         getFileFromDevice(context).then((pickedFile) {
                           setState(() {
-                            _file = pickedFile;
-                            _fileName = getFileName(pickedFile!.path);
+                            _bloc.file = pickedFile;
+                            _bloc.fileName = getFileName(pickedFile!.path);
                           });
                         });
                       },
@@ -109,7 +87,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                     spacer(),
                     buildTextField(_addressController, CHOOSE_TYPE),
                     spacer(),
-                    if (_chosenValue != "शस्त्र परवानाधारक")
+                    if (_bloc.armsValue != "शस्त्र परवानाधारक")
                       Column(
                         children: [
                           AttachButton(
@@ -118,8 +96,8 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                               onTap: () async {
                                 _position = await determinePosition();
                                 setState(() {
-                                  _longitude = _position!.longitude;
-                                  _latitude = _position!.latitude;
+                                  _bloc.longitude = _position!.longitude;
+                                  _bloc.latitude = _position!.latitude;
                                 });
                               }),
                           spacer(),
@@ -127,17 +105,17 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text("$LONGITUDE: $_longitude",
+                              Text("$LONGITUDE: $_bloc.longitude",
                                   style: GoogleFonts.poppins(fontSize: 14)),
                               const SizedBox(width: 12),
-                              Text("$LATITUDE: $_latitude",
+                              Text("$LATITUDE: $_bloc.latitude",
                                   style: GoogleFonts.poppins(fontSize: 14)),
                             ],
                           ),
                         ],
                       ),
                     spacer(),
-                    if (_chosenValue == "शस्त्र परवानाधारक")
+                    if (_bloc.armsValue == "शस्त्र परवानाधारक")
                       buildTextField(_uIDController, "युआईडी क्रमांक"),
                     spacer(),
                     buildTextField(_certificateNoController, "परवाना क्रमांक"),
@@ -145,24 +123,24 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                     buildDateTextField(context, _certificateExpiryController,
                         "परवान्याची वैधता कालावधी"),
                     spacer(),
-                    if (_chosenValue == "शस्त्र परवानाधारक")
+                    if (_bloc.armsValue == "शस्त्र परवानाधारक")
                       buildDropButton(
-                          value: _weaponCondition,
-                          items: _weaponCondTypes,
+                          value: _bloc.weaponCondition,
+                          items: _bloc.weaponCondTypes,
                           hint: "शस्त्राची सद्यस्तिथी निवडा",
                           onChanged: (String? value) {
                             setState(() {
-                              _weaponCondition = value;
+                              _bloc.weaponCondition = value;
                             });
                           }),
                     spacer(),
                     AttachButton(
-                      text: _photoName,
+                      text: _bloc.photoName,
                       onTap: () async {
                         getFileFromDevice(context).then((pickedFile) {
                           setState(() {
-                            _photo = pickedFile;
-                            _photoName = getFileName(pickedFile!.path);
+                            _bloc.photo = pickedFile;
+                            _bloc.photoName = getFileName(pickedFile!.path);
                           });
                         });
                       },
@@ -184,15 +162,15 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
     DateFormat format = DateFormat("yyyy-MM-dd");
     // TODO : add uid field and weapon condition dropdown
     ArmsData armsData = ArmsData(
-        type: _chosenValue!,
+        type: _bloc.armsValue!,
         name: _nameController.text,
         mobile: int.parse(_phoneController.text),
-        aadhar: _file?.path,
+        aadhar: _bloc.file?.path,
         address: _addressController.text,
-        latitude: _latitude,
-        longitude: _longitude,
+        latitude: _bloc.latitude,
+        longitude: _bloc.longitude,
         validity: format.parse(_certificateExpiryController.text),
-        licencephoto: _photo?.path,
+        licencephoto: _bloc.photo?.path,
         licenceNumber: _certificateNoController.text);
 
     BlocProvider.of<ArmsRegisterBloc>(context).add(AddArmsData(armsData));

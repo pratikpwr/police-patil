@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -18,26 +16,12 @@ class IllegalWorksFormScreen extends StatefulWidget {
 }
 
 class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
-  String? _chosenValue;
-
-  Position? _position;
-  double _longitude = 0.00;
-  double _latitude = 0.00;
-
-  File? _photo;
-  String _photoName = "फोटो जोडा";
-
-  final List<String> _watchRegTypes = <String>[
-    "अवैद्य दारू विक्री करणारे",
-    "अवैद्य गुटका विक्री करणारे",
-    "जुगार/मटका चालविणारे/खेळणारे",
-    "अवैद्य गौण खनिज उत्खनन करणारे वाळू तस्कर",
-    "अमली पदार्थ विक्री करणारे"
-  ];
-
+  final _bloc = IllegalRegisterBloc();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _vehicleNoController = TextEditingController();
+
+  Position? _position;
 
   @override
   Widget build(BuildContext context) {
@@ -67,24 +51,24 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
                   children: [
                     spacer(),
                     buildDropButton(
-                        value: _chosenValue,
-                        items: _watchRegTypes,
+                        value: _bloc.chosenValue,
+                        items: _bloc.watchRegTypes,
                         hint: "अवैद्य धंदे प्रकार निवडा",
                         onChanged: (String? value) {
                           setState(() {
-                            _chosenValue = value;
+                            _bloc.chosenValue = value;
                           });
                         }),
                     spacer(),
                     buildTextField(_nameController, NAME),
                     spacer(),
                     AttachButton(
-                      text: _photoName,
+                      text: _bloc.photoName,
                       onTap: () async {
                         getFileFromDevice(context).then((pickedFile) {
                           setState(() {
-                            _photo = pickedFile;
-                            _photoName = getFileName(pickedFile!.path);
+                            _bloc.photo = pickedFile;
+                            _bloc.photoName = getFileName(pickedFile!.path);
                           });
                         });
                       },
@@ -98,8 +82,8 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
                         onTap: () async {
                           _position = await determinePosition();
                           setState(() {
-                            _longitude = _position!.longitude;
-                            _latitude = _position!.latitude;
+                            _bloc.longitude = _position!.longitude;
+                            _bloc.latitude = _position!.latitude;
                           });
                         }),
                     spacer(),
@@ -107,16 +91,16 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("$LONGITUDE: $_longitude",
+                        Text("$LONGITUDE: ${_bloc.longitude}",
                             style: GoogleFonts.poppins(fontSize: 14)),
                         const SizedBox(width: 12),
-                        Text("$LATITUDE: $_latitude",
+                        Text("$LATITUDE: ${_bloc.latitude}",
                             style: GoogleFonts.poppins(fontSize: 14)),
                       ],
                     ),
                     spacer(),
-                    _chosenValue == _watchRegTypes[3] ||
-                            _chosenValue == _watchRegTypes[4]
+                    _bloc.chosenValue == _bloc.watchRegTypes[3] ||
+                            _bloc.chosenValue == _bloc.watchRegTypes[4]
                         ? buildTextField(_vehicleNoController, VEHICLE_NO)
                         : spacer(height: 0),
                     spacer(),
@@ -133,12 +117,12 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
 
   _registerIllegalData() {
     IllegalData _illegalData = IllegalData(
-      type: _chosenValue,
+      type: _bloc.chosenValue,
       name: _nameController.text,
-      photo: _photo?.path,
+      photo: _bloc.photo?.path,
       address: _addressController.text,
-      latitude: _latitude,
-      longitude: _longitude,
+      latitude: _bloc.latitude,
+      longitude: _bloc.longitude,
     );
 
     BlocProvider.of<IllegalRegisterBloc>(context)

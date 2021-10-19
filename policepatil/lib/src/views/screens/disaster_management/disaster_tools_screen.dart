@@ -95,7 +95,7 @@ class ToolsDetailWidget extends StatelessWidget {
               helperData.name!,
               style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: Colors.blue,
+                  color: PRIMARY_COLOR,
                   fontWeight: FontWeight.w500),
             ),
             const Divider(),

@@ -1,9 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:shared/modules/public_place_register/models/public_place_model.dart';
-import 'package:shared/modules/public_place_register/resources/public_place_repository.dart';
 import 'package:dio/dio.dart';
 import '../../../shared.dart';
 
@@ -27,6 +26,26 @@ class PublicPlaceRegisterBloc
       yield* _mapAddPublicPlaceDataState(event);
     }
   }
+
+  String? chosenValue;
+
+  double longitude = 0.00;
+  double latitude = 0.00;
+
+  File? photo;
+  String photoName = "फोटो जोडा";
+
+  final List<String> socialPlaceTypes = <String>[
+    "रस्ता",
+    "पाणवठा",
+    "जमीन",
+    "पुतळा",
+    "धार्मिक स्थळ"
+  ];
+
+  var isIssue;
+  var isCCTV;
+  var isCrimeReg;
 
   Stream<PublicPlaceRegisterState> _mapGetPublicPlaceDataState(
       GetPublicPlaceData event) async* {

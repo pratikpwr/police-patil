@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
@@ -41,12 +42,22 @@ class _SplashScreenState extends State<SplashScreen> {
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           bloc: authenticationBloc,
           builder: (BuildContext context, AuthenticationState state) {
-            return Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.white,
-                alignment: Alignment.center,
-                child: const LogoWidget(logoSize: 250));
+            final _size = MediaQuery.of(context).size;
+            return Stack(
+              children: [
+                Image.asset(
+                  ImageConstants.IMG_SHAPES_1,
+                  height: _size.height,
+                  width: _size.width,
+                  fit: BoxFit.fill,
+                ),
+                Container(
+                    height: _size.height,
+                    width: _size.width,
+                    alignment: Alignment.center,
+                    child: const LogoWidget(logoSize: 250)),
+              ],
+            );
           }),
     ));
   }

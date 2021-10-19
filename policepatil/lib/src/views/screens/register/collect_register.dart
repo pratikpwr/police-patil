@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,25 +18,13 @@ class CollectRegFormScreen extends StatefulWidget {
 }
 
 class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
-  String? _chosenValue;
-
-  final List<String> _collectionType = <String>[
-    "बेवारस वाहने",
-    "दागिने",
-    "गौण खनिज",
-    "इतर"
-  ];
+  final _bloc = CollectRegisterBloc();
 
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
   Position? _position;
-  double _longitude = 0.00;
-  double _latitude = 0.00;
-
-  String _photoName = "फोटो जोडा";
-  File? _photo;
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +56,12 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
                     children: [
                       spacer(),
                       buildDropButton(
-                          value: _chosenValue,
-                          items: _collectionType,
+                          value: _bloc.chosenValue,
+                          items: _bloc.collectionType,
                           hint: "जप्ती मालाचा प्रकार निवडा",
                           onChanged: (String? value) {
                             setState(() {
-                              _chosenValue = value;
+                              _bloc.chosenValue = value;
                             });
                           }),
                       spacer(),
@@ -87,8 +73,8 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
                           onTap: () async {
                             _position = await determinePosition();
                             setState(() {
-                              _longitude = _position!.longitude;
-                              _latitude = _position!.latitude;
+                              _bloc.longitude = _position!.longitude;
+                              _bloc.latitude = _position!.latitude;
                             });
                           }),
                       spacer(),
@@ -96,10 +82,10 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text("$LONGITUDE: $_longitude",
+                          Text("$LONGITUDE: ${_bloc.longitude}",
                               style: GoogleFonts.poppins(fontSize: 14)),
                           const SizedBox(width: 12),
-                          Text("$LATITUDE: $_latitude",
+                          Text("$LATITUDE: ${_bloc.latitude}",
                               style: GoogleFonts.poppins(fontSize: 14)),
                         ],
                       ),
@@ -109,12 +95,12 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
                       buildTextField(_detailsController, "जप्ती मालाचे वर्णन"),
                       spacer(),
                       AttachButton(
-                        text: _photoName,
+                        text: _bloc.photoName,
                         onTap: () {
                           getFileFromDevice(context).then((pickedFile) {
                             setState(() {
-                              _photo = pickedFile;
-                              _photoName = getFileName(pickedFile!.path);
+                              _bloc.photo = pickedFile;
+                              _bloc.photoName = getFileName(pickedFile!.path);
                             });
                           });
                         },
@@ -137,13 +123,13 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
   _registerCollectionData(BuildContext context) {
     DateFormat _format = DateFormat("yyyy-MM-dd");
     CollectionData _collectionData = CollectionData(
-      type: _chosenValue!,
+      type: _bloc.chosenValue!,
       address: _addressController.text,
       date: _format.parse(_dateController.text),
       description: _detailsController.text,
-      latitude: _latitude,
-      longitude: _longitude,
-      photo: _photo?.path,
+      latitude: _bloc.latitude,
+      longitude: _bloc.longitude,
+      photo: _bloc.photo?.path,
     );
 
     BlocProvider.of<CollectRegisterBloc>(context)

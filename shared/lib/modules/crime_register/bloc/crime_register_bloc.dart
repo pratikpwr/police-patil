@@ -16,9 +16,7 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
   final _crimeRepository = CrimeRepository();
 
   @override
-  Stream<CrimeRegisterState> mapEventToState(
-    CrimeRegisterEvent event,
-  ) async* {
+  Stream<CrimeRegisterState> mapEventToState(CrimeRegisterEvent event,) async* {
     if (event is GetCrimeData) {
       yield* _mapGetCrimeDataState(event);
     }
@@ -27,13 +25,22 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
     }
   }
 
+  String? chosenValue;
+  final List<String> crimesTypes = [
+    "शरीरा विरुद्ध",
+    "माला विरुद्ध",
+    "महिलांविरुद्ध",
+    "अपघात",
+    "इतर अपराध"
+  ];
+
   Stream<CrimeRegisterState> _mapGetCrimeDataState(GetCrimeData event) async* {
     final sharedPrefs = await prefs;
     yield CrimeDataLoading();
     try {
       int? userId = sharedPrefs.getInt('userId');
       Response _response =
-          await _crimeRepository.getCrimeRegisterByPP(userId: userId!);
+      await _crimeRepository.getCrimeRegisterByPP(userId: userId!);
       if (_response.statusCode! < 400) {
         final _crimeResponse = CrimeResponse.fromJson(_response.data);
         yield CrimeDataLoaded(_crimeResponse);

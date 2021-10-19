@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -27,6 +28,47 @@ class MovementRegisterBloc
       yield* _mapAddMovementDataState(event);
     }
   }
+
+  String? movementValue;
+  String? movementSubValue;
+  var isIssue;
+  List<String>? movementSubRegTypes;
+
+  double longitude = 0.00;
+  double latitude = 0.00;
+
+  String photoName = "हालचालीचा फोटो जोडा";
+  File? photo;
+  final List<String> movementRegTypes = <String>[
+    "राजकीय हालचाली",
+    "धार्मिक हालचाली",
+    "जातीय हालचाली",
+    "सांस्कृतिक हालचाली"
+  ];
+  final List<String> politicalMovements = <String>[
+    "आंदोलने",
+    "सभा",
+    "निवडणुका",
+    "इतर"
+    // "राजकीय संघर्ष/वाद-विवाद"
+  ];
+  final List<String> religionMovements = <String>[
+    "यात्रा/उत्सव",
+    "घेण्यात येणारे कार्यक्रम",
+    "इतर"
+    // "धार्मिक प्रसंगी उद्भवणारे वाद-विवाद"
+  ];
+  final List<String> castMovements = <String>[
+    "कार्यक्रम",
+    "जातीय वाद-विवाद",
+    "जातीय आंदोलने",
+    "इतर"
+  ];
+  final List<String> culturalMovements = <String>[
+    "जयंती/पुण्यतिथी",
+    "सण/उत्सव",
+    "इतर सांस्कृतिक हालचाली"
+  ];
 
   Stream<MovementRegisterState> _mapGetMovementDataState(
       GetMovementData event) async* {
@@ -65,6 +107,20 @@ class MovementRegisterBloc
       }
     } catch (err) {
       yield MovementDataSendError(err.toString());
+    }
+  }
+
+  List<String> getSubList() {
+    if (movementValue == "राजकीय हालचाली") {
+      return politicalMovements;
+    } else if (movementValue == "धार्मिक हालचाली") {
+      return religionMovements;
+    } else if (movementValue == "जातीय हालचाली") {
+      return castMovements;
+    } else if (movementValue == "सांस्कृतिक हालचाली") {
+      return culturalMovements;
+    } else {
+      return ["अगोदर हालचाली प्रकार निवडा"];
     }
   }
 }

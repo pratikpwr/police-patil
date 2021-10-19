@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,55 +18,14 @@ class MovementRegFormScreen extends StatefulWidget {
 }
 
 class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
-  String? _movementValue;
-  String? _movementSubValue;
-  var _isIssue;
-  List<String>? _movementSubRegTypes;
-
+  final _bloc = MovementRegisterBloc();
   Position? _position;
-  double _longitude = 0.00;
-  double _latitude = 0.00;
-
-  String _photoName = "हालचालीचा फोटो जोडा";
-  File? _photo;
-
   final TextEditingController _countController = TextEditingController();
   final TextEditingController _leaderController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _otherController = TextEditingController();
-
-  final List<String> _movementRegTypes = <String>[
-    "राजकीय हालचाली",
-    "धार्मिक हालचाली",
-    "जातीय हालचाली",
-    "सांस्कृतिक हालचाली"
-  ];
-  final List<String> _politicalMovements = <String>[
-    "आंदोलने",
-    "सभा",
-    "निवडणुका",
-    "इतर"
-    // "राजकीय संघर्ष/वाद-विवाद"
-  ];
-  final List<String> _religionMovements = <String>[
-    "यात्रा/उत्सव",
-    "घेण्यात येणारे कार्यक्रम",
-    "इतर"
-    // "धार्मिक प्रसंगी उद्भवणारे वाद-विवाद"
-  ];
-  final List<String> _castMovements = <String>[
-    "कार्यक्रम",
-    "जातीय वाद-विवाद",
-    "जातीय आंदोलने",
-    "इतर"
-  ];
-  final List<String> _culturalMovements = <String>[
-    "जयंती/पुण्यतिथी",
-    "सण/उत्सव",
-    "इतर सांस्कृतिक हालचाली"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -98,25 +55,25 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
               children: [
                 spacer(),
                 buildDropButton(
-                    value: _movementValue,
-                    items: _movementRegTypes,
+                    value: _bloc.movementValue,
+                    items: _bloc.movementRegTypes,
                     hint: "हालचाली प्रकार निवडा",
                     onChanged: (String? value) {
                       setState(() {
-                        _movementValue = value;
-                        _movementSubRegTypes = _getSubList(_movementValue);
-                        _movementSubValue = null;
+                        _bloc.movementValue = value;
+                        _bloc.movementSubRegTypes = _bloc.getSubList();
+                        _bloc.movementSubValue = null;
                       });
                     }),
                 spacer(),
-                _movementValue != null
+                _bloc.movementValue != null
                     ? buildDropButton(
-                        value: _movementSubValue,
-                        items: _movementSubRegTypes!,
+                        value: _bloc.movementSubValue,
+                        items: _bloc.movementSubRegTypes!,
                         hint: "हालचाली उपप्रकार निवडा",
                         onChanged: (String? value) {
                           setState(() {
-                            _movementSubValue = value;
+                            _bloc.movementSubValue = value;
                           });
                         })
                     : spacer(height: 0),
@@ -129,8 +86,8 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                     onTap: () async {
                       _position = await determinePosition();
                       setState(() {
-                        _longitude = _position!.longitude;
-                        _latitude = _position!.latitude;
+                        _bloc.longitude = _position!.longitude;
+                        _bloc.latitude = _position!.latitude;
                       });
                     }),
                 spacer(),
@@ -138,10 +95,10 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("$LONGITUDE: $_longitude",
+                    Text("$LONGITUDE: ${_bloc.longitude}",
                         style: GoogleFonts.poppins(fontSize: 14)),
                     const SizedBox(width: 12),
-                    Text("$LATITUDE: $_latitude",
+                    Text("$LATITUDE: ${_bloc.latitude}",
                         style: GoogleFonts.poppins(fontSize: 14)),
                   ],
                 ),
@@ -163,10 +120,10 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                           children: [
                             Radio(
                                 value: YES,
-                                groupValue: _isIssue,
+                                groupValue: _bloc.isIssue,
                                 onChanged: (value) {
                                   setState(() {
-                                    _isIssue = value;
+                                    _bloc.isIssue = value;
                                   });
                                 }),
                             Text(
@@ -182,10 +139,10 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                           children: [
                             Radio(
                                 value: NO,
-                                groupValue: _isIssue,
+                                groupValue: _bloc.isIssue,
                                 onChanged: (value) {
                                   setState(() {
-                                    _isIssue = value;
+                                    _bloc.isIssue = value;
                                   });
                                 }),
                             Text(
@@ -210,12 +167,12 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                 ),
                 spacer(),
                 AttachButton(
-                  text: _photoName,
+                  text: _bloc.photoName,
                   onTap: () async {
                     getFileFromDevice(context).then((pickedFile) {
                       setState(() {
-                        _photo = pickedFile;
-                        _photoName = getFileName(pickedFile!.path);
+                        _bloc.photo = pickedFile;
+                        _bloc.photoName = getFileName(pickedFile!.path);
                       });
                     });
                   },
@@ -242,33 +199,19 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
               use date option according to it
     */
     MovementData _movementData = MovementData(
-        type: _movementValue,
-        subtype: _movementSubValue,
+        type: _bloc.movementValue,
+        subtype: _bloc.movementSubValue,
         address: _placeController.text,
-        latitude: _latitude,
-        longitude: _longitude,
+        latitude: _bloc.latitude,
+        longitude: _bloc.longitude,
         datetime:
             _format.parse(_dateController.text + " " + _timeController.text),
-        issue: _isIssue == YES ? true : false,
+        issue: _bloc.isIssue == YES ? true : false,
         attendance: int.parse(_countController.text),
         description: _otherController.text,
-        photo: _photo?.path);
+        photo: _bloc.photo?.path);
 
     BlocProvider.of<MovementRegisterBloc>(context)
         .add(AddMovementData(_movementData));
-  }
-
-  List<String> _getSubList(String? movementValue) {
-    if (movementValue == "राजकीय हालचाली") {
-      return _politicalMovements;
-    } else if (movementValue == "धार्मिक हालचाली") {
-      return _religionMovements;
-    } else if (movementValue == "जातीय हालचाली") {
-      return _castMovements;
-    } else if (movementValue == "सांस्कृतिक हालचाली") {
-      return _culturalMovements;
-    } else {
-      return ["अगोदर हालचाली प्रकार निवडा"];
-    }
   }
 }

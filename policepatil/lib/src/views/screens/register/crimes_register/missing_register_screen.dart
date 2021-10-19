@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:policepatil/src/views/widgets/attach_button.dart';
 import 'package:shared/shared.dart';
@@ -20,19 +18,9 @@ class MissingRegFormScreen extends StatefulWidget {
 }
 
 class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
-  var _isAbove18;
-  String? _gender;
-  final List<String> _genderTypes = <String>["पुरुष", "स्त्री", "इतर"];
-
   Position? _position;
-  double _longitude = 0.00;
-  double _latitude = 0.00;
 
-  File? _photoImage;
-  String _photoName = "फोटो जोडा";
-  File? _fileImage;
-  String _fileName = 'आधार कार्ड जोडा';
-  final picker = ImagePicker();
+  final _bloc = MissingRegisterBloc();
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -79,10 +67,10 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                         children: [
                           Radio(
                               value: YES,
-                              groupValue: _isAbove18,
+                              groupValue: _bloc.isAbove18,
                               onChanged: (value) {
                                 setState(() {
-                                  _isAbove18 = value;
+                                  _bloc.isAbove18 = value;
                                 });
                               }),
                           Text(
@@ -98,10 +86,10 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                         children: [
                           Radio(
                               value: NO,
-                              groupValue: _isAbove18,
+                              groupValue: _bloc.isAbove18,
                               onChanged: (value) {
                                 setState(() {
-                                  _isAbove18 = value;
+                                  _bloc.isAbove18 = value;
                                 });
                               }),
                           Text(
@@ -120,120 +108,36 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
               buildTextField(_ageController, AGE),
               spacer(),
               buildDropButton(
-                  value: _gender,
-                  items: _genderTypes,
+                  value: _bloc.gender,
+                  items: _bloc.genderTypes,
                   hint: "लिंग निवडा",
                   onChanged: (String? value) {
                     setState(() {
-                      _gender = value;
+                      _bloc.gender = value;
                     });
                   }),
               spacer(),
               AttachButton(
-                text: _fileName,
+                text: _bloc.fileName,
                 onTap: () async {
-                  await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                            'फोटो काढा अथवा गॅलरी मधून निवडा',
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () async {
-                                  final pickedImage = await picker.pickImage(
-                                      source: ImageSource.camera);
-                                  setState(() {
-                                    if (pickedImage != null) {
-                                      _fileName = pickedImage.name;
-                                      _fileImage = File(pickedImage.path);
-                                    } else {
-                                      debugPrint('No image selected.');
-                                    }
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'कॅमेरा',
-                                  style: GoogleFonts.poppins(fontSize: 14),
-                                )),
-                            TextButton(
-                                onPressed: () async {
-                                  final pickedImage = await picker.pickImage(
-                                      source: ImageSource.gallery);
-                                  setState(() {
-                                    if (pickedImage != null) {
-                                      _fileName = pickedImage.name;
-                                      _fileImage = File(pickedImage.path);
-                                    } else {
-                                      debugPrint('No image selected.');
-                                    }
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'गॅलरी',
-                                  style: GoogleFonts.poppins(fontSize: 14),
-                                ))
-                          ],
-                        );
-                      });
+                  getFileFromDevice(context).then((pickedFile) {
+                    setState(() {
+                      _bloc.file = pickedFile;
+                      _bloc.fileName = getFileName(pickedFile!.path);
+                    });
+                  });
                 },
               ),
               spacer(),
               AttachButton(
-                text: _photoName,
+                text: _bloc.photoName,
                 onTap: () async {
-                  await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text(
-                            'फोटो काढा अथवा गॅलरी मधून निवडा',
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                          actions: [
-                            TextButton(
-                                onPressed: () async {
-                                  final pickedImage = await picker.pickImage(
-                                      source: ImageSource.camera);
-                                  setState(() {
-                                    if (pickedImage != null) {
-                                      _photoName = pickedImage.name;
-                                      _photoImage = File(pickedImage.path);
-                                    } else {
-                                      debugPrint('No image selected.');
-                                    }
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'कॅमेरा',
-                                  style: GoogleFonts.poppins(fontSize: 14),
-                                )),
-                            TextButton(
-                                onPressed: () async {
-                                  final pickedImage = await picker.pickImage(
-                                      source: ImageSource.gallery);
-                                  setState(() {
-                                    if (pickedImage != null) {
-                                      _photoName = pickedImage.name;
-                                      _photoImage = File(pickedImage.path);
-                                    } else {
-                                      debugPrint('No image selected.');
-                                    }
-                                  });
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  'गॅलरी',
-                                  style: GoogleFonts.poppins(fontSize: 14),
-                                ))
-                          ],
-                        );
-                      });
+                  getFileFromDevice(context).then((pickedFile) {
+                    setState(() {
+                      _bloc.photo = pickedFile;
+                      _bloc.photoName = getFileName(pickedFile!.path);
+                    });
+                  });
                 },
               ),
               spacer(),
@@ -245,8 +149,8 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                   onTap: () async {
                     _position = await determinePosition();
                     setState(() {
-                      _longitude = _position!.longitude;
-                      _latitude = _position!.latitude;
+                      _bloc.longitude = _position!.longitude;
+                      _bloc.latitude = _position!.latitude;
                     });
                   }),
               spacer(),
@@ -254,10 +158,10 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text("$LONGITUDE: $_longitude",
+                  Text("$LONGITUDE: ${_bloc.longitude}",
                       style: GoogleFonts.poppins(fontSize: 14)),
                   const SizedBox(width: 12),
-                  Text("$LATITUDE: $_latitude",
+                  Text("$LATITUDE: ${_bloc.latitude}",
                       style: GoogleFonts.poppins(fontSize: 14)),
                 ],
               ),
@@ -281,15 +185,15 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
     DateFormat _format = DateFormat("yyyy-MM-dd");
 
     MissingData _missingData = MissingData(
-        isAdult: _isAbove18 == YES,
+        isAdult: _bloc.isAbove18 == YES,
         name: _nameController.text,
         age: int.parse(_ageController.text),
-        gender: _gender,
-        aadhar: _fileImage?.path,
-        photo: _photoImage?.path,
+        gender: _bloc.gender,
+        aadhar: _bloc.file?.path,
+        photo: _bloc.photo?.path,
         address: _addressController.text,
-        latitude: _latitude,
-        longitude: _longitude,
+        latitude: _bloc.latitude,
+        longitude: _bloc.longitude,
         missingDate: _format.parse(_dateController.text));
 
     BlocProvider.of<MissingRegisterBloc>(context)

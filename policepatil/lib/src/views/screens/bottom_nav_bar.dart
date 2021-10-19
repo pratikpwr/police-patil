@@ -44,7 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           type: BottomNavigationBarType.fixed,
           currentIndex: _selectedIndex,
           elevation: 5,
-          selectedItemColor: Colors.blue[500],
+          selectedItemColor: PRIMARY_COLOR,
           unselectedItemColor: Colors.grey[500],
           showSelectedLabels: true,
           backgroundColor: Colors.white,

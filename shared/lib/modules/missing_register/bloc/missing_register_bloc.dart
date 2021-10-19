@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -27,6 +28,18 @@ class MissingRegisterBloc
       yield* _mapAddMissingDataState(event);
     }
   }
+
+  var isAbove18;
+  String? gender;
+  final List<String> genderTypes = <String>["पुरुष", "स्त्री", "इतर"];
+
+  double longitude = 0.00;
+  double latitude = 0.00;
+
+  File? photo;
+  String photoName = "फोटो जोडा";
+  File? file;
+  String fileName = 'आधार कार्ड जोडा';
 
   Stream<MissingRegisterState> _mapGetMissingDataState(
       GetMissingData event) async* {

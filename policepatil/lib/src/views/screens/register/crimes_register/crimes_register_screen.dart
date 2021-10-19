@@ -16,18 +16,10 @@ class CrimeRegFormScreen extends StatefulWidget {
 }
 
 class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
-  String? _chosenValue;
+  final _bloc = CrimeRegisterBloc();
   final TextEditingController _noController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
-
-  final List<String> _crimesTypes = [
-    "शरीरा विरुद्ध",
-    "माला विरुद्ध",
-    "महिलांविरुद्ध",
-    "अपघात",
-    "इतर अपराध"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +49,12 @@ class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
             children: [
               spacer(),
               buildDropButton(
-                  value: _chosenValue,
-                  items: _crimesTypes,
+                  value: _bloc.chosenValue,
+                  items: _bloc.crimesTypes,
                   hint: "गुन्ह्याचा प्रकार निवडा",
                   onChanged: (String? value) {
                     setState(() {
-                      _chosenValue = value;
+                      _bloc.chosenValue = value;
                     });
                   }),
               spacer(),
@@ -87,7 +79,7 @@ class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
   _registerCrimeData() {
     DateFormat _format = DateFormat("yyyy-MM-dd HH:mm");
     CrimeData _crimeData = CrimeData(
-        type: _chosenValue,
+        type: _bloc.chosenValue,
         registerNumber: _noController.text,
         date: _format.parse(_dateController.text + " " + _timeController.text),
         time: _timeController.text);

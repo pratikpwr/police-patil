@@ -96,7 +96,7 @@ class DisasterDetailWidget extends StatelessWidget {
               disasterData.type!,
               style: GoogleFonts.poppins(
                   fontSize: 16,
-                  color: Colors.blue,
+                  color: PRIMARY_COLOR,
                   fontWeight: FontWeight.w500),
             ),
             Text(

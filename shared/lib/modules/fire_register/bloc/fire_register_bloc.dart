@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -16,9 +17,7 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
   final _fireRepository = FireRepository();
 
   @override
-  Stream<FireRegisterState> mapEventToState(
-    FireRegisterEvent event,
-  ) async* {
+  Stream<FireRegisterState> mapEventToState(FireRegisterEvent event,) async* {
     if (event is GetFireData) {
       yield* _mapGetFireDataState(event);
     }
@@ -27,13 +26,19 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
     }
   }
 
+  double longitude = 0.00;
+  double latitude = 0.00;
+
+  File? photo;
+  String photoName = "फोटो जोडा";
+
   Stream<FireRegisterState> _mapGetFireDataState(GetFireData event) async* {
     final sharedPrefs = await prefs;
     yield FireDataLoading();
     try {
       int? userId = sharedPrefs.getInt('userId');
       Response _response =
-          await _fireRepository.getFireRegisterByPP(userId: userId!);
+      await _fireRepository.getFireRegisterByPP(userId: userId!);
       if (_response.statusCode! < 400) {
         final _fireResponse = FireResponse.fromJson(_response.data);
         yield FireDataLoaded(_fireResponse);

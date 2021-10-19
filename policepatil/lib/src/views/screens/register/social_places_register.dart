@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 import '../../views.dart';
@@ -20,27 +18,8 @@ class SocialPlacesRegFormScreen extends StatefulWidget {
 }
 
 class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
-  String? _chosenValue;
-
+  final _bloc = PublicPlaceRegisterBloc();
   Position? _position;
-  double _longitude = 0.00;
-  double _latitude = 0.00;
-
-  File? _photoImage;
-  String _photoName = "फोटो जोडा";
-  final picker = ImagePicker();
-
-  final List<String> _socialPlaceTypes = <String>[
-    "रस्ता",
-    "पाणवठा",
-    "जमीन",
-    "पुतळा",
-    "धार्मिक स्थळ"
-  ];
-
-  var _isIssue;
-  var _isCCTV;
-  var _isCrimeReg;
 
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _reasonController = TextEditingController();
@@ -73,12 +52,12 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
           child: Column(children: [
             spacer(),
             buildDropButton(
-                value: _chosenValue,
-                items: _socialPlaceTypes,
+                value: _bloc.chosenValue,
+                items: _bloc.socialPlaceTypes,
                 hint: "सार्वजनिक महत्त्वाचे स्थळ निवडा",
                 onChanged: (String? value) {
                   setState(() {
-                    _chosenValue = value;
+                    _bloc.chosenValue = value;
                   });
                 }),
             spacer(),
@@ -90,8 +69,8 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
                 onTap: () async {
                   _position = await determinePosition();
                   setState(() {
-                    _longitude = _position!.longitude;
-                    _latitude = _position!.latitude;
+                    _bloc.longitude = _position!.longitude;
+                    _bloc.latitude = _position!.latitude;
                   });
                 }),
             spacer(),
@@ -99,65 +78,23 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("$LONGITUDE: $_longitude",
+                Text("$LONGITUDE: ${_bloc.longitude}",
                     style: GoogleFonts.poppins(fontSize: 14)),
                 const SizedBox(width: 12),
-                Text("$LATITUDE: $_latitude",
+                Text("$LATITUDE: ${_bloc.latitude}",
                     style: GoogleFonts.poppins(fontSize: 14)),
               ],
             ),
             spacer(),
             AttachButton(
-              text: _photoName,
+              text: _bloc.photoName,
               onTap: () async {
-                await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text(
-                          'फोटो काढा अथवा गॅलरी मधून निवडा',
-                          style: GoogleFonts.poppins(fontSize: 14),
-                        ),
-                        actions: [
-                          TextButton(
-                              onPressed: () async {
-                                final pickedImage = await picker.pickImage(
-                                    source: ImageSource.camera);
-                                setState(() {
-                                  if (pickedImage != null) {
-                                    _photoName = pickedImage.name;
-                                    _photoImage = File(pickedImage.path);
-                                  } else {
-                                    debugPrint('No image selected.');
-                                  }
-                                });
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'कॅमेरा',
-                                style: GoogleFonts.poppins(fontSize: 14),
-                              )),
-                          TextButton(
-                              onPressed: () async {
-                                final pickedImage = await picker.pickImage(
-                                    source: ImageSource.gallery);
-                                setState(() {
-                                  if (pickedImage != null) {
-                                    _photoName = pickedImage.name;
-                                    _photoImage = File(pickedImage.path);
-                                  } else {
-                                    debugPrint('No image selected.');
-                                  }
-                                });
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                'गॅलरी',
-                                style: GoogleFonts.poppins(fontSize: 14),
-                              ))
-                        ],
-                      );
-                    });
+                getFileFromDevice(context).then((pickedFile) {
+                  setState(() {
+                    _bloc.photo = pickedFile;
+                    _bloc.photoName = getFileName(pickedFile!.path);
+                  });
+                });
               },
             ),
             spacer(),
@@ -174,10 +111,10 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
                       children: [
                         Radio(
                             value: YES,
-                            groupValue: _isCCTV,
+                            groupValue: _bloc.isCCTV,
                             onChanged: (value) {
                               setState(() {
-                                _isCCTV = value;
+                                _bloc.isCCTV = value;
                               });
                             }),
                         Text(
@@ -193,10 +130,10 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
                       children: [
                         Radio(
                             value: NO,
-                            groupValue: _isCCTV,
+                            groupValue: _bloc.isCCTV,
                             onChanged: (value) {
                               setState(() {
-                                _isCCTV = value;
+                                _bloc.isCCTV = value;
                               });
                             }),
                         Text(
@@ -223,10 +160,10 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
                       children: [
                         Radio(
                             value: YES,
-                            groupValue: _isIssue,
+                            groupValue: _bloc.isIssue,
                             onChanged: (value) {
                               setState(() {
-                                _isIssue = value;
+                                _bloc.isIssue = value;
                               });
                             }),
                         Text(
@@ -242,10 +179,10 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
                       children: [
                         Radio(
                             value: NO,
-                            groupValue: _isIssue,
+                            groupValue: _bloc.isIssue,
                             onChanged: (value) {
                               setState(() {
-                                _isIssue = value;
+                                _bloc.isIssue = value;
                               });
                             }),
                         Text(
@@ -259,7 +196,7 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
               ],
             ),
             spacer(),
-            _isIssue == YES
+            _bloc.isIssue == YES
                 ? Column(
                     children: [
                       buildTextField(_reasonController, "वादाचे कारण"),
@@ -279,10 +216,10 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
                                 children: [
                                   Radio(
                                       value: YES,
-                                      groupValue: _isCrimeReg,
+                                      groupValue: _bloc.isCrimeReg,
                                       onChanged: (value) {
                                         setState(() {
-                                          _isCrimeReg = value;
+                                          _bloc.isCrimeReg = value;
                                         });
                                       }),
                                   Text(
@@ -298,10 +235,10 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
                                 children: [
                                   Radio(
                                       value: NO,
-                                      groupValue: _isCrimeReg,
+                                      groupValue: _bloc.isCrimeReg,
                                       onChanged: (value) {
                                         setState(() {
-                                          _isCrimeReg = value;
+                                          _bloc.isCrimeReg = value;
                                         });
                                       }),
                                   Text(
@@ -331,16 +268,16 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
 
   _registerPlaceData() {
     PlaceData _placeData = PlaceData(
-        place: _chosenValue,
+        place: _bloc.chosenValue,
         address: _placeController.text,
-        latitude: _latitude,
-        longitude: _longitude,
-        photo: _photoImage?.path,
-        isCCTV: _isCCTV == YES ? true : false,
-        isIssue: _isIssue == YES ? true : false,
+        latitude: _bloc.latitude,
+        longitude: _bloc.longitude,
+        photo: _bloc.photo?.path,
+        isCCTV: _bloc.isCCTV == YES ? true : false,
+        isIssue: _bloc.isIssue == YES ? true : false,
         issueReason: _reasonController.text,
         issueCondition: _situationController.text,
-        isCrimeRegistered: _isCrimeReg == YES ? true : false);
+        isCrimeRegistered: _bloc.isCrimeReg == YES ? true : false);
 
     BlocProvider.of<PublicPlaceRegisterBloc>(context)
         .add(AddPublicPlaceData(_placeData));

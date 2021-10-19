@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -16,9 +17,7 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
   final _deathRepository = DeathRepository();
 
   @override
-  Stream<DeathRegisterState> mapEventToState(
-    DeathRegisterEvent event,
-  ) async* {
+  Stream<DeathRegisterState> mapEventToState(DeathRegisterEvent event,) async* {
     if (event is GetDeathData) {
       yield* _mapGetDeathDataState(event);
     }
@@ -27,13 +26,23 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
     }
   }
 
+  var isIdentified;
+  String? gender;
+  final List<String> genderTypes = <String>["पुरुष", "स्त्री", "इतर"];
+
+  double longitude = 0.00;
+  double latitude = 0.00;
+
+  File? photo;
+  String photoName = "फोटो जोडा";
+
   Stream<DeathRegisterState> _mapGetDeathDataState(GetDeathData event) async* {
     final sharedPrefs = await prefs;
     yield DeathDataLoading();
     try {
       int? userId = sharedPrefs.getInt('userId');
       Response _response =
-          await _deathRepository.getDeathRegisterByPP(userId: userId!);
+      await _deathRepository.getDeathRegisterByPP(userId: userId!);
       if (_response.statusCode! < 400) {
         final _deathResponse = DeathResponse.fromJson(_response.data);
         yield DeathDataLoaded(_deathResponse);

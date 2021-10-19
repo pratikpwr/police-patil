@@ -27,7 +27,7 @@ class LogoWidget extends StatelessWidget {
         ),
         spacer(height: 4),
         Text(
-          "पुणे ग्रा. पो. उपक्रम",
+          "पुणे ग्रामीण पोलीस उपक्रम",
           style: GoogleFonts.poppins(fontSize: 12, color: TEXT_COLOR),
         )
       ],

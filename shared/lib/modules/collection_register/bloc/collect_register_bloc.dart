@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -27,6 +28,20 @@ class CollectRegisterBloc
       yield* _mapAddCollectionDataState(event);
     }
   }
+
+  String? chosenValue;
+
+  final List<String> collectionType = <String>[
+    "बेवारस वाहने",
+    "दागिने",
+    "गौण खनिज",
+    "इतर"
+  ];
+
+  String photoName = "फोटो जोडा";
+  File? photo;
+  double longitude = 0.00;
+  double latitude = 0.00;
 
   Stream<CollectRegisterState> _mapGetCollectionDataState(
       GetCollectionData event) async* {

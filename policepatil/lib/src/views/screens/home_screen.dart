@@ -55,8 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
               spacer(),
               RegistersButton(
-                  text: NONDA,
-                  imageUrl: ImageConstants.IMG_NOTEBOOK,
+                  text: MANDHAN,
+                  imageUrl: ImageConstants.IMG_MONEY,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
                       return const MandhanScreen();
