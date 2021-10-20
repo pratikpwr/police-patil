@@ -16,11 +16,7 @@ class CrimesScreen extends StatelessWidget {
     BlocProvider.of<CrimeRegisterBloc>(context).add(GetCrimeData());
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          CRIMES,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(CRIMES),
       ),
       body: BlocListener<CrimeRegisterBloc, CrimeRegisterState>(
         listener: (context, state) {
@@ -32,7 +28,7 @@ class CrimesScreen extends StatelessWidget {
         child: BlocBuilder<CrimeRegisterBloc, CrimeRegisterState>(
           builder: (context, state) {
             if (state is CrimeDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is CrimeDataLoaded) {
               if (state.crimeResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -88,7 +84,7 @@ class CrimeDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

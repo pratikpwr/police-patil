@@ -25,11 +25,7 @@ class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          CRIMES,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(CRIMES),
       ),
       body: BlocListener<CrimeRegisterBloc, CrimeRegisterState>(
         listener: (context, state) {

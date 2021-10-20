@@ -30,11 +30,7 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          COLLECTION_REGISTER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(COLLECTION_REGISTER),
       ),
       body: BlocListener<CollectRegisterBloc, CollectRegisterState>(
         listener: (context, state) {

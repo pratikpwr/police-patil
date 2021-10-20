@@ -30,11 +30,7 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          WATCH_REGISTER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(WATCH_REGISTER),
       ),
       body: BlocListener<WatchRegisterBloc, WatchRegisterState>(
         listener: (context, state) {

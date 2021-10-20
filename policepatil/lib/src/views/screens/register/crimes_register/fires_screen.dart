@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
@@ -16,13 +15,7 @@ class FiresScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<FireRegisterBloc>(context).add(GetFireData());
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          BURNS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: AppBar(title: const Text(BURNS)),
       body: BlocListener<FireRegisterBloc, FireRegisterState>(
         listener: (context, state) {
           if (state is FireLoadError) {
@@ -32,7 +25,7 @@ class FiresScreen extends StatelessWidget {
         child: BlocBuilder<FireRegisterBloc, FireRegisterState>(
           builder: (context, state) {
             if (state is FireDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is FireDataLoaded) {
               if (state.fireResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -89,7 +82,7 @@ class FireDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

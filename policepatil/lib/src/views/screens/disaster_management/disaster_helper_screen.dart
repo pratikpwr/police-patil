@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 import '../../views.dart';
@@ -14,13 +14,7 @@ class DisasterManageHelperScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<DisasterHelperBloc>(context).add(GetHelperData());
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          DISASTER_HELPER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: AppBar(title: const Text(DISASTER_HELPER)),
       body: BlocListener<DisasterHelperBloc, DisasterHelperState>(
         listener: (context, state) {
           if (state is HelperLoadError) {
@@ -31,7 +25,7 @@ class DisasterManageHelperScreen extends StatelessWidget {
         child: BlocBuilder<DisasterHelperBloc, DisasterHelperState>(
           builder: (context, state) {
             if (state is HelperDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is HelperDataLoaded) {
               if (state.helperResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -87,25 +81,22 @@ class HelperDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               helperData.skill!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: PRIMARY_COLOR,
-                  fontWeight: FontWeight.w500),
+              style: Styles.primaryTextStyle(),
             ),
             const Divider(),
             Text(
               helperData.name!,
-              style: GoogleFonts.poppins(fontSize: 14),
+              style: Styles.subTitleTextStyle(),
             ),
             Text(
               helperData.mobile!.toString(),
-              style: GoogleFonts.poppins(fontSize: 15),
+              style: Styles.subTitleTextStyle(),
             ),
           ],
         ),

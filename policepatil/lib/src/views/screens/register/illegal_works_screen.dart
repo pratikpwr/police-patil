@@ -17,11 +17,7 @@ class IllegalScreen extends StatelessWidget {
     BlocProvider.of<IllegalRegisterBloc>(context).add(GetIllegalData());
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          ILLEGAL_WORKS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(ILLEGAL_WORKS),
       ),
       body: BlocListener<IllegalRegisterBloc, IllegalRegisterState>(
         listener: (context, state) {
@@ -32,7 +28,7 @@ class IllegalScreen extends StatelessWidget {
         child: BlocBuilder<IllegalRegisterBloc, IllegalRegisterState>(
           builder: (context, state) {
             if (state is IllegalDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is IllegalDataLoaded) {
               if (state.illegalResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -90,7 +86,7 @@ class IllegalDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
@@ -32,11 +28,7 @@ class _FireRegFormScreenState extends State<FireRegFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          BURNS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(BURNS),
       ),
       body: BlocListener<FireRegisterBloc, FireRegisterState>(
         listener: (context, state) {
@@ -73,9 +65,9 @@ class _FireRegFormScreenState extends State<FireRegFormScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text("$LONGITUDE: ${_bloc.longitude}",
-                      style: GoogleFonts.poppins(fontSize: 14)),
+                      style: Styles.subTitleTextStyle()),
                   Text("$LATITUDE: ${_bloc.latitude}",
-                      style: GoogleFonts.poppins(fontSize: 14)),
+                      style: Styles.subTitleTextStyle()),
                 ],
               ),
               spacer(),

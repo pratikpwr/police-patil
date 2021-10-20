@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
@@ -15,26 +14,7 @@ class DisasterRegFormScreen extends StatefulWidget {
 }
 
 class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
-  String? _chosenType;
-  String? _chosenSubType;
-  final _disasterTypes = ["नैसर्गिक", "मानवनिर्मित"];
-  List<String>? _subTypes;
-  final _naturalTypes = [
-    "दरड",
-    "पूर",
-    "दुष्काळ",
-    "भुकंप",
-    "विज",
-    "वणवा",
-    "इतर",
-  ];
-  final _manMadeTypes = [
-    "विस्फोट",
-    "आग",
-    "मोठे अपघात",
-    "इतर",
-  ];
-
+  final _bloc = DisasterRegisterBloc();
   final TextEditingController _casualityController = TextEditingController();
   final TextEditingController _levelController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
@@ -42,13 +22,7 @@ class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          REGISTER_DISASTER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: AppBar(title: const Text(REGISTER_DISASTER)),
       body: BlocListener<DisasterRegisterBloc, DisasterRegisterState>(
         listener: (context, state) {
           if (state is DisasterDataSendError) {
@@ -67,25 +41,25 @@ class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
               children: [
                 spacer(),
                 buildDropButton(
-                    value: _chosenType,
-                    items: _disasterTypes,
+                    value: _bloc.chosenType,
+                    items: _bloc.disasterTypes,
                     hint: "आपत्ती प्रकार निवडा",
                     onChanged: (String? value) {
                       setState(() {
-                        _chosenType = value;
-                        _subTypes = _getSubType(value!);
-                        _chosenSubType = null;
+                        _bloc.chosenType = value;
+                        _bloc.subTypes = _bloc.getSubType();
+                        _bloc.chosenSubType = null;
                       });
                     }),
                 spacer(),
-                _chosenType != null
+                _bloc.chosenType != null
                     ? buildDropButton(
-                        value: _chosenSubType,
-                        items: _subTypes!,
+                        value: _bloc.chosenSubType,
+                        items: _bloc.subTypes!,
                         hint: "आपत्ती उपप्रकार निवडा",
                         onChanged: (String? value) {
                           setState(() {
-                            _chosenSubType = value;
+                            _bloc.chosenSubType = value;
                           });
                         })
                     : spacer(height: 0),
@@ -113,23 +87,13 @@ class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
     DateFormat _format = DateFormat("yyyy-MM-dd");
 
     DisasterData _disasterData = DisasterData(
-        type: _chosenType,
-        subtype: _chosenSubType,
+        type: _bloc.chosenType,
+        subtype: _bloc.chosenSubType,
         date: _format.parse(_dateController.text),
         casuality: int.parse(_casualityController.text),
         level: _levelController.text);
 
     BlocProvider.of<DisasterRegisterBloc>(context)
         .add(AddDisasterData(_disasterData));
-  }
-
-  List<String> _getSubType(String mainType) {
-    if (mainType == "नैसर्गिक") {
-      return _naturalTypes;
-    } else if (mainType == "मानवनिर्मित") {
-      return _manMadeTypes;
-    } else {
-      return ["अगोदर प्रकार निवडा"];
-    }
   }
 }

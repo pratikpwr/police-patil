@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 import '../../views.dart';
@@ -14,13 +14,7 @@ class DisasterRegScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<DisasterRegisterBloc>(context).add(GetDisasterData());
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          REGISTER_DISASTER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: AppBar(title: const Text(REGISTER_DISASTER)),
       body: BlocListener<DisasterRegisterBloc, DisasterRegisterState>(
         listener: (context, state) {
           if (state is DisasterLoadError) {
@@ -31,7 +25,7 @@ class DisasterRegScreen extends StatelessWidget {
         child: BlocBuilder<DisasterRegisterBloc, DisasterRegisterState>(
           builder: (context, state) {
             if (state is DisasterDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is DisasterDataLoaded) {
               if (state.disasterResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -88,25 +82,22 @@ class DisasterDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               disasterData.type!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: PRIMARY_COLOR,
-                  fontWeight: FontWeight.w500),
+              style: Styles.primaryTextStyle(),
             ),
             Text(
               disasterData.subtype!,
-              style: GoogleFonts.poppins(fontSize: 15),
+              style: Styles.subTitleTextStyle(),
             ),
             const Divider(),
             Text(
               disasterData.date!.toIso8601String().substring(0, 10),
-              style: GoogleFonts.poppins(fontSize: 14),
+              style: Styles.subTitleTextStyle(),
             ),
           ],
         ),

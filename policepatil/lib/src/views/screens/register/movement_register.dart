@@ -31,11 +31,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          MOVEMENT_REGISTER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(MOVEMENT_REGISTER),
       ),
       body: BlocListener<MovementRegisterBloc, MovementRegisterState>(
         listener: (context, state) {

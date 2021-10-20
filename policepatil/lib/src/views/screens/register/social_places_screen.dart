@@ -17,11 +17,7 @@ class SocialPlaceScreen extends StatelessWidget {
     BlocProvider.of<PublicPlaceRegisterBloc>(context).add(GetPublicPlaceData());
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          SOCIAL_PLACES,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(SOCIAL_PLACES),
       ),
       body: BlocListener<PublicPlaceRegisterBloc, PublicPlaceRegisterState>(
         listener: (context, state) {
@@ -91,7 +87,7 @@ class PlaceDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -27,11 +27,7 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          ILLEGAL_WORKS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(ILLEGAL_WORKS),
       ),
       body: BlocListener<IllegalRegisterBloc, IllegalRegisterState>(
           listener: (context, state) {

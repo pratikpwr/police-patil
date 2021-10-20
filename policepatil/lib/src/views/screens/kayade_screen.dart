@@ -46,7 +46,7 @@ class KayadeScreen extends StatelessWidget {
                                 style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 12, horizontal: 16),
-                                    primary: GREY_BACKGROUND_COLOR,
+                                    primary: CONTAINER_BACKGROUND_COLOR,
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10))),

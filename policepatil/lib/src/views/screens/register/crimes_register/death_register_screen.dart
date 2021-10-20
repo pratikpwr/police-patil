@@ -31,11 +31,7 @@ class _DeathRegFormScreenState extends State<DeathRegFormScreen> {
     _ageController.text = "0";
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          DEATHS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(DEATHS),
       ),
       body: BlocListener<DeathRegisterBloc, DeathRegisterState>(
         listener: (context, state) {

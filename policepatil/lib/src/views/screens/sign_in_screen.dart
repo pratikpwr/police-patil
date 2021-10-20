@@ -107,10 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                   spacer(),
                                   state is AuthenticationLoading
-                                      ? const CircularProgressIndicator(
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  ORANGE))
+                                      ? const Loading()
                                       : ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                               padding:

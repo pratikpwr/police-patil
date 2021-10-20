@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
@@ -30,13 +29,7 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          MISSING,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: AppBar(title: const Text(MISSING)),
       body: BlocListener<MissingRegisterBloc, MissingRegisterState>(
         listener: (context, state) {
           if (state is MissingDataSendError) {
@@ -59,7 +52,7 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                 children: [
                   Text(
                     "१८ वर्षावरील आहे का ?",
-                    style: GoogleFonts.poppins(fontSize: 14),
+                    style: Styles.subTitleTextStyle(),
                   ),
                   Row(
                     children: [
@@ -75,7 +68,7 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                               }),
                           Text(
                             YES,
-                            style: GoogleFonts.poppins(fontSize: 14),
+                            style: Styles.subTitleTextStyle(),
                           ),
                         ],
                       ),
@@ -94,7 +87,7 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                               }),
                           Text(
                             NO,
-                            style: GoogleFonts.poppins(fontSize: 14),
+                            style: Styles.subTitleTextStyle(),
                           ),
                         ],
                       )
@@ -159,10 +152,10 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text("$LONGITUDE: ${_bloc.longitude}",
-                      style: GoogleFonts.poppins(fontSize: 14)),
+                      style: Styles.subTitleTextStyle()),
                   const SizedBox(width: 12),
                   Text("$LATITUDE: ${_bloc.latitude}",
-                      style: GoogleFonts.poppins(fontSize: 14)),
+                      style: Styles.subTitleTextStyle()),
                 ],
               ),
               spacer(),

@@ -11,11 +11,7 @@ class CrimesRegMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          CRIMES_REGISTER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(CRIMES_REGISTER),
       ),
       body: SafeArea(
         child: ListView(

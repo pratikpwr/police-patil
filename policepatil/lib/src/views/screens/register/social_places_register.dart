@@ -29,11 +29,7 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          SOCIAL_PLACES,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(SOCIAL_PLACES),
       ),
       body: BlocListener<PublicPlaceRegisterBloc, PublicPlaceRegisterState>(
         listener: (context, state) {

@@ -31,6 +31,20 @@ class Styles {
     );
   }
 
+  static TextStyle textButtonTextStyle({
+    Color color = PRIMARY_COLOR,
+    FontWeight fontWeight = FontWeight.w500,
+    double fontSize = 16,
+    FontStyle fontStyle = FontStyle.normal,
+  }) {
+    return GoogleFonts.poppins(
+      fontSize: fontSize,
+      color: color,
+      fontWeight: fontWeight,
+      fontStyle: fontStyle,
+    );
+  }
+
   static TextStyle titleTextStyle({
     Color color = TEXT_COLOR_TITLE,
     FontWeight fontWeight = FontWeight.w500,

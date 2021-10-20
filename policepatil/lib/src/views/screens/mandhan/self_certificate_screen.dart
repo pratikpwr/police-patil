@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -12,12 +11,7 @@ class SelfCertificateScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        "हजेरीबाबतचे स्वयंघोषणापत्र",
-        style: GoogleFonts.poppins(
-            color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-      )),
+      appBar: AppBar(title: const Text("हजेरीबाबतचे स्वयंघोषणापत्र")),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

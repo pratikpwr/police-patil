@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 import '../../views.dart';
@@ -14,13 +14,7 @@ class DisasterManageToolsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<DisasterToolsBloc>(context).add(GetToolsData());
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          DISASTER_TOOLS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: AppBar(title: const Text(DISASTER_TOOLS)),
       body: BlocListener<DisasterToolsBloc, DisasterToolsState>(
         listener: (context, state) {
           if (state is ToolsLoadError) {
@@ -31,7 +25,7 @@ class DisasterManageToolsScreen extends StatelessWidget {
         child: BlocBuilder<DisasterToolsBloc, DisasterToolsState>(
           builder: (context, state) {
             if (state is ToolsDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is ToolsDataLoaded) {
               if (state.toolsResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -87,21 +81,18 @@ class ToolsDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               helperData.name!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16,
-                  color: PRIMARY_COLOR,
-                  fontWeight: FontWeight.w500),
+              style: Styles.primaryTextStyle(),
             ),
             const Divider(),
             Text(
               helperData.quantity!.toString(),
-              style: GoogleFonts.poppins(fontSize: 15),
+              style: Styles.subTitleTextStyle(),
             ),
           ],
         ),

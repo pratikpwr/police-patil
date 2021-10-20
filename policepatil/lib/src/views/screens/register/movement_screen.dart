@@ -17,11 +17,7 @@ class MovementScreen extends StatelessWidget {
     BlocProvider.of<MovementRegisterBloc>(context).add(GetMovementData());
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          MOVEMENT_REGISTER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(MOVEMENT_REGISTER),
       ),
       body: BlocListener<MovementRegisterBloc, MovementRegisterState>(
         listener: (context, state) {
@@ -43,13 +39,13 @@ class MovementScreen extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       child: ListView.builder(
                           itemCount:
-                          state.movementResponse.movementData!.length,
+                              state.movementResponse.movementData!.length,
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return MovementDetailWidget(
                               movementData:
-                              state.movementResponse.movementData![index],
+                                  state.movementResponse.movementData![index],
                             );
                           })),
                 );
@@ -93,7 +89,7 @@ class MovementDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

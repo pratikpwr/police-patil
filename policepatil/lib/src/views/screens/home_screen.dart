@@ -24,16 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            POLICE_PATIL_APP,
-            style: GoogleFonts.poppins(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-          ),
-          centerTitle: true,
+          title: const Text(POLICE_PATIL_APP),
           automaticallyImplyLeading: false,
-          // actions: [
-          //   IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
-          // ],
         ),
         body: SafeArea(
             child: SingleChildScrollView(

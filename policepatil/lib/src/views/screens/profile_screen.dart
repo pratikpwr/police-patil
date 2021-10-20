@@ -19,17 +19,16 @@ class ProfileScreen extends StatelessWidget {
       onWillPop: () async => false,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            PROFILE,
-            style: Styles.appBarTextStyle(),
-          ),
+          title: const Text(PROFILE),
           automaticallyImplyLeading: false,
           actions: [
             IconButton(
                 onPressed: () {
                   _logout(context);
                 },
-                icon: const Icon(Icons.logout))
+                icon: const Icon(
+                  Icons.logout,
+                ))
           ],
         ),
         body: BlocListener<ProfileBloc, ProfileState>(
@@ -143,7 +142,7 @@ class ProfileScreen extends StatelessWidget {
           return AlertDialog(
             title: Text(
               "लॉग आऊट करायचे ?",
-              style: GoogleFonts.poppins(fontSize: 15),
+              style: Styles.titleTextStyle(),
             ),
             actions: [
               TextButton(
@@ -154,7 +153,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                   child: Text(
                     YES,
-                    style: GoogleFonts.poppins(fontSize: 15),
+                    style: Styles.textButtonTextStyle(),
                   )),
               TextButton(
                   onPressed: () {
@@ -162,7 +161,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                   child: Text(
                     NO,
-                    style: GoogleFonts.poppins(fontSize: 15),
+                    style: Styles.textButtonTextStyle(),
                   ))
             ],
           );

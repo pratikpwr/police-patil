@@ -32,10 +32,7 @@ class AttachButton extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontSize: 14),
             ),
-            Icon(
-              icon ?? Icons.upload_rounded,
-              size: 28,
-            )
+            Icon(icon ?? Icons.upload_rounded, size: 28, color: PRIMARY_COLOR)
           ],
         ));
   }

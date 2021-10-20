@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 
@@ -20,12 +19,7 @@ class _MeetingsScreenState extends State<MeetingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-        "पो. पाटील बैठक",
-        style: GoogleFonts.poppins(
-            color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-      )),
+      appBar: AppBar(title: const Text("पो. पाटील बैठक")),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

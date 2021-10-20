@@ -28,6 +28,26 @@ class DisasterRegisterBloc
     }
   }
 
+  String? chosenType;
+  String? chosenSubType;
+  final disasterTypes = ["नैसर्गिक", "मानवनिर्मित"];
+  List<String>? subTypes;
+  final naturalTypes = [
+    "दरड",
+    "पूर",
+    "दुष्काळ",
+    "भुकंप",
+    "विज",
+    "वणवा",
+    "इतर",
+  ];
+  final manMadeTypes = [
+    "विस्फोट",
+    "आग",
+    "मोठे अपघात",
+    "इतर",
+  ];
+
   Stream<DisasterRegisterState> _mapGetDisasterDataState(
       GetDisasterData event) async* {
     final sharedPrefs = await SharedPreferences.getInstance();
@@ -65,6 +85,16 @@ class DisasterRegisterBloc
       }
     } catch (err) {
       yield DisasterDataSendError(err.toString());
+    }
+  }
+
+  List<String> getSubType() {
+    if (chosenType == "नैसर्गिक") {
+      return naturalTypes;
+    } else if (chosenType == "मानवनिर्मित") {
+      return manMadeTypes;
+    } else {
+      return ["अगोदर प्रकार निवडा"];
     }
   }
 }

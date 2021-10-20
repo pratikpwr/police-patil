@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 
@@ -8,17 +7,10 @@ import '../../views.dart';
 class MandhanScreen extends StatelessWidget {
   const MandhanScreen({Key? key}) : super(key: key);
 
-  // TODO : Attendance feature
-  // TODO : Meet Register
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(
-            MANDHAN,
-        style: GoogleFonts.poppins(
-            color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-      )),
+      appBar: AppBar(title: const Text(MANDHAN)),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

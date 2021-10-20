@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:shared/shared.dart';
@@ -22,13 +21,7 @@ class _DisasterToolsRegisterFormState extends State<DisasterToolsRegisterForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          DISASTER_TOOLS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: AppBar(title: const Text(DISASTER_TOOLS)),
       body: BlocListener<DisasterToolsBloc, DisasterToolsState>(
         listener: (context, state) {
           if (state is ToolsDataSendError) {

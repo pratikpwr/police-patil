@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
@@ -17,11 +16,7 @@ class CollectionScreen extends StatelessWidget {
     BlocProvider.of<CollectRegisterBloc>(context).add(GetCollectionData());
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          COLLECTION_REGISTER,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(COLLECTION_REGISTER),
       ),
       body: BlocListener<CollectRegisterBloc, CollectRegisterState>(
         listener: (context, state) {
@@ -44,13 +39,13 @@ class CollectionScreen extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       child: ListView.builder(
                           itemCount:
-                          state.collectionResponse.collectData!.length,
+                              state.collectionResponse.collectData!.length,
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return CollectionDetailWidget(
                               collect:
-                              state.collectionResponse.collectData![index],
+                                  state.collectionResponse.collectData![index],
                             );
                           })),
                 );
@@ -94,7 +89,7 @@ class CollectionDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

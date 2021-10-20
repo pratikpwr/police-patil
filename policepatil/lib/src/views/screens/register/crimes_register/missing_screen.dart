@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
@@ -16,13 +15,7 @@ class MissingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<MissingRegisterBloc>(context).add(GetMissingData());
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          MISSING,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-      ),
+      appBar: AppBar(title: const Text(MISSING)),
       body: BlocListener<MissingRegisterBloc, MissingRegisterState>(
         listener: (context, state) {
           if (state is MissingLoadError) {
@@ -90,7 +83,7 @@ class MissingDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

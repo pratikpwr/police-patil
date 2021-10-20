@@ -17,11 +17,7 @@ class ArmsScreen extends StatelessWidget {
     BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          ARMS_COLLECTIONS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(ARMS_COLLECTIONS),
       ),
       body: BlocListener<ArmsRegisterBloc, ArmsRegisterState>(
         listener: (context, state) {
@@ -69,7 +65,7 @@ class ArmsScreen extends StatelessWidget {
             BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
           });
         },
-        child: const Icon(Icons.add, size: 24),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -90,7 +86,7 @@ class ArmsDetailWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: GREY_BACKGROUND_COLOR),
+            color: CONTAINER_BACKGROUND_COLOR),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

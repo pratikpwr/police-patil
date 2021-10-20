@@ -36,11 +36,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          ARMS_COLLECTIONS,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
-        ),
+        title: const Text(ARMS_COLLECTIONS),
       ),
       body: BlocListener<ArmsRegisterBloc, ArmsRegisterState>(
           listener: (context, state) {
@@ -105,16 +101,16 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text("$LONGITUDE: $_bloc.longitude",
+                              Text("$LONGITUDE: ${_bloc.longitude}",
                                   style: GoogleFonts.poppins(fontSize: 14)),
                               const SizedBox(width: 12),
-                              Text("$LATITUDE: $_bloc.latitude",
+                              Text("$LATITUDE: ${_bloc.latitude}",
                                   style: GoogleFonts.poppins(fontSize: 14)),
                             ],
                           ),
                         ],
                       ),
-                    spacer(),
+                    spacer(height: 8),
                     if (_bloc.armsValue == "शस्त्र परवानाधारक")
                       buildTextField(_uIDController, "युआईडी क्रमांक"),
                     spacer(),

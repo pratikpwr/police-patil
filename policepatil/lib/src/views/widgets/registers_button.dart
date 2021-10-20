@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/utils.dart';
 
 class RegistersButton extends StatelessWidget {
   final String text;
@@ -18,7 +19,7 @@ class RegistersButton extends StatelessWidget {
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
-              primary: GREY_BACKGROUND_COLOR,
+              primary: CONTAINER_BACKGROUND_COLOR,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15))),
           onPressed: onTap,
@@ -27,8 +28,8 @@ class RegistersButton extends StatelessWidget {
             children: [
               Image.asset(
                 imageUrl!,
-                height: 55,
-                width: 55,
+                height: 50,
+                width: 50,
                 fit: BoxFit.cover,
               ),
               const SizedBox(
@@ -36,10 +37,8 @@ class RegistersButton extends StatelessWidget {
               ),
               Text(
                 text,
-                style: GoogleFonts.poppins(
-                    color: PRIMARY_COLOR,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600),
+                style:
+                    Styles.appBarTextStyle(color: REGISTER_BUTTON_TEXT_COLOR),
               ),
             ],
           )),
