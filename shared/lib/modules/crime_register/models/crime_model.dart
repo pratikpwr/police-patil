@@ -68,10 +68,7 @@ class CrimeData {
   Map<String, dynamic> toJson() => {
         "type": type,
         "registernumber": registerNumber,
-        "date":
-            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
+        "date": date,
         "time": time,
-        "ppid": ppid,
-        "psid": psid,
       };
 }

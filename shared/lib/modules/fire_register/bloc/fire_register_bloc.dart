@@ -17,7 +17,9 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
   final _fireRepository = FireRepository();
 
   @override
-  Stream<FireRegisterState> mapEventToState(FireRegisterEvent event,) async* {
+  Stream<FireRegisterState> mapEventToState(
+    FireRegisterEvent event,
+  ) async* {
     if (event is GetFireData) {
       yield* _mapGetFireDataState(event);
     }
@@ -33,12 +35,9 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
   String photoName = "फोटो जोडा";
 
   Stream<FireRegisterState> _mapGetFireDataState(GetFireData event) async* {
-    final sharedPrefs = await prefs;
     yield FireDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-      await _fireRepository.getFireRegisterByPP(userId: userId!);
+      Response _response = await _fireRepository.getFireRegister();
       if (_response.statusCode! < 400) {
         final _fireResponse = FireResponse.fromJson(_response.data);
         yield FireDataLoaded(_fireResponse);
@@ -53,10 +52,6 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
   Stream<FireRegisterState> _mapAddFireDataState(AddFireData event) async* {
     yield FireDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.fireData.ppid = sharedPrefs.getInt('userId')!;
-      event.fireData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response =
           await _fireRepository.addFireData(fireData: event.fireData);
 

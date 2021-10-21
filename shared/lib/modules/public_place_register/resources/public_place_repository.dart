@@ -3,8 +3,8 @@ import 'package:shared/modules/public_place_register/models/public_place_model.d
 import 'package:dio/dio.dart';
 
 class PlaceRepository {
-  Future<dynamic> getPlaceRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getPlaceByPP(userId: userId);
+  Future<dynamic> getPlaceRegister() async {
+    final response = await ApiSdk.getPlace();
     return response;
   }
 

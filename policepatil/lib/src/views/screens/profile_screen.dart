@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(100),
                                     child: CachedNetworkImage(
-                                      imageUrl: state.user.photo ?? "",
+                                      imageUrl: "http://${state.user.photo}",
                                       width: 150,
                                       height: 150,
                                       fit: BoxFit.cover,

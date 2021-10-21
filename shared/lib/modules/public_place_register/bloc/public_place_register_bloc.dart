@@ -50,12 +50,9 @@ class PublicPlaceRegisterBloc
 
   Stream<PublicPlaceRegisterState> _mapGetPublicPlaceDataState(
       GetPublicPlaceData event) async* {
-    final sharedPrefs = await prefs;
     yield PublicPlaceDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-          await _placeRepository.getPlaceRegisterByPP(userId: userId!);
+      Response _response = await _placeRepository.getPlaceRegister();
       if (_response.statusCode! < 400) {
         final _placeResponse = PlaceResponse.fromJson(_response.data);
         yield PublicPlaceDataLoaded(_placeResponse);
@@ -71,10 +68,6 @@ class PublicPlaceRegisterBloc
       AddPublicPlaceData event) async* {
     yield PublicPlaceDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.placeData.ppid = sharedPrefs.getInt('userId')!;
-      event.placeData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response =
           await _placeRepository.addPlaceData(placeData: event.placeData);
 

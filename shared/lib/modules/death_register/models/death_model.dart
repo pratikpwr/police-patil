@@ -42,6 +42,7 @@ class DeathData {
     this.photo,
     this.foundAddress,
     this.causeOfDeath,
+    this.dateOfDeath,
     this.age,
     this.ppid,
     this.psid,
@@ -59,6 +60,7 @@ class DeathData {
   String? photo;
   String? foundAddress;
   String? causeOfDeath;
+  DateTime? dateOfDeath;
   int? age;
   int? ppid;
   int? psid;
@@ -76,6 +78,7 @@ class DeathData {
         photo: json["photo"],
         foundAddress: json["foundaddress"],
         causeOfDeath: json["causeofdeath"],
+        dateOfDeath: json["date"] == null ? null : DateTime.parse(json["date"]),
         age: json["age"],
         ppid: json["ppid"],
         psid: json["psid"],
@@ -83,18 +86,18 @@ class DeathData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "isknown": isKnown! ? 1 : 0,
         "name": name,
         "gender": gender,
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
+        "date": dateOfDeath,
         "photo": photo,
         "foundaddress": foundAddress,
         "causeofdeath": causeOfDeath,
         "age": age,
-        "ppid": ppid,
-        "psid": psid,
       };
 }

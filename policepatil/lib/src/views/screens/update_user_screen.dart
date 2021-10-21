@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,7 +11,7 @@ import 'package:shared/shared.dart';
 
 class UpdateProfile extends StatefulWidget {
   const UpdateProfile({Key? key, required this.user}) : super(key: key);
-  final UserClass user;
+  final UserData user;
 
   @override
   State<UpdateProfile> createState() => _UpdateProfileState();
@@ -131,7 +129,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       text: "माहिती उपडेट करा",
                       onTap: () {
                         DateFormat _format = DateFormat("yyyy-MM-dd");
-                        final user = UserClass(
+                        final user = UserData(
                             name: _nameController.text,
                             address: _addressController.text,
                             mobile: int.parse(_mobileController.text),
@@ -139,7 +137,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             photo: _photo?.path,
                             latitude: _latitude,
                             longitude: _longitude,
-                            psdistance: double.parse(_distanceController.text),
+                            psdistance: int.parse(_distanceController.text),
                             joindate: _format.parse(_assignController.text),
                             enddate: _format.parse(_lastController.text));
                         BlocProvider.of<ProfileBloc>(context)

@@ -29,13 +29,13 @@ class ArmsData {
     this.address,
     this.latitude,
     this.longitude,
+    this.licenceNumber,
+    this.uid,
+    this.weaponCondition,
     this.validity,
     this.licencephoto,
-    this.licenceNumber,
     this.ppid,
     this.psid,
-    this.createdAt,
-    this.updatedAt,
   });
 
   int? id;
@@ -47,12 +47,12 @@ class ArmsData {
   double? latitude;
   double? longitude;
   String? licenceNumber;
+  String? uid;
+  String? weaponCondition;
   DateTime? validity;
   String? licencephoto;
   int? ppid;
   int? psid;
-  DateTime? createdAt;
-  DateTime? updatedAt;
 
   factory ArmsData.fromJson(Map<String, dynamic> json) => ArmsData(
         id: json["id"],
@@ -64,18 +64,14 @@ class ArmsData {
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
         licenceNumber: json["licencenumber"],
-        validity: DateTime.parse(json["validity"]),
+        validity:
+            json["validity"] == null ? null : DateTime.parse(json["validity"]),
         licencephoto: json["licencephoto"],
         ppid: json["ppid"],
         psid: json["psid"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: json["updated_at"] == null
-            ? null
-            : DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "type": type,
         "name": name,
         "mobile": mobile,
@@ -84,10 +80,9 @@ class ArmsData {
         "latitude": latitude,
         "longitude": longitude,
         "licencenumber": licenceNumber,
-        "validity":
-            "${validity!.year.toString().padLeft(4, '0')}-${validity!.month.toString().padLeft(2, '0')}-${validity!.day.toString().padLeft(2, '0')}",
+        "uid": uid,
+        "weapon_condition": weaponCondition,
+        "validity": validity,
         "licencephoto": licencephoto,
-        "ppid": ppid,
-        "psid": psid
       };
 }

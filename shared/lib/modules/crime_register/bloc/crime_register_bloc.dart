@@ -16,7 +16,9 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
   final _crimeRepository = CrimeRepository();
 
   @override
-  Stream<CrimeRegisterState> mapEventToState(CrimeRegisterEvent event,) async* {
+  Stream<CrimeRegisterState> mapEventToState(
+    CrimeRegisterEvent event,
+  ) async* {
     if (event is GetCrimeData) {
       yield* _mapGetCrimeDataState(event);
     }
@@ -35,12 +37,9 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
   ];
 
   Stream<CrimeRegisterState> _mapGetCrimeDataState(GetCrimeData event) async* {
-    final sharedPrefs = await prefs;
     yield CrimeDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-      await _crimeRepository.getCrimeRegisterByPP(userId: userId!);
+      Response _response = await _crimeRepository.getCrimeRegister();
       if (_response.statusCode! < 400) {
         final _crimeResponse = CrimeResponse.fromJson(_response.data);
         yield CrimeDataLoaded(_crimeResponse);
@@ -55,10 +54,6 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
   Stream<CrimeRegisterState> _mapAddCrimeDataState(AddCrimeData event) async* {
     yield CrimeDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.crimeData.ppid = sharedPrefs.getInt('userId')!;
-      event.crimeData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response =
           await _crimeRepository.addCrimeData(crimeData: event.crimeData);
 

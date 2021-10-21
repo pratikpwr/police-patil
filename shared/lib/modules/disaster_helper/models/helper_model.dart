@@ -66,7 +66,5 @@ class HelperData {
         "name": name,
         "skill": skill,
         "mobile": mobile,
-        "ppid": ppid,
-        "psid": psid
       };
 }

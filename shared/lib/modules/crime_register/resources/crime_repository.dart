@@ -2,8 +2,8 @@ import 'package:api/api.dart';
 import 'package:shared/modules/crime_register/models/crime_model.dart';
 
 class CrimeRepository {
-  Future<dynamic> getCrimeRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getCrimeByPP(userId: userId);
+  Future<dynamic> getCrimeRegister() async {
+    final response = await ApiSdk.getCrime();
     return response;
   }
 

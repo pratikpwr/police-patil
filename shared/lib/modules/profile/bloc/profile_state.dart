@@ -21,7 +21,7 @@ class ProfileLoadError extends ProfileState {
 }
 
 class ProfileDataLoaded extends ProfileState {
-  final UserClass user;
+  final UserData user;
 
   const ProfileDataLoaded(this.user);
 

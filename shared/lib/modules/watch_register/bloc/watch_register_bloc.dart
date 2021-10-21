@@ -38,12 +38,9 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
   File? photo;
 
   Stream<WatchRegisterState> _mapGetWatchDataState(GetWatchData event) async* {
-    final sharedPrefs = await prefs;
     yield WatchDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-          await _watchRepository.getWatchRegisterByPP(userId: userId!);
+      Response _response = await _watchRepository.getWatchRegister();
       if (_response.statusCode! < 400) {
         final _watchResponse = WatchResponse.fromJson(_response.data);
         yield WatchDataLoaded(_watchResponse);
@@ -58,10 +55,6 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
   Stream<WatchRegisterState> _mapAddWatchDataState(AddWatchData event) async* {
     yield WatchDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.watchData.ppid = sharedPrefs.getInt('userId')!;
-      event.watchData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response =
           await _watchRepository.addWatchData(watchData: event.watchData);
 

@@ -48,13 +48,10 @@ class IllegalRegisterBloc
 
   Stream<IllegalRegisterState> _mapGetIllegalDataState(
       GetIllegalData event) async* {
-    final sharedPrefs = await prefs;
     yield IllegalDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-          await _illegalRepository.getIllegalRegisterByPP(userId: userId!);
-      if (_response.statusCode! < 400) {
+      Response _response = await _illegalRepository.getIllegalRegister();
+      if (_response.data["Success"] != null) {
         final _illegalResponse = IllegalResponse.fromJson(_response.data);
         yield IllegalDataLoaded(_illegalResponse);
       } else {
@@ -69,10 +66,6 @@ class IllegalRegisterBloc
       AddIllegalData event) async* {
     yield IllegalDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.illegalData.ppid = sharedPrefs.getInt('userId')!;
-      event.illegalData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response = await _illegalRepository.addIllegalData(
           illegalData: event.illegalData);
 

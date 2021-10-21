@@ -2,8 +2,8 @@ import 'package:api/api.dart';
 import 'package:shared/modules/village_safety/village_safety.dart';
 
 class VillageSafetyRepository {
-  Future<dynamic> getVillageSafetyRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getVillageSafetyByPP(userId: userId);
+  Future<dynamic> getVillageSafetyRegister() async {
+    final response = await ApiSdk.getVillageSafety();
     return response;
   }
 

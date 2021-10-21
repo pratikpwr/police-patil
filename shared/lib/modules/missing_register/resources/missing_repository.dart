@@ -3,8 +3,8 @@ import 'package:shared/modules/missing_register/models/missing_model.dart';
 import 'package:dio/dio.dart';
 
 class MissingRepository {
-  Future<dynamic> getMissingRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getMissingByPP(userId: userId);
+  Future<dynamic> getMissingRegister() async {
+    final response = await ApiSdk.getMissing();
     return response;
   }
 

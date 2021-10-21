@@ -18,7 +18,9 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
   final _armsRepository = ArmsRepository();
 
   @override
-  Stream<ArmsRegisterState> mapEventToState(ArmsRegisterEvent event,) async* {
+  Stream<ArmsRegisterState> mapEventToState(
+    ArmsRegisterEvent event,
+  ) async* {
     if (event is GetArmsData) {
       yield* _mapGetArmsDataState(event);
     }
@@ -51,12 +53,9 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
   File? photo;
 
   Stream<ArmsRegisterState> _mapGetArmsDataState(GetArmsData event) async* {
-    final sharedPrefs = await prefs;
     yield ArmsDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-      await _armsRepository.getArmsRegisterByPP(userId: userId!);
+      Response _response = await _armsRepository.getArmsRegister();
 
       if (_response.statusCode! < 400) {
         final _armsResponse = ArmsResponse.fromJson(_response.data);
@@ -72,10 +71,6 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
   Stream<ArmsRegisterState> _mapAddArmsDataState(AddArmsData event) async* {
     yield ArmsDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.armsData.ppid = sharedPrefs.getInt('userId')!;
-      event.armsData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response =
           await _armsRepository.addArmsData(armsData: event.armsData);
 

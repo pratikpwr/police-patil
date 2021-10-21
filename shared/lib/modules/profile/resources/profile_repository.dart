@@ -8,7 +8,7 @@ class ProfileRepository {
     return response;
   }
 
-  Future<dynamic> updateUserData(int id, UserClass user) async {
+  Future<dynamic> updateUserData(int id, UserData user) async {
     final _body = user.toJson();
     _body['photo'] = await MultipartFile.fromFile(_body['photo']);
     FormData _formData = FormData.fromMap(_body);

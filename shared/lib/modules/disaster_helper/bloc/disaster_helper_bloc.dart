@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared/modules/disaster_helper/disaster_helper.dart';
 import 'package:shared/modules/disaster_helper/models/helper_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
 part 'disaster_helper_event.dart';
@@ -31,12 +30,9 @@ class DisasterHelperBloc
 
   Stream<DisasterHelperState> _mapGetDisasterDataState(
       GetHelperData event) async* {
-    final sharedPrefs = await SharedPreferences.getInstance();
     yield HelperDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response = await _helperRepository
-          .getDisasterHelperRegisterByPP(userId: userId!);
+      Response _response = await _helperRepository.getDisasterHelperRegister();
       if (_response.statusCode! < 400) {
         final _helperResponse = HelperResponse.fromJson(_response.data);
         yield HelperDataLoaded(_helperResponse);
@@ -52,10 +48,6 @@ class DisasterHelperBloc
       AddHelperData event) async* {
     yield HelperDataSending();
     try {
-      final sharedPrefs = await SharedPreferences.getInstance();
-      event.helperData.ppid = sharedPrefs.getInt('userId')!;
-      event.helperData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response = await _helperRepository.addDisasterHelperData(
           helperData: event.helperData);
 

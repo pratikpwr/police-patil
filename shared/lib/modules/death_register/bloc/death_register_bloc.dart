@@ -17,7 +17,9 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
   final _deathRepository = DeathRepository();
 
   @override
-  Stream<DeathRegisterState> mapEventToState(DeathRegisterEvent event,) async* {
+  Stream<DeathRegisterState> mapEventToState(
+    DeathRegisterEvent event,
+  ) async* {
     if (event is GetDeathData) {
       yield* _mapGetDeathDataState(event);
     }
@@ -37,12 +39,9 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
   String photoName = "फोटो जोडा";
 
   Stream<DeathRegisterState> _mapGetDeathDataState(GetDeathData event) async* {
-    final sharedPrefs = await prefs;
     yield DeathDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-      await _deathRepository.getDeathRegisterByPP(userId: userId!);
+      Response _response = await _deathRepository.getDeathRegister();
       if (_response.statusCode! < 400) {
         final _deathResponse = DeathResponse.fromJson(_response.data);
         yield DeathDataLoaded(_deathResponse);
@@ -57,10 +56,6 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
   Stream<DeathRegisterState> _mapAddDeathDataState(AddDeathData event) async* {
     yield DeathDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.deathData.ppid = sharedPrefs.getInt('userId')!;
-      event.deathData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response =
           await _deathRepository.addDeathData(deathData: event.deathData);
 

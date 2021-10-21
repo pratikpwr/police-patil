@@ -3,8 +3,8 @@ import 'package:shared/modules/collection_register/models/collect_model.dart';
 import 'package:dio/dio.dart';
 
 class CollectRepository {
-  Future<dynamic> getCollectionsRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getCollectByPP(userId: userId);
+  Future<dynamic> getCollectionsRegister() async {
+    final response = await ApiSdk.getCollect();
     return response;
   }
 

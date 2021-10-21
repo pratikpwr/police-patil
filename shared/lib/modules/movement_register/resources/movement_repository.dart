@@ -3,8 +3,8 @@ import 'package:shared/modules/movement_register/models/movement_model.dart';
 import 'package:dio/dio.dart';
 
 class MovementRepository {
-  Future<dynamic> getMovementRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getMovementByPP(userId: userId);
+  Future<dynamic> getMovementRegister() async {
+    final response = await ApiSdk.getMovement();
     return response;
   }
 

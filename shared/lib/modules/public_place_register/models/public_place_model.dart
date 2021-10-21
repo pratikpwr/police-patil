@@ -83,8 +83,7 @@ class PlaceData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "place": place,
         "address": address,
         "latitude": latitude,
@@ -95,7 +94,5 @@ class PlaceData {
         "issuereason": issueReason,
         "issuecondition": issueCondition,
         "crimeregisterd": isCrimeRegistered! ? 1 : 0,
-        "ppid": ppid,
-        "psid": psid
       };
 }

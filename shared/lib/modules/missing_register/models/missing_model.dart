@@ -78,7 +78,9 @@ class MissingData {
         address: json["address"],
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
-        missingDate: DateTime.parse(json["missingdate"]),
+        missingDate: json["missingdate"] == null
+            ? null
+            : DateTime.parse(json["missingdate"]),
         ppid: json["ppid"],
         psid: json["psid"],
         createdAt: DateTime.parse(json["created_at"]),
@@ -95,9 +97,6 @@ class MissingData {
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
-        "missingdate":
-            "${missingDate!.year.toString().padLeft(4, '0')}-${missingDate!.month.toString().padLeft(2, '0')}-${missingDate!.day.toString().padLeft(2, '0')}",
-        "ppid": ppid,
-        "psid": psid
+    "missingdate": missingDate
       };
 }

@@ -38,6 +38,8 @@ class DisasterData {
     this.type,
     this.subtype,
     this.date,
+    this.latitude,
+    this.longitude,
     this.casuality,
     this.level,
     this.ppid,
@@ -51,6 +53,8 @@ class DisasterData {
   String? subtype;
   DateTime? date;
   int? casuality;
+  double? latitude;
+  double? longitude;
   String? level;
   int? ppid;
   int? psid;
@@ -61,8 +65,10 @@ class DisasterData {
         id: json["id"],
         type: json["type"],
         subtype: json["subtype"],
-        date: DateTime.parse(json["date"]),
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
         casuality: json["casuality"],
+        latitude: json["latitude"].toDouble(),
+        longitude: json["longitude"].toDouble(),
         level: json["level"],
         ppid: json["ppid"],
         psid: json["psid"],
@@ -70,14 +76,14 @@ class DisasterData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "type": type,
         "subtype": subtype,
-        "date":
-            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
+        "date": date,
+        "latitude": latitude,
+        "longitude": longitude,
         "casuality": casuality,
         "level": level,
-        "ppid": ppid,
-        "psid": psid,
       };
 }

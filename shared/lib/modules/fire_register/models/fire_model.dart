@@ -66,7 +66,7 @@ class FireData {
         address: json["address"],
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
-        date: DateTime.parse(json["date"]),
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
         time: json["time"],
         reason: json["reason"],
         loss: json["loss"],
@@ -85,8 +85,6 @@ class FireData {
         "time": time,
         "reason": reason,
         "loss": loss,
-        "photo": photo,
-        "ppid": ppid,
-        "psid": psid,
+    "photo": photo
       };
 }

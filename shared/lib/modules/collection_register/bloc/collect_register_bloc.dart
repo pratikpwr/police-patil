@@ -45,12 +45,9 @@ class CollectRegisterBloc
 
   Stream<CollectRegisterState> _mapGetCollectionDataState(
       GetCollectionData event) async* {
-    final sharedPrefs = await prefs;
     yield CollectionDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response = await _collectionRepository
-          .getCollectionsRegisterByPP(userId: userId!);
+      Response _response = await _collectionRepository.getCollectionsRegister();
       if (_response.statusCode! < 400) {
         final _collectionResponse = CollectionResponse.fromJson(_response.data);
         yield CollectionDataLoaded(_collectionResponse);
@@ -66,10 +63,6 @@ class CollectRegisterBloc
       AddCollectionData event) async* {
     yield CollectionDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.collectionData.ppid = sharedPrefs.getInt('userId')!;
-      event.collectionData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response = await _collectionRepository.addCollectionsData(
           collectionData: event.collectionData);
 

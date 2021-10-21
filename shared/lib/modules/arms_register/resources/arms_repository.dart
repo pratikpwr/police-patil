@@ -3,8 +3,8 @@ import 'package:shared/shared.dart';
 import 'package:dio/dio.dart';
 
 class ArmsRepository {
-  Future<dynamic> getArmsRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getArmsByPP(userId: userId);
+  Future<dynamic> getArmsRegister() async {
+    final response = await ApiSdk.getArms();
     return response;
   }
 

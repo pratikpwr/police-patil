@@ -3,8 +3,8 @@ import 'package:shared/modules/illegal_register/models/illegal_model.dart';
 import 'package:dio/dio.dart';
 
 class IllegalRepository {
-  Future<dynamic> getIllegalRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getIllegalByPP(userId: userId);
+  Future<dynamic> getIllegalRegister() async {
+    final response = await ApiSdk.getIllegal();
     return response;
   }
 

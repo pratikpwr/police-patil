@@ -45,7 +45,6 @@ class CollectionData {
     this.ppid,
     this.psid,
     this.createdAt,
-    this.updatedAt,
   });
 
   int? id;
@@ -59,7 +58,6 @@ class CollectionData {
   int? ppid;
   int? psid;
   DateTime? createdAt;
-  DateTime? updatedAt;
 
   factory CollectionData.fromJson(Map<String, dynamic> json) => CollectionData(
         id: json["id"],
@@ -73,7 +71,6 @@ class CollectionData {
         ppid: json["ppid"],
         psid: json["psid"],
         createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -81,11 +78,8 @@ class CollectionData {
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
-        "date":
-            "${date!.year.toString().padLeft(4, '0')}-${date!.month.toString().padLeft(2, '0')}-${date!.day.toString().padLeft(2, '0')}",
+        "date": date,
         "description": description,
         "photo": photo,
-        "ppid": ppid,
-        "psid": psid,
       };
 }

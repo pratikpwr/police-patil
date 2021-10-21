@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared/modules/village_safety/village_safety.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dio/dio.dart';
 
 part 'village_safety_event.dart';
@@ -28,12 +27,10 @@ class VillageSafetyBloc extends Bloc<VillageSafetyEvent, VillageSafetyState> {
 
   Stream<VillageSafetyState> _mapGetDisasterDataState(
       GetVillageSafetyData event) async* {
-    final sharedPrefs = await SharedPreferences.getInstance();
     yield VillageSafetyDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response = await _villageSafetyRepository
-          .getVillageSafetyRegisterByPP(userId: userId!);
+      Response _response =
+          await _villageSafetyRepository.getVillageSafetyRegister();
       if (_response.statusCode! < 400) {
         final _villageSafetyResponse =
             VillageSafetyResponse.fromJson(_response.data);
@@ -50,10 +47,6 @@ class VillageSafetyBloc extends Bloc<VillageSafetyEvent, VillageSafetyState> {
       AddVillageSafetyData event) async* {
     yield VillageSafetyDataSending();
     try {
-      final sharedPrefs = await SharedPreferences.getInstance();
-      event.safetyData.ppid = sharedPrefs.getInt('userId')!;
-      event.safetyData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response = await _villageSafetyRepository.addVillageSafetyData(
           safetyData: event.safetyData);
 

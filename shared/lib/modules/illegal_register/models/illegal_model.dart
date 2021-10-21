@@ -80,7 +80,5 @@ class IllegalData {
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
-        "ppid": ppid,
-        "psid": psid
       };
 }

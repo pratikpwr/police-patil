@@ -2,8 +2,8 @@ import 'package:api/api.dart';
 import 'package:shared/modules/disaster_tools/models/tools_model.dart';
 
 class DisasterToolsRepository {
-  Future<dynamic> getDisasterToolsRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getDisasterToolsByPP(userId: userId);
+  Future<dynamic> getDisasterToolsRegister() async {
+    final response = await ApiSdk.getDisasterTools();
     return response;
   }
 

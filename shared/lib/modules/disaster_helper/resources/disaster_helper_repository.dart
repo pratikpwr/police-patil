@@ -2,8 +2,8 @@ import 'package:api/api.dart';
 import 'package:shared/modules/disaster_helper/models/helper_model.dart';
 
 class DisasterHelperRepository {
-  Future<dynamic> getDisasterHelperRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getDisasterHelperByPP(userId: userId);
+  Future<dynamic> getDisasterHelperRegister() async {
+    final response = await ApiSdk.getDisasterHelper();
     return response;
   }
 

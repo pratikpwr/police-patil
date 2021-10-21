@@ -63,10 +63,16 @@ class AuthenticationBloc
       if (response.data["error"] == null) {
         final currentUser = UserModel.fromJson(response.data);
         if (currentUser != null) {
-          sharedPreferences.setString('authToken', currentUser.accessToken!);
-          sharedPreferences.setInt("userId", currentUser.user!.id!);
-          sharedPreferences.setInt('policeStationId', currentUser.user!.psid!);
-          yield AppAuthenticated();
+          if (currentUser.user!.role == "pp") {
+            sharedPreferences.setString('authToken', currentUser.accessToken!);
+            sharedPreferences.setInt("userId", currentUser.user!.id!);
+            sharedPreferences.setInt(
+                'policeStationId', currentUser.user!.psid!);
+            yield AppAuthenticated();
+          } else {
+            yield const AuthenticationFailure(
+                message: "Invalid Login Credentials.");
+          }
         } else {
           yield AuthenticationNotAuthenticated();
         }

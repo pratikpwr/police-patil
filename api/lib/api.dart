@@ -67,8 +67,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getCollectByPP({required int userId}) async {
-    String path = ApiConstants.GET_COLLECT_BY_PP + "$userId";
+  static Future<Response> getCollect() async {
+    String path = ApiConstants.GET_COLLECT;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -82,8 +82,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getMovementByPP({required int userId}) async {
-    String path = ApiConstants.GET_MOVEMENT_BY_PP + "$userId";
+  static Future<Response> getMovement() async {
+    String path = ApiConstants.GET_MOVEMENT;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -97,8 +97,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getWatchByPP({required int userId}) async {
-    String path = ApiConstants.GET_WATCH_BY_PP + "$userId";
+  static Future<Response> getWatch() async {
+    String path = ApiConstants.GET_WATCH;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -112,8 +112,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getCrimeByPP({required int userId}) async {
-    String path = ApiConstants.GET_CRIME_BY_PP + "$userId";
+  static Future<Response> getCrime() async {
+    String path = ApiConstants.GET_CRIME;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -127,8 +127,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getFireByPP({required int userId}) async {
-    String path = ApiConstants.GET_FIRE_BY_PP + "$userId";
+  static Future<Response> getFire() async {
+    String path = ApiConstants.GET_FIRE;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -142,8 +142,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getDeathByPP({required int userId}) async {
-    String path = ApiConstants.GET_DEATH_BY_PP + "$userId";
+  static Future<Response> getDeath() async {
+    String path = ApiConstants.GET_DEATH;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -157,8 +157,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getMissingByPP({required int userId}) async {
-    String path = ApiConstants.GET_MISSING_BY_PP + "$userId";
+  static Future<Response> getMissing() async {
+    String path = ApiConstants.GET_MISSING;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -172,8 +172,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getPlaceByPP({required int userId}) async {
-    String path = ApiConstants.GET_PUBLIC_PLACE_BY_PP + "$userId";
+  static Future<Response> getPlace() async {
+    String path = ApiConstants.GET_PUBLIC_PLACE;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -187,8 +187,64 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getIllegalByPP({required int userId}) async {
-    String path = ApiConstants.GET_ILLEGAL_WORK_BY_PP + "$userId";
+  static Future<Response> getIllegal() async {
+    String path = ApiConstants.GET_ILLEGAL_WORK;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> postDisasterHelper({required body}) async {
+    String path = ApiConstants.DISASTER_HELPER;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getDisasterHelper() async {
+    String path = ApiConstants.DISASTER_HELPER;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> postVillageSafety({required body}) async {
+    String path = ApiConstants.VILLAGE_HELPER;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getVillageSafety() async {
+    String path = ApiConstants.VILLAGE_HELPER;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> postDisasterTools({required body}) async {
+    String path = ApiConstants.DISASTER_TOOLS;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getDisasterTools() async {
+    String path = ApiConstants.DISASTER_TOOLS;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> postDisasterRegister({required body}) async {
+    String path = ApiConstants.DISASTER;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getDisaster() async {
+    String path = ApiConstants.DISASTER;
 
     Response response = await RestApiHandlerData.getData(path);
     return response;
@@ -203,62 +259,6 @@ class ApiSdk {
 
   static Future<Response> getAlerts() async {
     String path = ApiConstants.GET_ALERTS;
-
-    Response response = await RestApiHandlerData.getData(path);
-    return response;
-  }
-
-  static Future<Response> postDisasterHelper({required body}) async {
-    String path = ApiConstants.POST_DISASTER_HELPER;
-
-    Response response = await RestApiHandlerData.postData(path, body);
-    return response;
-  }
-
-  static Future<Response> getDisasterHelperByPP({required int userId}) async {
-    String path = ApiConstants.GET_DISASTER_HELPER_BY_PP + "$userId";
-
-    Response response = await RestApiHandlerData.getData(path);
-    return response;
-  }
-
-  static Future<Response> postVillageSafety({required body}) async {
-    String path = ApiConstants.POST_DISASTER_HELPER;
-
-    Response response = await RestApiHandlerData.postData(path, body);
-    return response;
-  }
-
-  static Future<Response> getVillageSafetyByPP({required int userId}) async {
-    String path = ApiConstants.GET_DISASTER_HELPER_BY_PP + "$userId";
-
-    Response response = await RestApiHandlerData.getData(path);
-    return response;
-  }
-
-  static Future<Response> postDisasterTools({required body}) async {
-    String path = ApiConstants.POST_DISASTER_TOOLS;
-
-    Response response = await RestApiHandlerData.postData(path, body);
-    return response;
-  }
-
-  static Future<Response> getDisasterToolsByPP({required int userId}) async {
-    String path = ApiConstants.GET_DISASTER_TOOLS_BY_PP + "$userId";
-
-    Response response = await RestApiHandlerData.getData(path);
-    return response;
-  }
-
-  static Future<Response> postDisasterRegister({required body}) async {
-    String path = ApiConstants.POST_DISASTER;
-
-    Response response = await RestApiHandlerData.postData(path, body);
-    return response;
-  }
-
-  static Future<Response> getDisasterByPP({required int userId}) async {
-    String path = ApiConstants.GET_DISASTERS_BY_PP + "$userId";
 
     Response response = await RestApiHandlerData.getData(path);
     return response;

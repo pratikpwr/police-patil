@@ -41,12 +41,9 @@ class MissingRegisterBloc
 
   Stream<MissingRegisterState> _mapGetMissingDataState(
       GetMissingData event) async* {
-    final sharedPrefs = await prefs;
     yield MissingDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-          await _missingRepository.getMissingRegisterByPP(userId: userId!);
+      Response _response = await _missingRepository.getMissingRegister();
       if (_response.statusCode! < 400) {
         final _missingResponse = MissingResponse.fromJson(_response.data);
         yield MissingDataLoaded(_missingResponse);
@@ -62,9 +59,6 @@ class MissingRegisterBloc
       AddMissingData event) async* {
     yield MissingDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.missingData.ppid = sharedPrefs.getInt('userId')!;
-      event.missingData.psid = sharedPrefs.getInt('policeStationId')!;
 
       Response _response = await _missingRepository.addMissingData(
           missingData: event.missingData);

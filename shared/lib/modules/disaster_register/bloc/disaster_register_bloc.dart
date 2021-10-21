@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:shared/modules/disaster_register/models/disaster_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared/modules/disaster_register/resources/disaster_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'disaster_register_event.dart';
 
@@ -52,12 +51,9 @@ class DisasterRegisterBloc
 
   Stream<DisasterRegisterState> _mapGetDisasterDataState(
       GetDisasterData event) async* {
-    final sharedPrefs = await SharedPreferences.getInstance();
     yield DisasterDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-          await _disasterRepository.getDisasterRegisterByPP(userId: userId!);
+      Response _response = await _disasterRepository.getDisasterRegister();
       if (_response.statusCode! < 400) {
         final _disasterResponse = DisasterResponse.fromJson(_response.data);
         yield DisasterDataLoaded(_disasterResponse);
@@ -73,10 +69,6 @@ class DisasterRegisterBloc
       AddDisasterData event) async* {
     yield DisasterDataSending();
     try {
-      final sharedPrefs = await SharedPreferences.getInstance();
-      event.disasterData.ppid = sharedPrefs.getInt('userId')!;
-      event.disasterData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response = await _disasterRepository.addDisasterData(
           disasterData: event.disasterData);
 

@@ -6,7 +6,6 @@ import 'package:equatable/equatable.dart';
 import 'package:shared/modules/movement_register/models/movement_model.dart';
 import 'package:shared/modules/movement_register/resources/movement_repository.dart';
 import 'package:dio/dio.dart';
-import '../../../shared.dart';
 
 part 'movement_register_event.dart';
 
@@ -72,12 +71,9 @@ class MovementRegisterBloc
 
   Stream<MovementRegisterState> _mapGetMovementDataState(
       GetMovementData event) async* {
-    final sharedPrefs = await prefs;
     yield MovementDataLoading();
     try {
-      int? userId = sharedPrefs.getInt('userId');
-      Response _response =
-          await _movementRepository.getMovementRegisterByPP(userId: userId!);
+      Response _response = await _movementRepository.getMovementRegister();
       if (_response.statusCode! < 400) {
         final _movementResponse = MovementResponse.fromJson(_response.data);
         yield MovementDataLoaded(_movementResponse);
@@ -93,10 +89,6 @@ class MovementRegisterBloc
       AddMovementData event) async* {
     yield MovementDataSending();
     try {
-      final sharedPrefs = await prefs;
-      event.movementData.ppid = sharedPrefs.getInt('userId')!;
-      event.movementData.psid = sharedPrefs.getInt('policeStationId')!;
-
       Response _response = await _movementRepository.addMovementData(
           movementData: event.movementData);
 

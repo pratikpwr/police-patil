@@ -3,8 +3,8 @@ import 'package:shared/modules/fire_register/models/fire_model.dart';
 import 'package:dio/dio.dart';
 
 class FireRepository {
-  Future<dynamic> getFireRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getFireByPP(userId: userId);
+  Future<dynamic> getFireRegister() async {
+    final response = await ApiSdk.getFire();
     return response;
   }
 

@@ -3,8 +3,8 @@ import 'package:shared/modules/watch_register/models/watch_model.dart';
 import 'package:dio/dio.dart';
 
 class WatchRepository {
-  Future<dynamic> getWatchRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getWatchByPP(userId: userId);
+  Future<dynamic> getWatchRegister() async {
+    final response = await ApiSdk.getWatch();
     return response;
   }
 

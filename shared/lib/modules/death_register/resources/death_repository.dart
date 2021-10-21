@@ -3,8 +3,8 @@ import 'package:shared/modules/death_register/models/death_model.dart';
 import 'package:dio/dio.dart';
 
 class DeathRepository {
-  Future<dynamic> getDeathRegisterByPP({required int userId}) async {
-    final response = await ApiSdk.getDeathByPP(userId: userId);
+  Future<dynamic> getDeathRegister() async {
+    final response = await ApiSdk.getDeath();
     return response;
   }
 
