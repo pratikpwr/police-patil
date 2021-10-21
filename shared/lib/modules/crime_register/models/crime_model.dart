@@ -68,7 +68,7 @@ class CrimeData {
   Map<String, dynamic> toJson() => {
         "type": type,
         "registernumber": registerNumber,
-        "date": date,
+        "date": date == null ? null : date!.toIso8601String(),
         "time": time,
       };
 }

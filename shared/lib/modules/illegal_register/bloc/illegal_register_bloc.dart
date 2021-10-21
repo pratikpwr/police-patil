@@ -51,11 +51,11 @@ class IllegalRegisterBloc
     yield IllegalDataLoading();
     try {
       Response _response = await _illegalRepository.getIllegalRegister();
-      if (_response.data["Success"] != null) {
+      if (_response.statusCode! < 400) {
         final _illegalResponse = IllegalResponse.fromJson(_response.data);
         yield IllegalDataLoaded(_illegalResponse);
       } else {
-        yield IllegalLoadError(_response.data["error"]);
+        yield IllegalLoadError(_response.data["error"] ?? "something off");
       }
     } catch (err) {
       yield IllegalLoadError(err.toString());

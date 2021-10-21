@@ -39,7 +39,6 @@ class MissingData {
     this.name,
     this.age,
     this.gender,
-    this.aadhar,
     this.photo,
     this.address,
     this.latitude,
@@ -56,7 +55,6 @@ class MissingData {
   String? name;
   int? age;
   String? gender;
-  String? aadhar;
   String? photo;
   String? address;
   double? latitude;
@@ -73,7 +71,6 @@ class MissingData {
         name: json["name"],
         age: json["age"],
         gender: json["gender"],
-        aadhar: json["aadhar"],
         photo: json["photo"],
         address: json["address"],
         latitude: json["latitude"].toDouble(),
@@ -92,11 +89,10 @@ class MissingData {
         "name": name,
         "age": age,
         "gender": gender,
-        "aadhar": aadhar,
         "photo": photo,
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
-    "missingdate": missingDate
+        "missingdate": missingDate
       };
 }

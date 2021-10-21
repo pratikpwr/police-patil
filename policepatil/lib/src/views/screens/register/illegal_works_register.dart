@@ -116,6 +116,7 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
       type: _bloc.chosenValue,
       name: _nameController.text,
       photo: _bloc.photo?.path,
+      vehicleNo: _vehicleNoController.text,
       address: _addressController.text,
       latitude: _bloc.latitude,
       longitude: _bloc.longitude,

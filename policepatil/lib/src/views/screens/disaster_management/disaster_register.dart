@@ -115,6 +115,8 @@ class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
     DisasterData _disasterData = DisasterData(
         type: _bloc.chosenType,
         subtype: _bloc.chosenSubType,
+        latitude: _bloc.latitude,
+        longitude: _bloc.longitude,
         date: _format.parse(_dateController.text),
         casuality: int.parse(_deathsController.text),
         level: _levelController.text);

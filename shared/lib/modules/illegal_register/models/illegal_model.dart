@@ -7,9 +7,6 @@ import 'dart:convert';
 IllegalResponse illegalResponseFromJson(String str) =>
     IllegalResponse.fromJson(json.decode(str));
 
-String illegalResponseToJson(IllegalResponse data) =>
-    json.encode(data.toJson());
-
 class IllegalResponse {
   IllegalResponse({
     this.message,
@@ -25,11 +22,6 @@ class IllegalResponse {
         data: List<IllegalData>.from(
             json["data"].map((x) => IllegalData.fromJson(x))),
       );
-
-  Map<String, dynamic> toJson() => {
-        "message": message,
-        "data": List<dynamic>.from(data!.map((x) => x.toJson())),
-      };
 }
 
 class IllegalData {
@@ -41,6 +33,7 @@ class IllegalData {
     this.address,
     this.latitude,
     this.longitude,
+    this.vehicleNo,
     this.ppid,
     this.psid,
     this.createdAt,
@@ -53,6 +46,7 @@ class IllegalData {
   String? photo;
   String? address;
   double? latitude;
+  String? vehicleNo;
   double? longitude;
   int? ppid;
   int? psid;
@@ -64,6 +58,7 @@ class IllegalData {
         type: json["type"],
         name: json["name"],
         photo: json["photo"],
+        vehicleNo: json["vehicle_no"],
         address: json["address"],
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
@@ -73,10 +68,12 @@ class IllegalData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "type": type,
         "name": name,
         "photo": photo,
+        "vehicle_no": vehicleNo,
         "address": address,
         "latitude": latitude,
         "longitude": longitude,

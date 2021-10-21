@@ -67,8 +67,8 @@ class DisasterData {
         subtype: json["subtype"],
         date: json["date"] == null ? null : DateTime.parse(json["date"]),
         casuality: json["casuality"],
-        latitude: json["latitude"].toDouble(),
-        longitude: json["longitude"].toDouble(),
+        latitude: json["latitude"],
+        longitude: json["longitude"],
         level: json["level"],
         ppid: json["ppid"],
         psid: json["psid"],
@@ -76,11 +76,10 @@ class DisasterData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "type": type,
         "subtype": subtype,
-        "date": date,
+        "date": date == null ? null : date!.toIso8601String(),
         "latitude": latitude,
         "longitude": longitude,
         "casuality": casuality,
