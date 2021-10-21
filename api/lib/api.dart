@@ -222,6 +222,20 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> postVillageSafety({required body}) async {
+    String path = ApiConstants.POST_DISASTER_HELPER;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getVillageSafetyByPP({required int userId}) async {
+    String path = ApiConstants.GET_DISASTER_HELPER_BY_PP + "$userId";
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
   static Future<Response> postDisasterTools({required body}) async {
     String path = ApiConstants.POST_DISASTER_TOOLS;
 

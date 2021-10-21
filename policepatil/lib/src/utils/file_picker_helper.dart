@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:policepatil/src/utils/styles.dart';
 
 getFileName(String path) {
   return basename(path);
@@ -55,7 +55,7 @@ Future<File?> getFileFromDevice(BuildContext context) async {
         return AlertDialog(
           title: Text(
             'फोटो काढा अथवा गॅलरी मधून निवडा',
-            style: GoogleFonts.poppins(fontSize: 14),
+            style: Styles.titleTextStyle(),
           ),
           actions: [
             TextButton(
@@ -65,7 +65,7 @@ Future<File?> getFileFromDevice(BuildContext context) async {
                 },
                 child: Text(
                   'कॅमेरा',
-                  style: GoogleFonts.poppins(fontSize: 14),
+                  style: Styles.primaryTextStyle(),
                 )),
             TextButton(
                 onPressed: () async {
@@ -74,7 +74,7 @@ Future<File?> getFileFromDevice(BuildContext context) async {
                 },
                 child: Text(
                   'गॅलरी',
-                  style: GoogleFonts.poppins(fontSize: 14),
+                  style: Styles.primaryTextStyle(),
                 ))
           ],
         );

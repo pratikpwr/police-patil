@@ -93,7 +93,6 @@ class WatchData {
         "latitude": latitude,
         "longitude": longitude,
         "description": description,
-        "otherphoto": otherPhoto,
         "ppid": ppid,
         "psid": psid,
       };

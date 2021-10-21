@@ -94,8 +94,11 @@ class WatchDetailWidget extends StatelessWidget {
               style: Styles.primaryTextStyle(),
             ),
             const Divider(),
-            HeadValueText(title: DATE, value: watchData.name!),
-            HeadValueText(title: DESCRIPTION, value: watchData.description!),
+            HeadValueText(title: NAME, value: watchData.name!),
+            watchData.description != null
+                ? HeadValueText(
+                    title: DESCRIPTION, value: watchData.description!)
+                : spacer(height: 0),
             HeadValueText(title: ADDRESS, value: "${watchData.address}"),
           ],
         ),
@@ -129,32 +132,52 @@ class WatchDetailWidget extends StatelessWidget {
                     PHOTO,
                     style: Styles.titleTextStyle(),
                   ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${watchData.photo!}",
-                    width: 300,
-                  ),
+                  watchData.photo != null
+                      ? CachedNetworkImage(
+                          imageUrl: "http://${watchData.photo!}",
+                          width: 300,
+                        )
+                      : spacer(height: 0),
                   spacer(height: 8),
                   Text(
                     AADHAR,
                     style: Styles.titleTextStyle(),
                   ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${watchData.aadhar!}",
-                    width: 300,
-                  ),
+                  watchData.aadhar != null
+                      ? CachedNetworkImage(
+                          imageUrl: "http://${watchData.aadhar!}",
+                          width: 300,
+                        )
+                      : spacer(height: 0),
                   spacer(height: 8),
                   Text(
                     "इतर फोटो",
                     style: Styles.titleTextStyle(),
                   ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${watchData.otherPhoto!}",
-                    width: 300,
+                  MyWidget(
+                    data: watchData.otherPhoto,
+                    child: CachedNetworkImage(
+                      imageUrl: "http://${watchData.otherPhoto}",
+                      width: 300,
+                    ),
                   ),
                 ],
               ),
             ),
           );
         });
+  }
+}
+
+// ignore: must_be_immutable
+class MyWidget extends StatelessWidget {
+  MyWidget({Key? key, this.data, required this.child}) : super(key: key);
+
+  dynamic data;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return data != null ? child : spacer(height: 0);
   }
 }

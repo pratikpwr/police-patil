@@ -62,6 +62,7 @@ const String IS_ISSUE = "काही वाद आहेत का ?";
 const String MOVEMENT_DESCRIPTION = "घटनेची सविस्तर माहिती";
 const String REGISTER_DISASTER = "आपत्ती रजिस्टर करा";
 const String DISASTER_HELPER = "आपदा मित्र";
+const String VILLAGE_SAFETY = "ग्राम सुरक्षा दल सदस्य";
 const String DISASTER_TOOLS = "उपलब्ध साधने";
 // const String = "";
 // const String = "";

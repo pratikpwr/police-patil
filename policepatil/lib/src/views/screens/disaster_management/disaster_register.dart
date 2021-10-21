@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
@@ -15,7 +17,8 @@ class DisasterRegFormScreen extends StatefulWidget {
 
 class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
   final _bloc = DisasterRegisterBloc();
-  final TextEditingController _casualityController = TextEditingController();
+  Position? _position;
+  final TextEditingController _deathsController = TextEditingController();
   final TextEditingController _levelController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
 
@@ -66,9 +69,32 @@ class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
                 spacer(),
                 buildDateTextField(context, _dateController, DATE),
                 spacer(),
+                AttachButton(
+                    text: SELECT_LOCATION,
+                    icon: Icons.location_on_rounded,
+                    onTap: () async {
+                      _position = await determinePosition();
+                      setState(() {
+                        _bloc.longitude = _position!.longitude;
+                        _bloc.latitude = _position!.latitude;
+                      });
+                    }),
+                spacer(),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("$LONGITUDE: ${_bloc.longitude}",
+                        style: Styles.subTitleTextStyle()),
+                    const SizedBox(width: 12),
+                    Text("$LATITUDE: ${_bloc.latitude}",
+                        style: Styles.subTitleTextStyle()),
+                  ],
+                ),
+                spacer(),
                 buildTextField(_levelController, "आपत्तीचे स्वरुप"),
                 spacer(),
-                buildTextField(_casualityController, "जिवितहानी संख्या"),
+                buildTextField(_deathsController, "जिवितहानी संख्या"),
                 spacer(),
                 CustomButton(
                     text: DO_REGISTER,
@@ -90,7 +116,7 @@ class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
         type: _bloc.chosenType,
         subtype: _bloc.chosenSubType,
         date: _format.parse(_dateController.text),
-        casuality: int.parse(_casualityController.text),
+        casuality: int.parse(_deathsController.text),
         level: _levelController.text);
 
     BlocProvider.of<DisasterRegisterBloc>(context)

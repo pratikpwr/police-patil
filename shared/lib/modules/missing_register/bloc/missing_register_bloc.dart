@@ -38,8 +38,6 @@ class MissingRegisterBloc
 
   File? photo;
   String photoName = "फोटो जोडा";
-  File? file;
-  String fileName = 'आधार कार्ड जोडा';
 
   Stream<MissingRegisterState> _mapGetMissingDataState(
       GetMissingData event) async* {

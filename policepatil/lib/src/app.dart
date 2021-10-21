@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => DisasterRegisterBloc()),
         BlocProvider(create: (ctx) => DisasterHelperBloc()),
         BlocProvider(create: (ctx) => DisasterToolsBloc()),
+        BlocProvider(create: (ctx) => VillageSafetyBloc()),
       ],
       child: MaterialApp(
           title: STR_APP_NAME,

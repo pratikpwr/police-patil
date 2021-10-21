@@ -40,7 +40,8 @@ class PublicPlaceRegisterBloc
     "पाणवठा",
     "जमीन",
     "पुतळा",
-    "धार्मिक स्थळ"
+    "धार्मिक स्थळ",
+    "इतर"
   ];
 
   var isIssue;

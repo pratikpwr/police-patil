@@ -36,6 +36,15 @@ class DisasterMenuScreen extends StatelessWidget {
                 }),
             spacer(),
             RegistersButton(
+                text: VILLAGE_SAFETY,
+                imageUrl: ImageConstants.IMG_DISASTER_HELPER,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return const VillageSafetyScreen();
+                  }));
+                }),
+            spacer(),
+            RegistersButton(
                 text: DISASTER_TOOLS,
                 imageUrl: ImageConstants.IMG_DISASTER_TOOLS,
                 onTap: () {

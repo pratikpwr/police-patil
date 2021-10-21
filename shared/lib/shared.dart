@@ -16,6 +16,7 @@ export 'package:shared/modules/disaster_helper/disaster_helper.dart';
 export 'package:shared/modules/disaster_tools/disaster_tools.dart';
 export 'package:shared/modules/disaster_register/disaster_register.dart';
 export 'package:shared/modules/kayade/kayade.dart';
+export 'package:shared/modules/village_safety/village_safety.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<SharedPreferences> prefs = SharedPreferences.getInstance();

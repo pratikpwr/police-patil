@@ -17,7 +17,9 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
   final _watchRepository = WatchRepository();
 
   @override
-  Stream<WatchRegisterState> mapEventToState(WatchRegisterEvent event,) async* {
+  Stream<WatchRegisterState> mapEventToState(
+    WatchRegisterEvent event,
+  ) async* {
     if (event is GetWatchData) {
       yield* _mapGetWatchDataState(event);
     }
@@ -29,17 +31,9 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
   String? chosenValue;
   double longitude = 0.00;
   double latitude = 0.00;
-  final List<String> watchRegTypes = <String>[
-    "भटक्या टोळी",
-    "सराईत गुन्हेगार",
-    "फरार आरोपी",
-    "तडीपार आरोपी",
-    "स्टॅंडिंग वॉरंट"
-  ];
+  final List<String> watchRegTypes = <String>["भटक्या टोळी"];
   String fileName = 'आधार कार्ड जोडा';
   String photoName = "फोटो जोडा";
-  String otherPhotoName = "इतर फोटो जोडा";
-  File? otherPhoto;
   File? file;
   File? photo;
 
@@ -49,7 +43,7 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
     try {
       int? userId = sharedPrefs.getInt('userId');
       Response _response =
-      await _watchRepository.getWatchRegisterByPP(userId: userId!);
+          await _watchRepository.getWatchRegisterByPP(userId: userId!);
       if (_response.statusCode! < 400) {
         final _watchResponse = WatchResponse.fromJson(_response.data);
         yield WatchDataLoaded(_watchResponse);

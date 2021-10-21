@@ -111,18 +111,6 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
                   }),
               spacer(),
               AttachButton(
-                text: _bloc.fileName,
-                onTap: () async {
-                  getFileFromDevice(context).then((pickedFile) {
-                    setState(() {
-                      _bloc.file = pickedFile;
-                      _bloc.fileName = getFileName(pickedFile!.path);
-                    });
-                  });
-                },
-              ),
-              spacer(),
-              AttachButton(
                 text: _bloc.photoName,
                 onTap: () async {
                   getFileFromDevice(context).then((pickedFile) {
@@ -182,7 +170,6 @@ class _MissingRegFormScreenState extends State<MissingRegFormScreen> {
         name: _nameController.text,
         age: int.parse(_ageController.text),
         gender: _bloc.gender,
-        aadhar: _bloc.file?.path,
         photo: _bloc.photo?.path,
         address: _addressController.text,
         latitude: _bloc.latitude,

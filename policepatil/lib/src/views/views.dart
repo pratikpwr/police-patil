@@ -22,6 +22,8 @@ export 'package:policepatil/src/views/screens/disaster_management/disaster_regis
 export 'package:policepatil/src/views/screens/disaster_management/disaster_helper_register.dart';
 export 'package:policepatil/src/views/screens/disaster_management/disaster_register.dart';
 export 'package:policepatil/src/views/screens/disaster_management/disaster_tools_register.dart';
+export 'package:policepatil/src/views/screens/disaster_management/village_safety_register.dart';
+export 'package:policepatil/src/views/screens/disaster_management/village_safety_screen.dart';
 
 // Register
 export 'package:policepatil/src/views/screens/register/register_menu_screen.dart';

@@ -127,18 +127,6 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
                           borderRadius: BorderRadius.circular(10))),
                 ),
                 spacer(),
-                AttachButton(
-                  text: _bloc.otherPhotoName,
-                  onTap: () async {
-                    getFileFromDevice(context).then((pickedFile) {
-                      setState(() {
-                        _bloc.otherPhoto = pickedFile;
-                        _bloc.otherPhotoName = getFileName(pickedFile!.path);
-                      });
-                    });
-                  },
-                ),
-                spacer(),
                 CustomButton(
                     text: DO_REGISTER,
                     onTap: () {
@@ -163,8 +151,7 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
         address: _addressController.text,
         latitude: _bloc.latitude,
         longitude: _bloc.longitude,
-        description: _otherController.text,
-        otherPhoto: _bloc.otherPhoto?.path);
+        description: _otherController.text);
 
     BlocProvider.of<WatchRegisterBloc>(context).add(AddWatchData(_watchData));
   }

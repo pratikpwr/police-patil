@@ -30,6 +30,8 @@ class DisasterRegisterBloc
 
   String? chosenType;
   String? chosenSubType;
+  double longitude = 0.00;
+  double latitude = 0.00;
   final disasterTypes = ["नैसर्गिक", "मानवनिर्मित"];
   List<String>? subTypes;
   final naturalTypes = [

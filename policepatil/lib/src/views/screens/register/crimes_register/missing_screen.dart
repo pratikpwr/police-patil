@@ -131,14 +131,6 @@ class MissingDetailWidget extends StatelessWidget {
                     width: 300,
                   ),
                   spacer(height: 8),
-                  Text(
-                    AADHAR,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${missingData.aadhar!}",
-                    width: 300,
-                  ),
                 ],
               ),
             ),
