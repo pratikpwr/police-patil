@@ -37,6 +37,7 @@ class MovementData {
     this.id,
     this.type,
     this.subtype,
+    this.movementType,
     this.address,
     this.latitude,
     this.longitude,
@@ -45,6 +46,7 @@ class MovementData {
     this.attendance,
     this.description,
     this.photo,
+    this.leader,
     this.ppid,
     this.psid,
     this.createdAt,
@@ -54,12 +56,14 @@ class MovementData {
   int? id;
   String? type;
   String? subtype;
+  String? movementType;
   String? address;
   double? latitude;
   double? longitude;
   DateTime? datetime;
   bool? issue;
   int? attendance;
+  String? leader;
   String? description;
   String? photo;
   int? ppid;
@@ -71,6 +75,8 @@ class MovementData {
         id: json["id"],
         type: json["type"],
         subtype: json["subtype"],
+        movementType: json["movement_type"],
+        leader: json["leader"],
         address: json["address"],
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
@@ -85,18 +91,19 @@ class MovementData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "type": type,
         "subtype": subtype,
         "address": address,
         "latitude": latitude,
+        "leader": leader,
+        "movement_type": movementType,
         "longitude": longitude,
         "datetime": datetime!.toIso8601String(),
         "essue": issue! ? 1 : 0,
         "attendance": attendance,
         "description": description,
         "photo": photo,
-        "ppid": ppid,
-        "psid": psid
       };
 }

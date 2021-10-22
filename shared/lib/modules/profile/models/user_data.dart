@@ -67,11 +67,8 @@ class UserData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "name": name,
-        // "email": email,
-        // "village": village,
         "mobile": mobile,
         "address": address,
         "joindate": joindate,

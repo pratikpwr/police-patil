@@ -12,10 +12,10 @@ final myTheme = ThemeData(
     centerTitle: true,
     elevation: 2,
     color: Colors.white,
-    actionsIconTheme: const IconThemeData(color: PRIMARY_COLOR, size: 24),
-    iconTheme: const IconThemeData(color: PRIMARY_COLOR, size: 24),
+    actionsIconTheme: const IconThemeData(color: POLICE_BLUE, size: 24),
+    iconTheme: const IconThemeData(color: POLICE_BLUE, size: 24),
     titleTextStyle: GoogleFonts.poppins(
-        color: PRIMARY_COLOR, fontSize: 20, fontWeight: FontWeight.w600),
+        color: POLICE_BLUE, fontSize: 20, fontWeight: FontWeight.w600),
   ),
   floatingActionButtonTheme:
       const FloatingActionButtonThemeData(backgroundColor: PRIMARY_COLOR),

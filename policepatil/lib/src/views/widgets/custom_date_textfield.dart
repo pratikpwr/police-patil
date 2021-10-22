@@ -3,7 +3,8 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 TextField buildDateTextField(
-    BuildContext context, TextEditingController _controller, String hint) {
+    BuildContext context, TextEditingController _controller, String hint,
+    {DateTime? minTime, DateTime? maxTime}) {
   return TextField(
     controller: _controller,
     style: GoogleFonts.poppins(fontSize: 14),
@@ -14,8 +15,8 @@ TextField buildDateTextField(
             DatePicker.showDatePicker(
               context,
               showTitleActions: true,
-              minTime: DateTime(2018, 1, 1),
-              maxTime: DateTime(2032, 12, 31),
+              minTime: minTime ?? DateTime(1999, 1, 1),
+              maxTime: maxTime ?? DateTime(2100, 12, 31),
               onChanged: (date) {
                 _controller.text =
                     "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";

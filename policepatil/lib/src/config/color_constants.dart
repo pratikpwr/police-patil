@@ -9,7 +9,7 @@ const Color PRIMARY_COLOR = Color(0xFFF7770F);
 // Color(0xff000eac); // police blue color //Color(0xffdacbb0)
 // const Color PRIMARY_COLOR_DARK = Color(0xff3143C8);
 // const Color ACCENT_COLOR = Color(0xff4286f5);
-const Color POLICE_BLUE = Color(0xff000eac);
+const Color POLICE_BLUE = Color(0xff180154);
 const Color PRIMARY_COLOR_LIGHT = Color(0xFFf0f6ff);
 const Color ORANGE = Color(0xFFF7770F);
 

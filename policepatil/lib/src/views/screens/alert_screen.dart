@@ -26,7 +26,7 @@ class AlertScreen extends StatelessWidget {
         }, child: BlocBuilder<AlertBloc, AlertState>(
           builder: (context, state) {
             if (state is AlertLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is AlertLoaded) {
               if (state.alertResponse.data!.isEmpty) {
                 return NoRecordFound();

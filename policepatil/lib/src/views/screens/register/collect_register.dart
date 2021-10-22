@@ -125,7 +125,7 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
       description: _detailsController.text,
       latitude: _bloc.latitude,
       longitude: _bloc.longitude,
-      photo: _bloc.photo!.path,
+      photo: _bloc.photo?.path,
     );
 
     BlocProvider.of<CollectRegisterBloc>(context)

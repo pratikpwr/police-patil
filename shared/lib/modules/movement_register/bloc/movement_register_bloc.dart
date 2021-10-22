@@ -18,8 +18,7 @@ class MovementRegisterBloc
 
   @override
   Stream<MovementRegisterState> mapEventToState(
-    MovementRegisterEvent event,
-  ) async* {
+    MovementRegisterEvent event,) async* {
     if (event is GetMovementData) {
       yield* _mapGetMovementDataState(event);
     }
@@ -29,6 +28,7 @@ class MovementRegisterBloc
   }
 
   String? movementValue;
+  String? timeValue;
   String? movementSubValue;
   var isIssue;
   List<String>? movementSubRegTypes;
@@ -38,6 +38,7 @@ class MovementRegisterBloc
 
   String photoName = "हालचालीचा फोटो जोडा";
   File? photo;
+  final List<String> timeType = <String>["संभाव्य", "घटित"];
   final List<String> movementRegTypes = <String>[
     "राजकीय हालचाली",
     "धार्मिक हालचाली",

@@ -99,7 +99,22 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                   ],
                 ),
                 spacer(),
-                buildDateTextField(context, _dateController, DATE),
+                buildDropButton(
+                    value: _bloc.timeValue,
+                    items: _bloc.timeType,
+                    hint: "हालचाली स्तिथी निवडा",
+                    onChanged: (String? value) {
+                      setState(() {
+                        _bloc.timeValue = value;
+                      });
+                    }),
+                spacer(),
+                if (_bloc.timeValue == "संभाव्य")
+                  buildDateTextField(context, _dateController, DATE,
+                      minTime: DateTime.now()),
+                if (_bloc.timeValue == "घटित")
+                  buildDateTextField(context, _dateController, DATE,
+                      maxTime: DateTime.now()),
                 spacer(),
                 buildTimeTextField(context, _timeController, TIME),
                 spacer(),
@@ -153,7 +168,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                 ),
                 spacer(),
                 buildTextField(
-                    _leaderController, "नेतृत्त्व करणाऱ्या  व्यक्तीचे नाव"),
+                    _leaderController, "नेतृत्त्व करणाऱ्या व्यक्तीचे नाव"),
                 spacer(),
                 buildTextField(_countController, ATTENDANCE),
                 spacer(),
@@ -197,6 +212,8 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
     MovementData _movementData = MovementData(
         type: _bloc.movementValue,
         subtype: _bloc.movementSubValue,
+        movementType: _bloc.timeValue,
+        leader: _leaderController.text,
         address: _placeController.text,
         latitude: _bloc.latitude,
         longitude: _bloc.longitude,

@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/styles.dart';
@@ -96,10 +95,11 @@ class MovementDetailWidget extends StatelessWidget {
             Text(movementData.type!, style: Styles.primaryTextStyle()),
             Text(movementData.subtype!, style: Styles.primaryTextStyle()),
             const Divider(),
-            HeadValueText(title: DESCRIPTION, value: movementData.description!),
-            HeadValueText(title: ADDRESS, value: "${movementData.address}"),
             HeadValueText(
-                title: ATTENDANCE, value: "${movementData.attendance}"),
+                title: DESCRIPTION, value: movementData.description ?? "-"),
+            HeadValueText(title: ADDRESS, value: movementData.address ?? "-"),
+            HeadValueText(
+                title: ATTENDANCE, value: "${movementData.attendance ?? 0}"),
             HeadValueText(title: DATE, value: showDate(movementData.datetime!)),
           ],
         ),
@@ -125,13 +125,18 @@ class MovementDetailWidget extends StatelessWidget {
                   const Divider(),
                   spacer(height: 8),
                   HeadValueText(
-                      title: ADDRESS, value: "${movementData.address}"),
+                      title: ADDRESS, value: movementData.address ?? "-"),
                   HeadValueText(
                       title: DATE, value: showDate(movementData.datetime!)),
                   HeadValueText(
-                      title: DESCRIPTION, value: movementData.description!),
+                      title: DESCRIPTION,
+                      value: movementData.description ?? "-"),
                   HeadValueText(
-                      title: ATTENDANCE, value: "${movementData.attendance}"),
+                      title: "नेतृत्त्व करणाऱ्या व्यक्तीचे नाव",
+                      value: movementData.leader ?? "-"),
+                  HeadValueText(
+                      title: ATTENDANCE,
+                      value: "${movementData.attendance ?? 0}"),
                   HeadValueText(
                       title: IS_ISSUE, value: movementData.issue! ? YES : NO),
                   spacer(height: 8),

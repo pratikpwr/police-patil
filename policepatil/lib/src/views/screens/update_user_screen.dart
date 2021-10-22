@@ -19,17 +19,12 @@ class UpdateProfile extends StatefulWidget {
 
 class _UpdateProfileState extends State<UpdateProfile> {
   final _nameController = TextEditingController();
-
-  final _villageController = TextEditingController();
   final _addressController = TextEditingController();
-
   final _mobileController = TextEditingController();
-
   final _assignController = TextEditingController();
-
   final _lastController = TextEditingController();
-
   final _distanceController = TextEditingController();
+
   String _photoName = "फोटो जोडा";
   File? _photo;
   Position? _position;
@@ -39,13 +34,19 @@ class _UpdateProfileState extends State<UpdateProfile> {
   @override
   Widget build(BuildContext context) {
     final user = widget.user;
+    // _photo.path = user.photo ?? "";
     _nameController.text = user.name ?? "";
     _mobileController.text = user.mobile.toString();
     _addressController.text = user.address ?? "";
-    _villageController.text = user.village ?? "";
     _distanceController.text = user.psdistance.toString();
-    // _assignController.text = user.joindate.toIso8601String();
-    // _lastController.text = user.enddate.toIso8601String();
+    _latitude = user.latitude ?? 0.00;
+    _longitude = user.latitude ?? 0.00;
+    _assignController.text = user.joindate == null
+        ? ""
+        : user.joindate!.toIso8601String().substring(0, 10);
+    _lastController.text = user.enddate == null
+        ? ""
+        : user.enddate!.toIso8601String().substring(0, 10);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -83,8 +84,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       }),
                   spacer(),
                   buildTextField(_nameController, NAME),
-                  spacer(),
-                  buildTextField(_villageController, "गाव"),
                   spacer(),
                   buildTextField(_addressController, ADDRESS),
                   spacer(),
@@ -133,8 +132,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             name: _nameController.text,
                             address: _addressController.text,
                             mobile: int.parse(_mobileController.text),
-                            village: _villageController.text,
-                            photo: _photo?.path,
+                            photo: _photo?.path ?? "",
                             latitude: _latitude,
                             longitude: _longitude,
                             psdistance: int.parse(_distanceController.text),

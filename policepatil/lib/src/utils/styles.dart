@@ -4,7 +4,7 @@ import 'package:policepatil/src/config/constants.dart';
 
 class Styles {
   static TextStyle primaryTextStyle({
-    Color color = PRIMARY_COLOR,
+    Color color = POLICE_BLUE,
     FontWeight fontWeight = FontWeight.w500,
     double fontSize = 16,
     FontStyle fontStyle = FontStyle.normal,

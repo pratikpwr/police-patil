@@ -88,20 +88,26 @@ class ProfileScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                buildDetails(
-                                    "मो. नंबर :", state.user.mobile.toString()),
+                                buildDetails("मो. नंबर :",
+                                    "${state.user.mobile ?? "-"}"),
                                 spacer(height: 12),
                                 buildDetails(
                                     "पत्ता :", state.user.address ?? "-"),
                                 spacer(height: 12),
-                                buildDetails("नेमणुकीची तारीख :",
-                                    showDate(state.user.joindate!)),
+                                buildDetails(
+                                    "नेमणुकीची तारीख :",
+                                    state.user.joindate == null
+                                        ? "-"
+                                        : showDate(state.user.joindate!)),
                                 spacer(height: 12),
-                                buildDetails("नेमणुकीची मुदत :",
-                                    showDate(state.user.enddate!)),
+                                buildDetails(
+                                    "नेमणुकीची मुदत :",
+                                    state.user.enddate == null
+                                        ? "-"
+                                        : showDate(state.user.enddate!)),
                                 spacer(height: 12),
                                 buildDetails("पो. ठा. पासून गावाचे अंतर :",
-                                    "${state.user.psdistance} कि.मी."),
+                                    "${state.user.psdistance ?? "-"} कि.मी."),
                                 spacer(),
                               ],
                             ),
