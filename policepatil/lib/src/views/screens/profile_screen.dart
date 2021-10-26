@@ -95,6 +95,9 @@ class ProfileScreen extends StatelessWidget {
                                     "पत्ता :", state.user.address ?? "-"),
                                 spacer(height: 12),
                                 buildDetails(
+                                    "आदेश क्र.", state.user.orderNo ?? "-"),
+                                spacer(),
+                                buildDetails(
                                     "नेमणुकीची तारीख :",
                                     state.user.joindate == null
                                         ? "-"
