@@ -156,12 +156,13 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
 
   _registerArmsData() {
     DateFormat format = DateFormat("yyyy-MM-dd");
-    // TODO : add uid field and weapon condition dropdown
     ArmsData armsData = ArmsData(
         type: _bloc.armsValue!,
         name: _nameController.text,
         mobile: int.parse(_phoneController.text),
         aadhar: _bloc.file?.path,
+        uid: _uIDController.text,
+        weaponCondition: _bloc.weaponCondition,
         address: _addressController.text,
         latitude: _bloc.latitude,
         longitude: _bloc.longitude,

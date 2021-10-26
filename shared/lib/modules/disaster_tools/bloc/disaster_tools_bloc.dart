@@ -14,6 +14,28 @@ class DisasterToolsBloc extends Bloc<DisasterToolsEvent, DisasterToolsState> {
   DisasterToolsBloc() : super(DisasterToolsInitial());
   final _toolsRepository = DisasterToolsRepository();
 
+  String? chosenValue;
+  List<String> tools = [
+    "वॉटर प्रुफ थ्री पोल राहुटी",
+    "श्री पोल राहुटी",
+    "नाईट रिप्लेक्टीव्ह जॅकेट",
+    "लाईफ जॅकेट (रेस्क्यू जॅकेट)",
+    "रोप, कॅरॉबिनर व ग्लोज रेस्क्यू करीता",
+    "गम बुट",
+    "सर्च लाईट",
+    "रिचार्जेबल एल इ डी टॉर्च",
+    "रेन कोर्ट",
+    "बायनाक्युलर दुर्बिन",
+    "लाईट रिफ्लेक्टर बॅटन",
+    "नाईलॉन रोप",
+    "कुऱ्हाड",
+    "हेक्सा लाईट",
+    "रक्षक बोटी",
+    "वॉटर ट्यूब",
+    "प्लास्टीक हेल्मेट",
+    "इतर"
+  ];
+
   @override
   Stream<DisasterToolsState> mapEventToState(
     DisasterToolsEvent event,

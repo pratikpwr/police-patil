@@ -96,11 +96,25 @@ class AlertDetailsWidget extends StatelessWidget {
                   fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const Divider(),
-            Text(
-              alertData.date!.toIso8601String().substring(0, 10),
-              style: GoogleFonts.poppins(
-                  fontSize: 16, fontWeight: FontWeight.w500),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  alertData.date!.toIso8601String().substring(0, 10),
+                  style: GoogleFonts.poppins(
+                      fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                if (alertData.file != null)
+                  IconButton(
+                      onPressed: () {
+                        launchUrl("http://${alertData.file!}");
+                      },
+                      icon: const Icon(
+                        Icons.attach_file_rounded,
+                        size: 24,
+                      ))
+              ],
+            )
           ],
         ),
       ),

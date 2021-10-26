@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:shared/shared.dart';
@@ -18,6 +17,7 @@ class DisasterToolsRegisterForm extends StatefulWidget {
 class _DisasterToolsRegisterFormState extends State<DisasterToolsRegisterForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
+  final _bloc = DisasterToolsBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,18 @@ class _DisasterToolsRegisterFormState extends State<DisasterToolsRegisterForm> {
           child: Column(
             children: [
               spacer(),
-              buildTextField(_nameController, "उपलब्ध साधनाचे नाव"),
+              buildDropButton(
+                  value: _bloc.chosenValue,
+                  items: _bloc.tools,
+                  hint: "प्रकार निवडा",
+                  onChanged: (String? value) {
+                    setState(() {
+                      _bloc.chosenValue = value;
+                    });
+                  }),
+              spacer(),
+              if (_bloc.chosenValue == "इतर")
+                buildTextField(_nameController, "उपलब्ध साधनाचे नाव"),
               spacer(),
               buildTextField(_quantityController, "संख्या"),
               spacer(),
@@ -58,7 +69,9 @@ class _DisasterToolsRegisterFormState extends State<DisasterToolsRegisterForm> {
 
   _registerToolsData() {
     ToolsData _toolsData = ToolsData(
-        name: _nameController.text,
+        name: _bloc.chosenValue == "इतर"
+            ? _nameController.text
+            : _bloc.chosenValue,
         quantity: int.parse(_quantityController.text));
 
     BlocProvider.of<DisasterToolsBloc>(context).add(AddToolsData(_toolsData));

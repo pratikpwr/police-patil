@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:shared/shared.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ImpNewsWidget extends StatelessWidget {
   const ImpNewsWidget({Key? key}) : super(key: key);
@@ -47,7 +46,7 @@ class ImpNewsWidget extends StatelessWidget {
             BlocBuilder<NewsBloc, NewsState>(
               builder: (context, state) {
                 if (state is NewsLoading) {
-                  return Loading();
+                  return const Loading();
                 } else if (state is NewsLoaded) {
                   if (state.newsResponse.data!.isEmpty) {
                     return NoRecordFound();
@@ -101,6 +100,7 @@ class NewsDetailsWidget extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(16),
+        alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -111,15 +111,29 @@ class NewsDetailsWidget extends StatelessWidget {
             // Todo see doc button
             Text(
               newsData.title!,
-              maxLines: 3,
+              maxLines: 4,
               style: GoogleFonts.poppins(
                   fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const Divider(),
-            Text(
-              newsData.date!.toIso8601String().substring(0, 10),
-              style: GoogleFonts.poppins(
-                  fontSize: 16, fontWeight: FontWeight.w500),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  newsData.date!.toIso8601String().substring(0, 10),
+                  style: GoogleFonts.poppins(
+                      fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                if (newsData.file != null)
+                  IconButton(
+                      onPressed: () {
+                        launchUrl("http://${newsData.file!}");
+                      },
+                      icon: const Icon(
+                        Icons.attach_file_rounded,
+                        size: 24,
+                      ))
+              ],
             ),
           ],
         ),

@@ -96,7 +96,8 @@ class DeathDetailWidget extends StatelessWidget {
                 title: "मरणाचे प्राथमिक कारण",
                 value: deathData.causeOfDeath ?? "-"),
             HeadValueText(
-                title: "कोठे सापडले ठिकाण", value: deathData.address ?? "-"),
+                title: "कोठे सापडले ठिकाण",
+                value: deathData.foundAddress ?? "-"),
             HeadValueText(title: "लिंग", value: deathData.gender ?? "-"),
           ],
         ),

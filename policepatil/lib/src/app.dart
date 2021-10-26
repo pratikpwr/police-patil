@@ -30,6 +30,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => DisasterHelperBloc()),
         BlocProvider(create: (ctx) => DisasterToolsBloc()),
         BlocProvider(create: (ctx) => VillageSafetyBloc()),
+        BlocProvider(create: (ctx) => MandhanBloc()),
+        BlocProvider(create: (ctx) => CertificatesBloc()),
       ],
       child: MaterialApp(
           title: STR_APP_NAME,
@@ -41,5 +43,3 @@ class MyApp extends StatelessWidget {
 }
 
 // TODO : Change com.dcdevelopers.policepatil to  com.punerural.policepatil
-
-// TODO : Forget password and reset password

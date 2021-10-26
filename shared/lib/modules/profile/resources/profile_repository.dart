@@ -20,6 +20,7 @@ class ProfileRepository {
     } else {
       _body['photo'] = null;
     }
+    _body['_method'] = 'put';
     FormData _formData = FormData.fromMap(_body);
     final response = await ApiSdk.updateUserData(userId: id, body: _formData);
     return response;

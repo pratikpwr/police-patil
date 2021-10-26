@@ -18,6 +18,15 @@ class DisasterMenuScreen extends StatelessWidget {
           children: [
             spacer(),
             RegistersButton(
+                text: "आपत्ती प्रवण क्षेत्र",
+                imageUrl: ImageConstants.IMG_DISASTER_MANAGE,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) {
+                    return const DisasterAreaScreen();
+                  }));
+                }),
+            spacer(),
+            RegistersButton(
                 text: REGISTER_DISASTER,
                 imageUrl: ImageConstants.IMG_DISASTER_MANAGE,
                 onTap: () {

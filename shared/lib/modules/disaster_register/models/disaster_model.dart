@@ -86,3 +86,10 @@ class DisasterData {
         "level": level,
       };
 }
+
+class DisasterArea {
+  final String title;
+  bool isSelected;
+
+  DisasterArea({required this.title, required this.isSelected});
+}

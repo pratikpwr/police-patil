@@ -17,3 +17,14 @@ class AddDisasterData extends DisasterRegisterEvent {
   @override
   List<Object> get props => [disasterData];
 }
+
+class AddDisasterArea extends DisasterRegisterEvent {
+  final List<String> areas;
+
+  const AddDisasterArea(this.areas);
+
+  @override
+  List<Object> get props => [areas];
+}
+
+class GetDisasterArea extends DisasterRegisterEvent {}

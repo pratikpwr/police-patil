@@ -33,6 +33,14 @@ class ApiSdk {
       {required int userId, required dynamic body}) async {
     String path = ApiConstants.UPDATE_USER_DATA + "$userId";
 
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> updateDangerZoneData(
+      {required int userId, required dynamic body}) async {
+    String path = ApiConstants.UPDATE_USER_DATA + "$userId";
+
     Response response = await RestApiHandlerData.putData(path, body);
     return response;
   }
@@ -268,6 +276,20 @@ class ApiSdk {
     String path = ApiConstants.GET_KAYADE;
 
     Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> getCertificate({required body}) async {
+    String path = ApiConstants.GET_CERTIFICATE;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> getMandhan({required body}) async {
+    String path = ApiConstants.GET_MANDHAN;
+
+    Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }
 }

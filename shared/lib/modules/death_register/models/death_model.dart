@@ -86,15 +86,14 @@ class DeathData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "isknown": isKnown! ? 1 : 0,
         "name": name,
         "gender": gender,
         "address": address,
         "latitude": latitude,
         "longitude": longitude,
-        "date": dateOfDeath,
+        "date": dateOfDeath == null ? null : dateOfDeath!.toIso8601String(),
         "photo": photo,
         "foundaddress": foundAddress,
         "causeofdeath": causeOfDeath,

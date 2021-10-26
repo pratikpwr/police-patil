@@ -5,6 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:shared/modules/disaster_register/models/disaster_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared/modules/disaster_register/resources/disaster_repository.dart';
+import 'package:shared/modules/profile/models/user_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'disaster_register_event.dart';
 
@@ -14,18 +16,6 @@ class DisasterRegisterBloc
     extends Bloc<DisasterRegisterEvent, DisasterRegisterState> {
   DisasterRegisterBloc() : super(DisasterRegisterInitial());
   final _disasterRepository = DisasterRepository();
-
-  @override
-  Stream<DisasterRegisterState> mapEventToState(
-    DisasterRegisterEvent event,
-  ) async* {
-    if (event is GetDisasterData) {
-      yield* _mapGetDisasterDataState(event);
-    }
-    if (event is AddDisasterData) {
-      yield* _mapAddDisasterDataState(event);
-    }
-  }
 
   String? chosenType;
   String? chosenSubType;
@@ -48,6 +38,34 @@ class DisasterRegisterBloc
     "मोठे अपघात",
     "इतर",
   ];
+  List<DisasterArea> areas = [
+    DisasterArea(title: "दरड प्रवण", isSelected: false),
+    DisasterArea(title: "पूर प्रवण", isSelected: false),
+    DisasterArea(title: "दुष्काळ प्रवण", isSelected: false),
+    DisasterArea(title: "भुकंप प्रवण", isSelected: false),
+    DisasterArea(title: "MIDC", isSelected: false),
+    DisasterArea(title: "इतर", isSelected: false),
+  ];
+
+  List<String> selectedAreas = [];
+
+  @override
+  Stream<DisasterRegisterState> mapEventToState(
+    DisasterRegisterEvent event,
+  ) async* {
+    if (event is GetDisasterData) {
+      yield* _mapGetDisasterDataState(event);
+    }
+    if (event is AddDisasterData) {
+      yield* _mapAddDisasterDataState(event);
+    }
+    if (event is AddDisasterArea) {
+      yield* _mapAddDisasterAreaState(event);
+    }
+    if (event is GetDisasterArea) {
+      yield* _mapGetDisasterAreaState(event);
+    }
+  }
 
   Stream<DisasterRegisterState> _mapGetDisasterDataState(
       GetDisasterData event) async* {
@@ -79,6 +97,56 @@ class DisasterRegisterBloc
       }
     } catch (err) {
       yield DisasterDataSendError(err.toString());
+    }
+  }
+
+  Stream<DisasterRegisterState> _mapAddDisasterAreaState(
+      AddDisasterArea event) async* {
+    yield DisasterAreaSending();
+    try {
+      final SharedPreferences sharedPrefs =
+          await SharedPreferences.getInstance();
+      int? userId = sharedPrefs.getInt('userId');
+
+      Map<String, dynamic> body = {"dangerzone": event.areas};
+      Response _response =
+          await _disasterRepository.addDisasterArea(id: userId!, body: body);
+
+      if (_response.data["message"] != null) {
+        yield DisasterAreaSent(_response.data["message"]);
+      } else {
+        yield DisasterAreaSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield DisasterAreaSendError(err.toString());
+    }
+  }
+
+  Stream<DisasterRegisterState> _mapGetDisasterAreaState(
+      GetDisasterArea event) async* {
+    yield DisasterAreaLoading();
+    try {
+      final SharedPreferences sharedPrefs =
+          await SharedPreferences.getInstance();
+      int? userId = sharedPrefs.getInt('userId');
+
+      Response _response = await _disasterRepository.getDisasterArea(userId!);
+      final user = UserData.fromJson(_response.data["data"]);
+      if (_response.data["message"] == "Success") {
+        final line = user.dangerzone;
+        final regex = RegExp(r'\w+');
+        List<String> areasPrev = [];
+        final res = regex.allMatches(line!);
+        for (int i = 0; i < res.length; i++) {
+          var match = res.elementAt(i);
+          areasPrev.add(match.group(0)!);
+        }
+        yield DisasterAreaLoaded(areasPrev);
+      } else {
+        yield DisasterAreaSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield DisasterAreaSendError(err.toString());
     }
   }
 

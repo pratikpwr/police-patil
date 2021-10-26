@@ -59,6 +59,8 @@ class ArmsData {
         type: json["type"],
         name: json["name"],
         mobile: json["mobile"],
+        uid: json["uid"],
+        weaponCondition: json["weapon_condition"],
         aadhar: json["aadhar"],
         address: json["address"],
         latitude: json["latitude"].toDouble(),

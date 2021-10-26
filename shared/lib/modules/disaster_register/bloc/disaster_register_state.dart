@@ -39,3 +39,34 @@ class DisasterDataSendError extends DisasterRegisterState {
 
   const DisasterDataSendError(this.error);
 }
+
+class DisasterAreaSending extends DisasterRegisterState {}
+
+class DisasterAreaSent extends DisasterRegisterState {
+  final String message;
+
+  const DisasterAreaSent(this.message);
+}
+
+class DisasterAreaSendError extends DisasterRegisterState {
+  final String error;
+
+  const DisasterAreaSendError(this.error);
+}
+
+class DisasterAreaLoading extends DisasterRegisterState {}
+
+class DisasterAreaLoaded extends DisasterRegisterState {
+  final List<String> areas;
+
+  const DisasterAreaLoaded(this.areas);
+
+  @override
+  List<Object> get props => [areas];
+}
+
+class DisasterAreaLoadError extends DisasterRegisterState {
+  final String error;
+
+  const DisasterAreaLoadError(this.error);
+}

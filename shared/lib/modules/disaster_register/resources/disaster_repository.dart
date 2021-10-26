@@ -12,4 +12,15 @@ class DisasterRepository {
     final response = await ApiSdk.postDisasterRegister(body: body);
     return response;
   }
+
+  Future<dynamic> getDisasterArea(int userId) async {
+    final response = await ApiSdk.getUserData(userId: userId);
+    return response;
+  }
+
+  Future<dynamic> addDisasterArea(
+      {required int id, required dynamic body}) async {
+    final response = await ApiSdk.updateDangerZoneData(userId: id, body: body);
+    return response;
+  }
 }
