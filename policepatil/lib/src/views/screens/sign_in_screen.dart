@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 import '../views.dart';
@@ -62,14 +62,15 @@ class _SignInScreenState extends State<SignInScreen> {
                           const LogoWidget(logoSize: 240),
                           spacer(height: 24),
                           TextFormField(
+                            cursorColor: PRIMARY_COLOR,
                             decoration: InputDecoration(
-                                labelText: USER_ID,
-                                filled: true,
-                                isDense: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15))),
+                              labelText: USER_ID,
+                              labelStyle: Styles.inputFieldTextStyle(),
+                              filled: true,
+                              isDense: true,
+                            ),
                             controller: _emailController,
-                            style: GoogleFonts.poppins(fontSize: 14),
+                            style: Styles.inputFieldTextStyle(),
                             autocorrect: false,
                             validator: (value) {
                               if (value == "") {
@@ -82,12 +83,11 @@ class _SignInScreenState extends State<SignInScreen> {
                           TextFormField(
                             decoration: InputDecoration(
                               labelText: PASSWORD,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15)),
+                              labelStyle: Styles.inputFieldTextStyle(),
                               filled: true,
                               isDense: true,
                             ),
-                            style: GoogleFonts.poppins(fontSize: 14),
+                            style: Styles.inputFieldTextStyle(),
                             controller: _passwordController,
                             validator: (value) {
                               if (value == "") {
@@ -119,11 +119,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                                   _passwordController.text));
                                     }
                                   },
-                                  child: Text(
-                                    SIGN_IN,
-                                    style: GoogleFonts.poppins(
-                                        color: BUTTON_TEXT_COLOR, fontSize: 18),
-                                  ))
+                                  child: Text(SIGN_IN,
+                                      style: Styles.buttonTextStyle()),
+                                )
                         ],
                       ),
                     ),

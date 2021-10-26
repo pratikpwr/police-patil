@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:shared/shared.dart';
 
@@ -79,30 +79,26 @@ class AlertDetailsWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Todo see doc button
-            // if video then don't show photo
             if (alertData.photo != null && !(alertData.videoLink != null))
               CachedNetworkImage(
                 imageUrl: "http://${alertData.photo!}",
                 width: double.infinity,
-                height: 180,
+                height: 170,
               ),
             if (alertData.videoLink != null)
               VideoPlayerWidget(videoUrl: alertData.videoLink!),
             spacer(),
             Text(
               alertData.title!,
-              style: GoogleFonts.poppins(
-                  fontSize: 16, fontWeight: FontWeight.w500),
+              style: Styles.titleTextStyle(),
             ),
             const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  alertData.date!.toIso8601String().substring(0, 10),
-                  style: GoogleFonts.poppins(
-                      fontSize: 16, fontWeight: FontWeight.w500),
+                  showDate(alertData.date!),
+                  style: Styles.subTitleTextStyle(),
                 ),
                 if (alertData.file != null)
                   IconButton(
@@ -111,7 +107,7 @@ class AlertDetailsWidget extends StatelessWidget {
                       },
                       icon: const Icon(
                         Icons.attach_file_rounded,
-                        size: 24,
+                        size: 22,
                       ))
               ],
             )

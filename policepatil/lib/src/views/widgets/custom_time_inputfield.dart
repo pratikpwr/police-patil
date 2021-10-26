@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/utils.dart';
 
 TextField buildTimeTextField(
     BuildContext context, TextEditingController _controller, String hint) {
   return TextField(
     controller: _controller,
-    style: GoogleFonts.poppins(fontSize: 16),
+    style: Styles.inputFieldTextStyle(),
     decoration: InputDecoration(
         suffixIcon: IconButton(
-          icon: const Icon(Icons.calendar_today_rounded),
+          icon: const Icon(
+            Icons.calendar_today_rounded,
+            color: PRIMARY_COLOR,
+          ),
           onPressed: () {
             DatePicker.showTimePicker(
               context,
@@ -25,11 +29,6 @@ TextField buildTimeTextField(
           },
         ),
         hintText: "hh:mm",
-        label: Text(hint,
-            style:
-                GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500)),
-        hintStyle:
-            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+        label: Text(hint, style: Styles.inputFieldTextStyle())),
   );
 }

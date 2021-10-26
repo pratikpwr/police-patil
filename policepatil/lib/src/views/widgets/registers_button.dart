@@ -18,7 +18,7 @@ class RegistersButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.93,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
               primary: CONTAINER_BACKGROUND_COLOR,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15))),
@@ -37,8 +37,9 @@ class RegistersButton extends StatelessWidget {
               ),
               Text(
                 text,
-                style:
-                    Styles.appBarTextStyle(color: REGISTER_BUTTON_TEXT_COLOR),
+                overflow: TextOverflow.ellipsis,
+                style: Styles.appBarTextStyle(
+                    color: REGISTER_BUTTON_TEXT_COLOR, fontSize: 16),
               ),
             ],
           )),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/utils.dart';
 
 Widget buildDropButton(
     {String? value,
@@ -12,7 +12,7 @@ Widget buildDropButton(
     children: [
       Text(
         hint,
-        style: GoogleFonts.poppins(color: Colors.black),
+        style: Styles.inputFieldTextStyle(),
       ),
       spacer(height: 8),
       Container(
@@ -20,32 +20,27 @@ Widget buildDropButton(
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(width: 0.8),
+          border: Border.all(width: 1),
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
               focusColor: Colors.white,
               value: value,
               isExpanded: true,
-              //elevation: 5,
-              style: GoogleFonts.poppins(color: Colors.white),
-              iconEnabledColor: Colors.black,
+              iconEnabledColor: PRIMARY_COLOR,
               iconSize: 30,
               items: items.map<DropdownMenuItem<String>>((String val) {
                 return DropdownMenuItem<String>(
                   value: val,
                   child: Text(
                     val,
-                    style: GoogleFonts.poppins(color: Colors.black),
+                    style: Styles.inputFieldTextStyle(),
                   ),
                 );
               }).toList(),
               hint: Text(
                 hint,
-                style: GoogleFonts.poppins(
-                    color: Colors.black,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
+                style: Styles.inputFieldTextStyle(),
               ),
               onChanged: onChanged),
         ),

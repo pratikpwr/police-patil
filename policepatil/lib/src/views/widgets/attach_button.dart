@@ -17,9 +17,8 @@ class AttachButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-              10,
-            ))),
+                side: const BorderSide(width: 2, color: Colors.black),
+                borderRadius: BorderRadius.circular(10))),
         onPressed: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

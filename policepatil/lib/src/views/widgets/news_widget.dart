@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
+import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
 class ImpNewsWidget extends StatelessWidget {
@@ -99,7 +100,7 @@ class NewsDetailsWidget extends StatelessWidget {
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
@@ -108,21 +109,18 @@ class NewsDetailsWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Todo see doc button
             Text(
               newsData.title!,
               maxLines: 4,
-              style: GoogleFonts.poppins(
-                  fontSize: 16, fontWeight: FontWeight.w500),
+              style: Styles.titleTextStyle(),
             ),
             const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  newsData.date!.toIso8601String().substring(0, 10),
-                  style: GoogleFonts.poppins(
-                      fontSize: 16, fontWeight: FontWeight.w500),
+                  showDate(newsData.date!),
+                  style: Styles.subTitleTextStyle(),
                 ),
                 if (newsData.file != null)
                   IconButton(
@@ -131,7 +129,7 @@ class NewsDetailsWidget extends StatelessWidget {
                       },
                       icon: const Icon(
                         Icons.attach_file_rounded,
-                        size: 24,
+                        size: 22,
                       ))
               ],
             ),
@@ -141,9 +139,3 @@ class NewsDetailsWidget extends StatelessWidget {
     );
   }
 }
-
-// var ups = [
-//   "जप्ती मालाचा प्रकार बेवारस वाहने दागिने गौण खनिज इतर, जप्ती मालाचा प्रकार बेवारस वाहने दागिने गौण खनिज इतर.",
-//   "हे हस्तलिखित प्रिंटिंग होणार हातासो ते लिहावे असे आवाहन  करतो व ते आपल्या फोटोसह माझ्या नावाने किंवा शाळेच्या नावाने पोस्टाने किंवा कुरिअर ने पाठवाव्यात",
-//   "अवैद्य दारू विक्री करणारे गुटका जुगार मटका चालविणारे इतर जुगार खेळणारे गौण खनिज उत्खनन करणारे वाळू तस्कर",
-// ];

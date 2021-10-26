@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
+import 'package:policepatil/src/utils/utils.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -20,8 +21,7 @@ class CustomButton extends StatelessWidget {
         onPressed: onTap,
         child: Text(
           text,
-          style: GoogleFonts.poppins(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+          style: Styles.buttonTextStyle(),
         ));
   }
 }
