@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/views/screens/kayade_screen.dart';
@@ -47,11 +46,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
               spacer(),
               RegistersButton(
-                  text: MANDHAN,
+                  text: "हजेरीबाबतचे स्वयंघोषणापत्र",
                   imageUrl: ImageConstants.IMG_MONEY,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const MandhanScreen();
+                      return const SelfCertificateScreen();
+                    }));
+                  }),
+              spacer(),
+              RegistersButton(
+                  text: "पोलीस पाटील दाखला",
+                  imageUrl: ImageConstants.IMG_CERTIFICATE,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) {
+                      return const PatilCertificate();
                     }));
                   }),
               spacer(),

@@ -8,11 +8,10 @@ export 'package:policepatil/src/views/screens/splash_screen.dart';
 export 'package:policepatil/src/views/screens/alert_screen.dart';
 export 'package:policepatil/src/views/screens/bottom_nav_bar.dart';
 export 'package:policepatil/src/views/screens/profile_screen.dart';
-
-//MANDHAN
-export 'package:policepatil/src/views/screens/mandhan/mandhan_screen.dart';
-export 'package:policepatil/src/views/screens/mandhan/meetings_screen.dart';
-export 'package:policepatil/src/views/screens/mandhan/self_certificate_screen.dart';
+export 'package:policepatil/src/views/screens/self_certificate_screen.dart';
+export 'package:policepatil/src/views/screens/update_user_screen.dart';
+export 'package:policepatil/src/views/screens/pdf_view_screen.dart';
+export 'package:policepatil/src/views/screens/police_patil_dakhala.dart';
 
 //MANAGEMENT
 export 'package:policepatil/src/views/screens/disaster_management/disaster_manage_menu.dart';
@@ -51,7 +50,6 @@ export 'package:policepatil/src/views/screens/register/crimes_register/fires_scr
 export 'package:policepatil/src/views/screens/register/crimes_register/fires_register_screen.dart';
 export 'package:policepatil/src/views/screens/register/crimes_register/missing_screen.dart';
 export 'package:policepatil/src/views/screens/register/crimes_register/missing_register_screen.dart';
-export 'package:policepatil/src/views/screens/update_user_screen.dart';
 
 // export 'package:policepatil/src/views/screens';
 // export 'package:policepatil/src/views/screens';
