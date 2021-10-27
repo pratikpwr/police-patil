@@ -41,7 +41,7 @@ class AuthenticationBloc
     yield AuthenticationLoading();
     try {
       // a simulated delay for splash
-      await Future.delayed(const Duration(seconds: 1));
+      // await Future.delayed(const Duration(milliseconds: 5));
       final SharedPreferences sharedPreferences = await prefs;
       String? authToken = sharedPreferences.getString('authToken');
       if (authToken != "" && authToken != null) {

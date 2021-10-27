@@ -77,5 +77,5 @@ class ApiConstants {
 
   static const String GET_CERTIFICATE = BASE_URL + "/api/certificate";
   static const String GET_MANDHAN = BASE_URL + "/api/mandhan";
-  static const String POST_APP_VERSION = BASE_URL + "/api";
+  static const String POST_APP_VERSION = BASE_URL + "/api/app";
 }

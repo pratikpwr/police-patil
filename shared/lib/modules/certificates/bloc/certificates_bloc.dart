@@ -14,7 +14,7 @@ class CertificatesBloc extends Bloc<CertificatesEvent, CertificatesState> {
   final _certificatesRepository = CertificatesRepository();
   String? gender;
   final List<String> genderTypes = <String>["पुरुष", "स्त्री", "इतर"];
-  var body = {};
+  Map<String, dynamic> body = {};
 
   @override
   Stream<CertificatesState> mapEventToState(

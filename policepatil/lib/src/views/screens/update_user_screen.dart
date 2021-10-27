@@ -61,7 +61,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "माहिती उपडेट करा",
+          "माहिती अपडेट करा",
         ),
       ),
       body: BlocListener<ProfileBloc, ProfileState>(
@@ -137,7 +137,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       context, _lastController, "नेमणुकीची मुदत"),
                   spacer(),
                   CustomButton(
-                      text: "माहिती उपडेट करा",
+                      text: "माहिती अपडेट करा",
                       onTap: () {
                         DateFormat _format = DateFormat("yyyy-MM-dd");
                         final user = UserData(

@@ -21,7 +21,7 @@ class MandhanBloc extends Bloc<MandhanEvent, MandhanState> {
   ) async* {
     if (event is GetMandhanDakhala) {
       try {
-        var body = {"count": int.parse(chosenValue!)};
+        Map<String, dynamic> body = {"count": int.parse(chosenValue!)};
         Response _response = await _mandhanRepository.getMandhanDakhala(body);
         if (_response.data["message"] == "Success") {
           String link = _response.data["data"]["link"];

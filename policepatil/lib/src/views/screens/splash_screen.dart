@@ -27,38 +27,18 @@ class _SplashScreenState extends State<SplashScreen> {
     // SizeConfig().init(context);
     return Scaffold(
         body: BlocListener<AuthenticationBloc, AuthenticationState>(
-      bloc: authenticationBloc,
-      listener: (BuildContext context, AuthenticationState state) {
-        if (state is AppAuthenticated) {
-          Navigator.pushNamed(context, '/bottomNavBar');
-        }
-        if (state is AuthenticationStart) {
-          Navigator.pushNamed(context, '/auth');
-        }
-        if (state is UserLogoutState) {
-          Navigator.pushNamed(context, '/auth');
-        }
-      },
-      child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          bloc: authenticationBloc,
-          builder: (BuildContext context, AuthenticationState state) {
-            final _size = MediaQuery.of(context).size;
-            return Stack(
-              children: [
-                Image.asset(
-                  ImageConstants.IMG_SHAPES_1,
-                  height: _size.height,
-                  width: _size.width,
-                  fit: BoxFit.fill,
-                ),
-                Container(
-                    height: _size.height,
-                    width: _size.width,
-                    alignment: Alignment.center,
-                    child: const LogoWidget(logoSize: 250)),
-              ],
-            );
-          }),
-    ));
+            bloc: authenticationBloc,
+            listener: (BuildContext context, AuthenticationState state) {
+              if (state is AppAuthenticated) {
+                Navigator.pushNamed(context, '/bottomNavBar');
+              }
+              if (state is AuthenticationStart) {
+                Navigator.pushNamed(context, '/auth');
+              }
+              if (state is UserLogoutState) {
+                Navigator.pushNamed(context, '/auth');
+              }
+            },
+            child: const SizedBox()));
   }
 }

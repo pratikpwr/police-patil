@@ -7,7 +7,7 @@ import 'package:policepatil/src/utils/styles.dart';
 /// contains theme data for app
 
 final myTheme = ThemeData(
-  primaryColor: ORANGE,
+  primaryColor: PRIMARY_COLOR,
   iconTheme: const IconThemeData(color: PRIMARY_COLOR, size: 24),
   appBarTheme: AppBarTheme(
     centerTitle: true,

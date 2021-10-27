@@ -116,7 +116,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             Center(
                               child: CustomButton(
-                                  text: "माहिती उपडेट करा",
+                                  text: "माहिती अपडेट करा",
                                   onTap: () {
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (_) {
