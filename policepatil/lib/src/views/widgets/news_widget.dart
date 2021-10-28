@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
+import 'package:policepatil/src/views/screens/news_screen.dart';
 import 'package:shared/shared.dart';
 
 class ImpNewsWidget extends StatelessWidget {
@@ -23,25 +24,32 @@ class ImpNewsWidget extends StatelessWidget {
         )),
         child: Column(
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  ImageConstants.UPDATES,
-                  height: 40,
-                  width: 40,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(
-                  width: 12,
-                ),
-                Text(
-                  "महत्त्वाच्या घडामोडी !",
-                  style: GoogleFonts.poppins(
-                      fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-              ],
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) {
+                  return const NewsScreen();
+                }));
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    ImageConstants.UPDATES,
+                    height: 40,
+                    width: 40,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    "महत्त्वाच्या घडामोडी !",
+                    style: GoogleFonts.poppins(
+                        fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
             ),
             spacer(height: 8),
             BlocBuilder<NewsBloc, NewsState>(
@@ -66,7 +74,7 @@ class ImpNewsWidget extends StatelessWidget {
                               state.newsResponse.data!.map((NewsData newsData) {
                             return Builder(
                               builder: (BuildContext context) {
-                                return NewsDetailsWidget(
+                                return NewsWidget(
                                   newsData: newsData,
                                 );
                               },
@@ -86,10 +94,10 @@ class ImpNewsWidget extends StatelessWidget {
   }
 }
 
-class NewsDetailsWidget extends StatelessWidget {
+class NewsWidget extends StatelessWidget {
   final NewsData newsData;
 
-  const NewsDetailsWidget({Key? key, required this.newsData}) : super(key: key);
+  const NewsWidget({Key? key, required this.newsData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -32,9 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               spacer(height: 8),
-              BlocProvider(
-                  create: (context) => NewsBloc(),
-                  child: const ImpNewsWidget()),
+              const ImpNewsWidget(),
               spacer(),
               RegistersButton(
                   text: REGISTER,

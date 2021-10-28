@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (ctx) => DisasterToolsBloc()),
         BlocProvider(create: (ctx) => VillageSafetyBloc()),
         BlocProvider(create: (ctx) => MandhanBloc()),
+        BlocProvider(create: (context) => NewsBloc()),
         BlocProvider(create: (ctx) => CertificatesBloc()),
       ],
       child: MaterialApp(
