@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared/modules/disaster_register/models/disaster_model.dart';
 import 'package:dio/dio.dart';
 import 'package:shared/modules/disaster_register/resources/disaster_repository.dart';
-import 'package:shared/modules/profile/models/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'disaster_register_event.dart';
@@ -126,21 +126,11 @@ class DisasterRegisterBloc
       GetDisasterArea event) async* {
     yield DisasterAreaLoading();
     try {
-      final SharedPreferences sharedPrefs =
-          await SharedPreferences.getInstance();
-      int? userId = sharedPrefs.getInt('userId');
-
-      Response _response = await _disasterRepository.getDisasterArea(userId!);
-      final user = UserData.fromJson(_response.data["data"]);
+      Response _response = await _disasterRepository.getDisasterArea();
       if (_response.data["message"] == "Success") {
-        final line = user.dangerzone;
-        final regex = RegExp(r'\w+');
         List<String> areasPrev = [];
-        final res = regex.allMatches(line!);
-        for (int i = 0; i < res.length; i++) {
-          var match = res.elementAt(i);
-          areasPrev.add(match.group(0)!);
-        }
+        areasPrev
+            .addAll(List<String>.from(_response.data["data"].map((x) => x)));
         yield DisasterAreaLoaded(areasPrev);
       } else {
         yield DisasterAreaSendError(_response.data["error"]);

@@ -286,6 +286,13 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> getDangerArea() async {
+    String path = ApiConstants.GET_DANGER_AREA;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
   static Future<Response> getCertificate({required body}) async {
     String path = ApiConstants.GET_CERTIFICATE;
 

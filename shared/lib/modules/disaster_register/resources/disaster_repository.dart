@@ -13,8 +13,8 @@ class DisasterRepository {
     return response;
   }
 
-  Future<dynamic> getDisasterArea(int userId) async {
-    final response = await ApiSdk.getUserData(userId: userId);
+  Future<dynamic> getDisasterArea() async {
+    final response = await ApiSdk.getDangerArea();
     return response;
   }
 

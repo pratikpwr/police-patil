@@ -75,6 +75,7 @@ class ApiConstants {
   static const String VILLAGE_HELPER = BASE_URL + "/api/gramsuraksha";
 
   static const String GET_KAYADE = BASE_URL + "/api/kayade";
+  static const String GET_DANGER_AREA = BASE_URL + "/api/dangerzone";
 
   static const String GET_CERTIFICATE = BASE_URL + "/api/certificate";
   static const String GET_MANDHAN = BASE_URL + "/api/mandhan";
