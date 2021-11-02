@@ -43,7 +43,7 @@ class IllegalData {
   int? id;
   String? type;
   String? name;
-  String? photo;
+  dynamic photo;
   String? address;
   double? latitude;
   String? vehicleNo;

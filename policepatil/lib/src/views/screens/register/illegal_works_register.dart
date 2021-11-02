@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -96,7 +97,7 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
                     ),
                     spacer(),
                     _bloc.chosenValue == _bloc.watchRegTypes[3] ||
-                            _bloc.chosenValue == _bloc.watchRegTypes[4]
+                        _bloc.chosenValue == _bloc.watchRegTypes[4]
                         ? buildTextField(_vehicleNoController, VEHICLE_NO)
                         : spacer(height: 0),
                     spacer(),
@@ -111,11 +112,13 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
     );
   }
 
-  _registerIllegalData() {
+  _registerIllegalData() async {
     IllegalData _illegalData = IllegalData(
       type: _bloc.chosenValue,
       name: _nameController.text,
-      photo: _bloc.photo?.path,
+      photo: _bloc.photo?.path != null
+          ? await MultipartFile.fromFile(_bloc.photo!.path)
+          : " ",
       vehicleNo: _vehicleNoController.text,
       address: _addressController.text,
       latitude: _bloc.latitude,

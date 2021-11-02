@@ -10,7 +10,7 @@ class IllegalRepository {
 
   Future<dynamic> addIllegalData({required IllegalData illegalData}) async {
     Map<String, dynamic> _body = illegalData.toJson();
-    _body['photo'] = await MultipartFile.fromFile(_body['photo']);
+    // _body['photo'] = await MultipartFile.fromFile(_body['photo']);
     FormData _formData = FormData.fromMap(_body);
     final response = await ApiSdk.postIllegalRegister(body: _formData);
     return response;
