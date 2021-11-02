@@ -85,6 +85,6 @@ class FireData {
         "time": time,
         "reason": reason,
         "loss": loss,
-    "photo": photo
+        "photo": photo
       };
 }

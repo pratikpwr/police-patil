@@ -1,9 +1,9 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
@@ -138,21 +138,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   spacer(),
                   CustomButton(
                       text: "माहिती अपडेट करा",
-                      onTap: () {
-                        DateFormat _format = DateFormat("yyyy-MM-dd");
-                        final user = UserData(
-                            name: _nameController.text,
-                            address: _addressController.text,
-                            mobile: int.parse(_mobileController.text),
-                            photo: _photo?.path ?? "",
-                            latitude: _latitude,
-                            longitude: _longitude,
-                            orderNo: _orderNoController.text,
-                            psdistance: int.parse(_distanceController.text),
-                            joindate: _format.parse(_assignController.text),
-                            enddate: _format.parse(_lastController.text));
-                        BlocProvider.of<ProfileBloc>(context)
-                            .add(ChangeUserData(user));
+                      onTap: () async {
+                        _updateUser();
                       })
                 ],
               ),
@@ -161,5 +148,22 @@ class _UpdateProfileState extends State<UpdateProfile> {
         ),
       ),
     );
+  }
+
+  _updateUser() async {
+    final user = UserData(
+        name: _nameController.text,
+        address: _addressController.text,
+        mobile: parseInt(_mobileController.text),
+        photo: _photo?.path != null
+            ? await MultipartFile.fromFile(_photo!.path)
+            : widget.user.photo,
+        latitude: _latitude,
+        longitude: _longitude,
+        orderNo: _orderNoController.text,
+        psdistance: parseInt(_distanceController.text),
+        joindate: parseDate(_assignController.text),
+        enddate: parseDate(_lastController.text));
+    BlocProvider.of<ProfileBloc>(context).add(ChangeUserData(user));
   }
 }

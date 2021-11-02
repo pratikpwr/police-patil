@@ -32,7 +32,7 @@ class UserData {
   DateTime? joindate;
   DateTime? enddate;
   int? psdistance;
-  String? photo;
+  dynamic photo;
   double? latitude;
   double? longitude;
   String? taluka;
