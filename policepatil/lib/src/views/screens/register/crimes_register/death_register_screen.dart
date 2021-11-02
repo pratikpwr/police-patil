@@ -1,13 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
-import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
-import 'package:policepatil/src/views/widgets/attach_button.dart';
 import 'package:shared/shared.dart';
 
 class DeathRegFormScreen extends StatefulWidget {
@@ -46,197 +44,196 @@ class _DeathRegFormScreenState extends State<DeathRegFormScreen> {
         },
         child: SafeArea(
             child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding: const EdgeInsets.all(16),
+              physics: const BouncingScrollPhysics(),
+              child: Column(
                 children: [
-                  Text(
-                    "ओळख पटलेली आहे का ?",
-                    style: GoogleFonts.poppins(fontSize: 14),
-                  ),
-                  Row(
+                  spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Radio(
-                              value: YES,
-                              groupValue: _bloc.isIdentified,
-                              onChanged: (value) {
-                                setState(() {
-                                  _bloc.isIdentified = value;
-                                });
-                              }),
-                          Text(
-                            YES,
-                            style: GoogleFonts.poppins(fontSize: 14),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        width: 18,
+                      Text(
+                        "ओळख पटलेली आहे का ?",
+                        style: GoogleFonts.poppins(fontSize: 14),
                       ),
                       Row(
                         children: [
-                          Radio(
-                              value: NO,
-                              groupValue: _bloc.isIdentified,
-                              onChanged: (value) {
-                                setState(() {
-                                  _bloc.isIdentified = value;
-                                });
-                              }),
-                          Text(
-                            NO,
-                            style: GoogleFonts.poppins(fontSize: 14),
+                          Row(
+                            children: [
+                              Radio(
+                                  value: YES,
+                                  groupValue: _bloc.isIdentified,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _bloc.isIdentified = value;
+                                    });
+                                  }),
+                              Text(
+                                YES,
+                                style: GoogleFonts.poppins(fontSize: 14),
+                              ),
+                            ],
                           ),
+                          const SizedBox(
+                            width: 18,
+                          ),
+                          Row(
+                            children: [
+                              Radio(
+                                  value: NO,
+                                  groupValue: _bloc.isIdentified,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _bloc.isIdentified = value;
+                                    });
+                                  }),
+                              Text(
+                                NO,
+                                style: GoogleFonts.poppins(fontSize: 14),
+                              ),
+                            ],
+                          )
                         ],
-                      )
+                      ),
                     ],
                   ),
+                  spacer(),
+                  _bloc.isIdentified == YES
+                      ? Column(
+                    children: [
+                      buildTextField(_nameController, NAME),
+                      spacer(),
+                      buildDropButton(
+                          value: _bloc.gender,
+                          items: _bloc.genderTypes,
+                          hint: "लिंग निवडा",
+                          onChanged: (String? value) {
+                            setState(() {
+                              _bloc.gender = value;
+                            });
+                          }),
+                      spacer(),
+                      buildTextField(_addressController, ADDRESS),
+                      spacer(),
+                      AttachButton(
+                          text: SELECT_LOCATION,
+                          icon: Icons.location_on_rounded,
+                          onTap: () async {
+                            _addPos = await determinePosition();
+                            setState(() {
+                              _bloc.longitude = _addPos!.longitude;
+                              _bloc.latitude = _addPos!.latitude;
+                            });
+                          }),
+                      spacer(),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("$LONGITUDE: ${_bloc.longitude}",
+                              style: GoogleFonts.poppins(fontSize: 14)),
+                          const SizedBox(width: 12),
+                          Text("$LATITUDE: ${_bloc.latitude}",
+                              style: GoogleFonts.poppins(fontSize: 14)),
+                        ],
+                      ),
+                      spacer(),
+                      AttachButton(
+                        text: _bloc.photoName,
+                        onTap: () async {
+                          getFileFromDevice(context).then((pickedFile) {
+                            setState(() {
+                              _bloc.photo = pickedFile;
+                              _bloc.photoName = getFileName(pickedFile!.path);
+                            });
+                          });
+                        },
+                      ),
+                      spacer(),
+                      buildTextField(_placeController, "कोठे सापडले ठिकाण"),
+                      spacer(),
+                      buildTextField(
+                          _reasonController, "मरणाचे प्राथमिक कारण"),
+                      spacer(),
+                      buildDateTextField(
+                          context, _dateController, "मरणाची तारीख"),
+                    ],
+                  )
+                      : spacer(height: 0),
+                  _bloc.isIdentified == NO
+                      ? Column(
+                    children: [
+                      buildTextField(_ageController, "अंदाजे वय"),
+                      spacer(),
+                      buildDropButton(
+                          value: _bloc.gender,
+                          items: _bloc.genderTypes,
+                          hint: "लिंग निवडा",
+                          onChanged: (String? value) {
+                            setState(() {
+                              _bloc.gender = value;
+                            });
+                          }),
+                      spacer(),
+                      AttachButton(
+                        text: _bloc.photoName,
+                        onTap: () async {
+                          getFileFromDevice(context).then((pickedFile) {
+                            setState(() {
+                              _bloc.photo = pickedFile;
+                              _bloc.photoName = getFileName(pickedFile!.path);
+                            });
+                          });
+                        },
+                      ),
+                      spacer(),
+                      buildTextField(_placeController, "कोठे सापडले ठिकाण"),
+                      spacer(),
+                      AttachButton(
+                          text: SELECT_LOCATION,
+                          icon: Icons.location_on_rounded,
+                          onTap: () async {
+                            _addPos = await determinePosition();
+                            setState(() {
+                              _bloc.longitude = _addPos!.longitude;
+                              _bloc.latitude = _addPos!.latitude;
+                            });
+                          }),
+                      spacer(),
+                      Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("$LONGITUDE: ${_bloc.longitude}",
+                              style: GoogleFonts.poppins(fontSize: 14)),
+                          const SizedBox(width: 12),
+                          Text("$LATITUDE: ${_bloc.latitude}",
+                              style: GoogleFonts.poppins(fontSize: 14)),
+                        ],
+                      ),
+                      spacer(),
+                      buildTextField(
+                          _reasonController, "मरणाचे प्राथमिक कारण"),
+                      spacer(),
+                      buildDateTextField(
+                          context, _dateController, "मरणाची तारीख"),
+                    ],
+                  )
+                      : spacer(height: 0),
+                  spacer(),
+                  CustomButton(
+                      text: DO_REGISTER,
+                      onTap: () {
+                        _registerDeathData();
+                      })
                 ],
               ),
-              spacer(),
-              _bloc.isIdentified == YES
-                  ? Column(
-                      children: [
-                        buildTextField(_nameController, NAME),
-                        spacer(),
-                        buildDropButton(
-                            value: _bloc.gender,
-                            items: _bloc.genderTypes,
-                            hint: "लिंग निवडा",
-                            onChanged: (String? value) {
-                              setState(() {
-                                _bloc.gender = value;
-                              });
-                            }),
-                        spacer(),
-                        buildTextField(_addressController, ADDRESS),
-                        spacer(),
-                        AttachButton(
-                            text: SELECT_LOCATION,
-                            icon: Icons.location_on_rounded,
-                            onTap: () async {
-                              _addPos = await determinePosition();
-                              setState(() {
-                                _bloc.longitude = _addPos!.longitude;
-                                _bloc.latitude = _addPos!.latitude;
-                              });
-                            }),
-                        spacer(),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("$LONGITUDE: ${_bloc.longitude}",
-                                style: GoogleFonts.poppins(fontSize: 14)),
-                            const SizedBox(width: 12),
-                            Text("$LATITUDE: ${_bloc.latitude}",
-                                style: GoogleFonts.poppins(fontSize: 14)),
-                          ],
-                        ),
-                        spacer(),
-                        AttachButton(
-                          text: _bloc.photoName,
-                          onTap: () async {
-                            getFileFromDevice(context).then((pickedFile) {
-                              setState(() {
-                                _bloc.photo = pickedFile;
-                                _bloc.photoName = getFileName(pickedFile!.path);
-                              });
-                            });
-                          },
-                        ),
-                        spacer(),
-                        buildTextField(_placeController, "कोठे सापडले ठिकाण"),
-                        spacer(),
-                        buildTextField(
-                            _reasonController, "मरणाचे प्राथमिक कारण"),
-                        spacer(),
-                        buildDateTextField(
-                            context, _dateController, "मरणाची तारीख"),
-                      ],
-                    )
-                  : spacer(height: 0),
-              _bloc.isIdentified == NO
-                  ? Column(
-                      children: [
-                        buildTextField(_ageController, "अंदाजे वय"),
-                        spacer(),
-                        buildDropButton(
-                            value: _bloc.gender,
-                            items: _bloc.genderTypes,
-                            hint: "लिंग निवडा",
-                            onChanged: (String? value) {
-                              setState(() {
-                                _bloc.gender = value;
-                              });
-                            }),
-                        spacer(),
-                        AttachButton(
-                          text: _bloc.photoName,
-                          onTap: () async {
-                            getFileFromDevice(context).then((pickedFile) {
-                              setState(() {
-                                _bloc.photo = pickedFile;
-                                _bloc.photoName = getFileName(pickedFile!.path);
-                              });
-                            });
-                          },
-                        ),
-                        spacer(),
-                        buildTextField(_placeController, "कोठे सापडले ठिकाण"),
-                        spacer(),
-                        AttachButton(
-                            text: SELECT_LOCATION,
-                            icon: Icons.location_on_rounded,
-                            onTap: () async {
-                              _addPos = await determinePosition();
-                              setState(() {
-                                _bloc.longitude = _addPos!.longitude;
-                                _bloc.latitude = _addPos!.latitude;
-                              });
-                            }),
-                        spacer(),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text("$LONGITUDE: ${_bloc.longitude}",
-                                style: GoogleFonts.poppins(fontSize: 14)),
-                            const SizedBox(width: 12),
-                            Text("$LATITUDE: ${_bloc.latitude}",
-                                style: GoogleFonts.poppins(fontSize: 14)),
-                          ],
-                        ),
-                        spacer(),
-                        buildTextField(
-                            _reasonController, "मरणाचे प्राथमिक कारण"),
-                        spacer(),
-                        buildDateTextField(
-                            context, _dateController, "मरणाची तारीख"),
-                      ],
-                    )
-                  : spacer(height: 0),
-              spacer(),
-              CustomButton(
-                  text: DO_REGISTER,
-                  onTap: () {
-                    _registerDeathData();
-                  })
-            ],
-          ),
-        )),
+            )),
       ),
     );
   }
 
-  _registerDeathData() {
-    DateFormat _format = DateFormat("yyyy-MM-dd");
+  _registerDeathData() async {
     DeathData _deathData = DeathData(
         isKnown: _bloc.isIdentified == YES,
         name: _nameController.text,
@@ -244,11 +241,13 @@ class _DeathRegFormScreenState extends State<DeathRegFormScreen> {
         address: _addressController.text,
         latitude: _bloc.latitude,
         longitude: _bloc.longitude,
-        photo: _bloc.photo?.path,
+        photo: _bloc.photo?.path != null
+            ? await MultipartFile.fromFile(_bloc.photo!.path)
+            : " ",
         foundAddress: _placeController.text,
         causeOfDeath: _reasonController.text,
-        dateOfDeath: _format.parse(_dateController.text),
-        age: int.parse(_ageController.text));
+        dateOfDeath: parseDate(_dateController.text),
+        age: parseInt(_ageController.text));
 
     BlocProvider.of<DeathRegisterBloc>(context).add(AddDeathData(_deathData));
   }

@@ -55,7 +55,7 @@ class FireData {
   String? time;
   String? reason;
   String? loss;
-  String? photo;
+  dynamic photo;
   int? ppid;
   int? psid;
   DateTime? createdAt;

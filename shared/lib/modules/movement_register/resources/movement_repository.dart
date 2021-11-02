@@ -10,7 +10,6 @@ class MovementRepository {
 
   Future<dynamic> addMovementData({required MovementData movementData}) async {
     Map<String, dynamic> _body = movementData.toJson();
-    _body['photo'] = await MultipartFile.fromFile(_body['photo']);
     FormData _formData = FormData.fromMap(_body);
     final response = await ApiSdk.postMovementRegister(body: _formData);
     return response;

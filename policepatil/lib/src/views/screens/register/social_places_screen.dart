@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/styles.dart';
@@ -28,7 +27,7 @@ class SocialPlaceScreen extends StatelessWidget {
         child: BlocBuilder<PublicPlaceRegisterBloc, PublicPlaceRegisterState>(
           builder: (context, state) {
             if (state is PublicPlaceDataLoading) {
-              return Loading();
+              return const Loading();
             } else if (state is PublicPlaceDataLoaded) {
               if (state.placeResponse.data!.isEmpty) {
                 return NoRecordFound();
@@ -93,7 +92,7 @@ class PlaceDetailWidget extends StatelessWidget {
           children: [
             Text(placeData.place!, style: Styles.primaryTextStyle()),
             const Divider(),
-            HeadValueText(title: ADDRESS, value: "${placeData.address}"),
+            HeadValueText(title: ADDRESS, value: placeData.address ?? "-"),
             HeadValueText(
                 title: IS_ISSUE, value: placeData.isIssue! ? YES : NO),
             HeadValueText(
@@ -121,7 +120,8 @@ class PlaceDetailWidget extends StatelessWidget {
                   Text(placeData.place!, style: Styles.primaryTextStyle()),
                   const Divider(),
                   spacer(height: 8),
-                  HeadValueText(title: ADDRESS, value: "${placeData.address}"),
+                  HeadValueText(
+                      title: ADDRESS, value: placeData.address ?? "-"),
                   HeadValueText(
                       title: DESCRIPTION,
                       value: placeData.issueCondition ?? "-"),
@@ -136,14 +136,16 @@ class PlaceDetailWidget extends StatelessWidget {
                       title: "गुन्हा दाखल आहे का ?",
                       value: placeData.isCrimeRegistered! ? YES : NO),
                   spacer(height: 8),
-                  Text(
-                    PHOTO,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${placeData.photo!}",
-                    width: 300,
-                  ),
+                  if (placeData.photo != null)
+                    Text(
+                      PHOTO,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (placeData.photo != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${placeData.photo!}",
+                      width: 300,
+                    ),
                 ],
               ),
             ),

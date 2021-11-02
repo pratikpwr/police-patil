@@ -1,10 +1,10 @@
 // ignore_for_bloc.file: prefer_final_fields
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
@@ -154,20 +154,23 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
     );
   }
 
-  _registerArmsData() {
-    DateFormat format = DateFormat("yyyy-MM-dd");
+  _registerArmsData() async {
     ArmsData armsData = ArmsData(
         type: _bloc.armsValue!,
         name: _nameController.text,
-        mobile: int.parse(_phoneController.text),
-        aadhar: _bloc.file?.path,
+        mobile: parseInt(_phoneController.text),
+        aadhar: _bloc.file?.path != null
+            ? await MultipartFile.fromFile(_bloc.file!.path)
+            : " ",
         uid: _uIDController.text,
         weaponCondition: _bloc.weaponCondition,
         address: _addressController.text,
         latitude: _bloc.latitude,
         longitude: _bloc.longitude,
-        validity: format.parse(_certificateExpiryController.text),
-        licencephoto: _bloc.photo?.path,
+        validity: parseDate(_certificateExpiryController.text),
+        licencephoto: _bloc.photo?.path != null
+            ? await MultipartFile.fromFile(_bloc.photo!.path)
+            : " ",
         licenceNumber: _certificateNoController.text);
 
     BlocProvider.of<ArmsRegisterBloc>(context).add(AddArmsData(armsData));

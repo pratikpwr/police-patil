@@ -94,11 +94,11 @@ class ArmsDetailWidget extends StatelessWidget {
               style: Styles.primaryTextStyle(),
             ),
             const Divider(),
-            HeadValueText(title: NAME, value: armsData.name!),
-            HeadValueText(title: MOB_NO, value: "${armsData.mobile}"),
-            HeadValueText(title: ADDRESS, value: armsData.address!),
+            HeadValueText(title: NAME, value: armsData.name ?? "-"),
+            HeadValueText(title: MOB_NO, value: "${armsData.mobile ?? "-"} "),
+            HeadValueText(title: ADDRESS, value: armsData.address ?? "-"),
             HeadValueText(
-                title: "परवाना क्रमांक", value: "${armsData.licenceNumber}"),
+                title: "परवाना क्रमांक", value: armsData.licenceNumber ?? "-"),
           ],
         ),
       ),
@@ -124,33 +124,38 @@ class ArmsDetailWidget extends StatelessWidget {
                   ),
                   const Divider(),
                   spacer(height: 8),
-                  HeadValueText(title: NAME, value: armsData.name!),
-                  HeadValueText(title: MOB_NO, value: "${armsData.mobile}"),
-                  HeadValueText(title: ADDRESS, value: armsData.address!),
+                  HeadValueText(title: NAME, value: armsData.name ?? "-"),
+                  HeadValueText(
+                      title: MOB_NO, value: "${armsData.mobile ?? "-"} "),
+                  HeadValueText(title: ADDRESS, value: armsData.address ?? "-"),
                   HeadValueText(
                       title: "परवाना क्रमांक",
-                      value: "${armsData.licenceNumber}"),
+                      value: armsData.licenceNumber ?? "-"),
                   HeadValueText(
                       title: "परवान्याची वैधता कालावधी",
-                      value: armsData.validity!.toIso8601String()),
+                      value: dateInStringFormat(armsData.validity!)),
                   spacer(height: 8),
-                  Text(
-                    AADHAR,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${armsData.aadhar!}",
-                    width: 300,
-                  ),
+                  if (armsData.aadhar != null)
+                    Text(
+                      AADHAR,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (armsData.aadhar != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${armsData.aadhar}",
+                      width: 300,
+                    ),
                   spacer(height: 8),
-                  Text(
-                    "परवान्याचा फोटो",
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${armsData.aadhar!}",
-                    width: 300,
-                  ),
+                  if (armsData.licencephoto != null)
+                    Text(
+                      "परवान्याचा फोटो",
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (armsData.licencephoto != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${armsData.licencephoto}",
+                      width: 300,
+                    ),
                 ],
               ),
             ),

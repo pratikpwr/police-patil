@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -116,16 +117,17 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
     );
   }
 
-  _registerCollectionData(BuildContext context) {
-    DateFormat _format = DateFormat("yyyy-MM-dd");
+  _registerCollectionData(BuildContext context) async {
     CollectionData _collectionData = CollectionData(
       type: _bloc.chosenValue!,
       address: _addressController.text,
-      date: _format.parse(_dateController.text),
+      date: parseDate(_dateController.text),
       description: _detailsController.text,
       latitude: _bloc.latitude,
       longitude: _bloc.longitude,
-      photo: _bloc.photo?.path,
+      photo: _bloc.photo?.path != null
+          ? await MultipartFile.fromFile(_bloc.photo!.path)
+          : " ",
     );
 
     BlocProvider.of<CollectRegisterBloc>(context)

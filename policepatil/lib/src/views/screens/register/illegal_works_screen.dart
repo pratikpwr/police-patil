@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
@@ -92,8 +91,8 @@ class IllegalDetailWidget extends StatelessWidget {
           children: [
             Text(illegalData.type!, style: Styles.primaryTextStyle()),
             const Divider(),
-            HeadValueText(title: NAME, value: "${illegalData.name}"),
-            HeadValueText(title: ADDRESS, value: "${illegalData.address}"),
+            HeadValueText(title: NAME, value: illegalData.name ?? " - "),
+            HeadValueText(title: ADDRESS, value: illegalData.address ?? "-"),
           ],
         ),
       ),
@@ -116,18 +115,20 @@ class IllegalDetailWidget extends StatelessWidget {
                   Text(illegalData.type!, style: Styles.primaryTextStyle()),
                   const Divider(),
                   spacer(height: 8),
-                  HeadValueText(title: NAME, value: "${illegalData.name}"),
+                  HeadValueText(title: NAME, value: illegalData.name ?? " - "),
                   HeadValueText(
-                      title: ADDRESS, value: "${illegalData.address}"),
+                      title: ADDRESS, value: illegalData.address ?? "-"),
                   spacer(height: 8),
-                  Text(
-                    PHOTO,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${illegalData.photo!}",
-                    width: 300,
-                  ),
+                  if (illegalData.photo != null)
+                    Text(
+                      PHOTO,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (illegalData.photo != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${illegalData.photo!}",
+                      width: 300,
+                    ),
                 ],
               ),
             ),

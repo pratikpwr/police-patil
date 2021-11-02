@@ -140,14 +140,16 @@ class MovementDetailWidget extends StatelessWidget {
                   HeadValueText(
                       title: IS_ISSUE, value: movementData.issue! ? YES : NO),
                   spacer(height: 8),
-                  Text(
-                    PHOTO,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${movementData.photo!}",
-                    width: 300,
-                  ),
+                  if (movementData.photo != null)
+                    Text(
+                      PHOTO,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (movementData.photo != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${movementData.photo!}",
+                      width: 300,
+                    ),
                 ],
               ),
             ),

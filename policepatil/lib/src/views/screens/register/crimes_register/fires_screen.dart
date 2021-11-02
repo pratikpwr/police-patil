@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:policepatil/src/config/constants.dart';
-import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
 import 'package:shared/shared.dart';
 
@@ -88,8 +87,8 @@ class FireDetailWidget extends StatelessWidget {
           children: [
             HeadValueText(title: PLACE, value: fireData.address ?? "-"),
             HeadValueText(title: DATE, value: showDate(fireData.date!)),
-            HeadValueText(title: "", value: fireData.reason ?? "-"),
-            HeadValueText(title: "", value: fireData.loss ?? "-"),
+            HeadValueText(title: "आगीचे कारण", value: fireData.reason ?? "-"),
+            HeadValueText(title: "अंदाजे नुकसान", value: fireData.loss ?? "-"),
           ],
         ),
       ),
@@ -111,17 +110,21 @@ class FireDetailWidget extends StatelessWidget {
                 children: [
                   HeadValueText(title: PLACE, value: fireData.address ?? "-"),
                   HeadValueText(title: DATE, value: showDate(fireData.date!)),
-                  HeadValueText(title: "", value: fireData.reason ?? "-"),
-                  HeadValueText(title: "", value: fireData.loss ?? "-"),
+                  HeadValueText(
+                      title: "आगीचे कारण", value: fireData.reason ?? "-"),
+                  HeadValueText(
+                      title: "अंदाजे नुकसान", value: fireData.loss ?? "-"),
                   spacer(height: 8),
-                  Text(
-                    PHOTO,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${fireData.photo!}",
-                    width: 300,
-                  ),
+                  if (fireData.photo != null)
+                    Text(
+                      PHOTO,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (fireData.photo != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${fireData.photo!}",
+                      width: 300,
+                    ),
                 ],
               ),
             ),

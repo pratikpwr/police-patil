@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -141,13 +142,17 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
     );
   }
 
-  _registerWatchData() {
+  _registerWatchData() async {
     WatchData _watchData = WatchData(
         type: _bloc.chosenValue,
         name: _nameController.text,
-        mobile: int.parse(_phoneController.text),
-        photo: _bloc.photo?.path,
-        aadhar: _bloc.file?.path,
+        mobile: parseInt(_phoneController.text),
+        photo: _bloc.photo?.path != null
+            ? await MultipartFile.fromFile(_bloc.photo!.path)
+            : " ",
+        aadhar: _bloc.photo?.path != null
+            ? await MultipartFile.fromFile(_bloc.photo!.path)
+            : " ",
         address: _addressController.text,
         latitude: _bloc.latitude,
         longitude: _bloc.longitude,

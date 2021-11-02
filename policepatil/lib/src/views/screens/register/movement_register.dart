@@ -1,8 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
@@ -64,14 +64,14 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                 spacer(),
                 _bloc.movementValue != null
                     ? buildDropButton(
-                        value: _bloc.movementSubValue,
-                        items: _bloc.movementSubRegTypes!,
-                        hint: "हालचाली उपप्रकार निवडा",
-                        onChanged: (String? value) {
-                          setState(() {
-                            _bloc.movementSubValue = value;
-                          });
-                        })
+                    value: _bloc.movementSubValue,
+                    items: _bloc.movementSubRegTypes!,
+                    hint: "हालचाली उपप्रकार निवडा",
+                    onChanged: (String? value) {
+                      setState(() {
+                        _bloc.movementSubValue = value;
+                      });
+                    })
                     : spacer(height: 0),
                 spacer(),
                 buildTextField(_placeController, PLACE),
@@ -203,12 +203,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
     );
   }
 
-  _registerMovementData() {
-    DateFormat _format = DateFormat("yyyy-MM-dd HH:mm");
-    /* TODO : add leader field - can add multiple persons up to 5
-              movement type - happened or going to happen
-              use date option according to it
-    */
+  _registerMovementData() async {
     MovementData _movementData = MovementData(
         type: _bloc.movementValue,
         subtype: _bloc.movementSubValue,
@@ -217,12 +212,14 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
         address: _placeController.text,
         latitude: _bloc.latitude,
         longitude: _bloc.longitude,
-        datetime:
-            _format.parse(_dateController.text + " " + _timeController.text),
+        datetime: parseDate(_dateController.text + " " + _timeController.text,
+            form: "yyyy-MM-dd HH:mm"),
         issue: _bloc.isIssue == YES ? true : false,
-        attendance: int.parse(_countController.text),
+        attendance: parseInt(_countController.text),
         description: _otherController.text,
-        photo: _bloc.photo?.path);
+        photo: _bloc.photo?.path != null
+            ? await MultipartFile.fromFile(_bloc.photo!.path)
+            : " ");
 
     BlocProvider.of<MovementRegisterBloc>(context)
         .add(AddMovementData(_movementData));

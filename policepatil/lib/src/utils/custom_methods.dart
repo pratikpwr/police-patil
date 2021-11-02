@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:policepatil/src/config/constants.dart';
 
@@ -16,6 +17,29 @@ void showSnackBar(BuildContext context, String message) {
 
 String showDate(DateTime date) {
   return date.toIso8601String().substring(0, 10);
+}
+
+int? parseInt(String? string) {
+  int? parsedInt;
+  try {
+    parsedInt = int.parse(string!);
+    return parsedInt;
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+  return null;
+}
+
+DateTime? parseDate(String? date, {String? form}) {
+  DateTime? formattedDate;
+  DateFormat format = DateFormat(form ?? "yyyy-MM-dd");
+  try {
+    formattedDate = format.parse(date!);
+    return formattedDate;
+  } catch (e) {
+    debugPrint(e.toString());
+  }
+  return null;
 }
 
 String? youtubeUrlToId(String? url, {bool trimWhitespaces = true}) {
@@ -110,7 +134,7 @@ void launchUrl(String url) async {
   await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 }
 
-String dateInFormat(DateTime dateTime) {
+String dateInStringFormat(DateTime dateTime) {
   String date = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
   String time = "${dateTime.hour}:${dateTime.minute}";
   return "वेळ: $time आणि तारीख: $date";

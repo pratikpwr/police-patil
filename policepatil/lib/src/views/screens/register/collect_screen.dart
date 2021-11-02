@@ -95,8 +95,9 @@ class CollectionDetailWidget extends StatelessWidget {
           children: [
             Text(collect.type!, style: Styles.primaryTextStyle()),
             const Divider(),
-            HeadValueText(title: DESCRIPTION, value: collect.description!),
-            HeadValueText(title: ADDRESS, value: "${collect.address}"),
+            HeadValueText(
+                title: DESCRIPTION, value: collect.description ?? "-"),
+            HeadValueText(title: ADDRESS, value: collect.address ?? "-"),
             HeadValueText(title: DATE, value: showDate(collect.date!)),
           ],
         ),
@@ -121,18 +122,20 @@ class CollectionDetailWidget extends StatelessWidget {
                   const Divider(),
                   spacer(height: 8),
                   HeadValueText(
-                      title: DESCRIPTION, value: collect.description!),
-                  HeadValueText(title: ADDRESS, value: "${collect.address}"),
+                      title: DESCRIPTION, value: collect.description ?? "-"),
+                  HeadValueText(title: ADDRESS, value: collect.address ?? "-"),
                   HeadValueText(title: DATE, value: showDate(collect.date!)),
                   spacer(height: 8),
-                  Text(
-                    PHOTO,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${collect.photo!}",
-                    width: 300,
-                  ),
+                  if (collect.photo != null)
+                    Text(
+                      PHOTO,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (collect.photo != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${collect.photo}",
+                      width: 300,
+                    ),
                 ],
               ),
             ),

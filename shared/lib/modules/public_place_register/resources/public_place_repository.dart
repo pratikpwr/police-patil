@@ -10,7 +10,6 @@ class PlaceRepository {
 
   Future<dynamic> addPlaceData({required PlaceData placeData}) async {
     Map<String, dynamic> _body = placeData.toJson();
-    _body['photo'] = await MultipartFile.fromFile(_body['photo']);
     FormData _formData = FormData.fromMap(_body);
     final response = await ApiSdk.postPlaceRegister(body: _formData);
     return response;

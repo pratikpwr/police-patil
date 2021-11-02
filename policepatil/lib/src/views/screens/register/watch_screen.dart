@@ -94,12 +94,10 @@ class WatchDetailWidget extends StatelessWidget {
               style: Styles.primaryTextStyle(),
             ),
             const Divider(),
-            HeadValueText(title: NAME, value: watchData.name!),
-            watchData.description != null
-                ? HeadValueText(
-                    title: DESCRIPTION, value: watchData.description!)
-                : spacer(height: 0),
-            HeadValueText(title: ADDRESS, value: "${watchData.address}"),
+            HeadValueText(title: NAME, value: watchData.name ?? "-"),
+            HeadValueText(
+                title: DESCRIPTION, value: watchData.description ?? "-"),
+            HeadValueText(title: ADDRESS, value: watchData.address ?? "-"),
           ],
         ),
       ),
@@ -122,45 +120,35 @@ class WatchDetailWidget extends StatelessWidget {
                   Text(watchData.type!, style: Styles.primaryTextStyle()),
                   const Divider(),
                   spacer(height: 8),
-                  HeadValueText(title: DATE, value: watchData.name!),
-                  HeadValueText(title: DATE, value: "${watchData.mobile!}"),
-                  HeadValueText(title: ADDRESS, value: "${watchData.address}"),
+                  HeadValueText(title: DATE, value: watchData.name ?? "-"),
+                  HeadValueText(title: DATE, value: "${watchData.mobile ?? 0}"),
                   HeadValueText(
-                      title: DESCRIPTION, value: watchData.description!),
+                      title: ADDRESS, value: watchData.address ?? "-"),
+                  HeadValueText(
+                      title: DESCRIPTION, value: watchData.description ?? "-"),
                   spacer(height: 8),
-                  Text(
-                    PHOTO,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  watchData.photo != null
-                      ? CachedNetworkImage(
-                          imageUrl: "http://${watchData.photo!}",
-                          width: 300,
-                        )
-                      : spacer(height: 0),
-                  spacer(height: 8),
-                  Text(
-                    AADHAR,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  watchData.aadhar != null
-                      ? CachedNetworkImage(
-                          imageUrl: "http://${watchData.aadhar!}",
-                          width: 300,
-                        )
-                      : spacer(height: 0),
-                  spacer(height: 8),
-                  Text(
-                    "इतर फोटो",
-                    style: Styles.titleTextStyle(),
-                  ),
-                  MyWidget(
-                    data: watchData.otherPhoto,
-                    child: CachedNetworkImage(
-                      imageUrl: "http://${watchData.otherPhoto}",
+                  if (watchData.photo != null)
+                    Text(
+                      PHOTO,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (watchData.photo != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${watchData.photo!}",
                       width: 300,
                     ),
-                  ),
+                  spacer(height: 8),
+                  if (watchData.aadhar != null)
+                    Text(
+                      AADHAR,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (watchData.aadhar != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${watchData.aadhar!}",
+                      width: 300,
+                    ),
+                  spacer(height: 8),
                 ],
               ),
             ),

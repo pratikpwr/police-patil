@@ -54,7 +54,7 @@ class PlaceData {
   String? address;
   double? latitude;
   double? longitude;
-  String? photo;
+  dynamic photo;
   bool? isCCTV;
   bool? isIssue;
   String? issueReason;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/styles.dart';
@@ -92,7 +91,7 @@ class CrimeDetailWidget extends StatelessWidget {
             const Divider(),
             HeadValueText(
                 title: "गुन्हा रजिस्टर नंबर",
-                value: "${crimesData.registerNumber}"),
+                value: crimesData.registerNumber ?? "-"),
             HeadValueText(title: DATE, value: showDate(crimesData.date!)),
           ],
         ),

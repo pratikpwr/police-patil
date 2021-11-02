@@ -122,14 +122,16 @@ class MissingDetailWidget extends StatelessWidget {
                   HeadValueText(
                       title: "लिंग", value: missingData.gender ?? "-"),
                   spacer(height: 8),
-                  Text(
-                    PHOTO,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${missingData.photo!}",
-                    width: 300,
-                  ),
+                  if (missingData.photo != null)
+                    Text(
+                      PHOTO,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (missingData.photo != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${missingData.photo!}",
+                      width: 300,
+                    ),
                   spacer(height: 8),
                 ],
               ),

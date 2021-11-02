@@ -18,7 +18,8 @@ class MovementRegisterBloc
 
   @override
   Stream<MovementRegisterState> mapEventToState(
-    MovementRegisterEvent event,) async* {
+    MovementRegisterEvent event,
+  ) async* {
     if (event is GetMovementData) {
       yield* _mapGetMovementDataState(event);
     }

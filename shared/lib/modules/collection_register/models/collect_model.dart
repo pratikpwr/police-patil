@@ -54,7 +54,7 @@ class CollectionData {
   double? longitude;
   DateTime? date;
   String? description;
-  String? photo;
+  dynamic photo;
   int? ppid;
   int? psid;
   DateTime? createdAt;

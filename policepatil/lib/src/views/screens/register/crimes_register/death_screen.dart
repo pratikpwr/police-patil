@@ -136,14 +136,16 @@ class DeathDetailWidget extends StatelessWidget {
                       value: deathData.address ?? "-"),
                   HeadValueText(title: "लिंग", value: deathData.gender ?? "-"),
                   spacer(height: 8),
-                  Text(
-                    PHOTO,
-                    style: Styles.titleTextStyle(),
-                  ),
-                  CachedNetworkImage(
-                    imageUrl: "http://${deathData.photo!}",
-                    width: 300,
-                  ),
+                  if (deathData.photo != null)
+                    Text(
+                      PHOTO,
+                      style: Styles.titleTextStyle(),
+                    ),
+                  if (deathData.photo != null)
+                    CachedNetworkImage(
+                      imageUrl: "http://${deathData.photo!}",
+                      width: 300,
+                    ),
                 ],
               ),
             ),

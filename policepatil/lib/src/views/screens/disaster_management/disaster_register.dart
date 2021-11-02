@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
-import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
@@ -110,15 +108,13 @@ class _DisasterRegFormScreenState extends State<DisasterRegFormScreen> {
   }
 
   _registerDisasterData() {
-    DateFormat _format = DateFormat("yyyy-MM-dd");
-
     DisasterData _disasterData = DisasterData(
         type: _bloc.chosenType,
         subtype: _bloc.chosenSubType,
         latitude: _bloc.latitude,
         longitude: _bloc.longitude,
-        date: _format.parse(_dateController.text),
-        casuality: int.parse(_deathsController.text),
+        date: parseDate(_dateController.text),
+        casuality: parseInt(_deathsController.text),
         level: _levelController.text);
 
     BlocProvider.of<DisasterRegisterBloc>(context)

@@ -97,7 +97,7 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
                     ),
                     spacer(),
                     _bloc.chosenValue == _bloc.watchRegTypes[3] ||
-                        _bloc.chosenValue == _bloc.watchRegTypes[4]
+                            _bloc.chosenValue == _bloc.watchRegTypes[4]
                         ? buildTextField(_vehicleNoController, VEHICLE_NO)
                         : spacer(height: 0),
                     spacer(),

@@ -57,7 +57,7 @@ class DeathData {
   String? address;
   double? latitude;
   double? longitude;
-  String? photo;
+  dynamic photo;
   String? foundAddress;
   String? causeOfDeath;
   DateTime? dateOfDeath;

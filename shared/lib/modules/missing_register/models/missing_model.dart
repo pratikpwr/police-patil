@@ -55,7 +55,7 @@ class MissingData {
   String? name;
   int? age;
   String? gender;
-  String? photo;
+  dynamic photo;
   String? address;
   double? latitude;
   double? longitude;

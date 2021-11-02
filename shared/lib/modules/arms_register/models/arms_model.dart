@@ -42,7 +42,7 @@ class ArmsData {
   String? type;
   String? name;
   int? mobile;
-  String? aadhar;
+  dynamic aadhar;
   String? address;
   double? latitude;
   double? longitude;
@@ -50,7 +50,7 @@ class ArmsData {
   String? uid;
   String? weaponCondition;
   DateTime? validity;
-  String? licencephoto;
+  dynamic licencephoto;
   int? ppid;
   int? psid;
 

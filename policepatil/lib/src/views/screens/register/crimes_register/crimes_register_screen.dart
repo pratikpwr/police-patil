@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:shared/shared.dart';
@@ -73,11 +71,11 @@ class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
   }
 
   _registerCrimeData() {
-    DateFormat _format = DateFormat("yyyy-MM-dd HH:mm");
     CrimeData _crimeData = CrimeData(
-        type: _bloc.chosenValue,
+        type: _bloc.chosenValue!,
         registerNumber: _noController.text,
-        date: _format.parse(_dateController.text + " " + _timeController.text),
+        date: parseDate(_dateController.text + " " + _timeController.text,
+            form: "yyyy-MM-dd HH:mm"),
         time: _timeController.text);
 
     BlocProvider.of<CrimeRegisterBloc>(context).add(AddCrimeData(_crimeData));

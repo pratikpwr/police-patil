@@ -65,7 +65,7 @@ class MovementData {
   int? attendance;
   String? leader;
   String? description;
-  String? photo;
+  dynamic photo;
   int? ppid;
   int? psid;
   DateTime? createdAt;
