@@ -5,4 +5,9 @@ class NewsRepository {
     final response = await ApiSdk.getNews();
     return response;
   }
+
+  Future<dynamic> getTopNews() async {
+    final response = await ApiSdk.getTopNews();
+    return response;
+  }
 }

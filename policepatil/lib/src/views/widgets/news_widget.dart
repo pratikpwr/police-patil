@@ -13,7 +13,7 @@ class ImpNewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<NewsBloc>(context).add(GetNews());
+    BlocProvider.of<NewsBloc>(context).add(GetTopNews());
     return Container(
         padding: const EdgeInsets.all(8),
         margin: const EdgeInsets.all(16),

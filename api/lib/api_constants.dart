@@ -54,6 +54,7 @@ class ApiConstants {
   static const String POST_ILLEGAL_WORK_BY_PP = BASE_URL + '/api/illegalwork';
 
   static const String GET_NEWS = BASE_URL + "/api/news";
+  static const String GET_TOP_NEWS = BASE_URL + "/api/topnews";
   static const String POST_NEWS = BASE_URL + "/api/news";
 
   static const String GET_ALERTS = BASE_URL + "/api/alert";
