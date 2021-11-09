@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/views/views.dart';
 
+import 'app_update.dart';
+
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
 
@@ -38,42 +40,44 @@ class _BottomNavBarState extends State<BottomNavBar> {
         // let system handle back button if we're on the first route
         return isFirstRouteInCurrentTab;
       },
-      child: Scaffold(
-        body: _widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _selectedIndex,
-          elevation: 5,
-          selectedItemColor: PRIMARY_COLOR,
-          unselectedItemColor: Colors.grey[500],
-          showSelectedLabels: true,
-          backgroundColor: Colors.white,
-          selectedLabelStyle: GoogleFonts.poppins(),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_rounded,
+      child: AppUpdate(
+        child: Scaffold(
+          body: _widgetOptions.elementAt(_selectedIndex),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _selectedIndex,
+            elevation: 5,
+            selectedItemColor: PRIMARY_COLOR,
+            unselectedItemColor: Colors.grey[500],
+            showSelectedLabels: true,
+            backgroundColor: Colors.white,
+            selectedLabelStyle: GoogleFonts.poppins(),
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home_rounded,
+                ),
+                label: HOME,
               ),
-              label: HOME,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.notifications_rounded,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.notifications_rounded,
+                ),
+                label: NOTICE,
               ),
-              label: NOTICE,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person_rounded,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person_rounded,
+                ),
+                label: PROFILE,
               ),
-              label: PROFILE,
-            ),
-          ],
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
+            ],
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
         ),
       ),
     );

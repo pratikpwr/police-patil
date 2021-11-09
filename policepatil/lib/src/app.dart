@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (ctx) => AuthenticationBloc()),
+        BlocProvider(create: (ctx) => AppVersionBloc()),
         BlocProvider(create: (ctx) => ProfileBloc()),
         BlocProvider(create: (ctx) => ArmsRegisterBloc()),
         BlocProvider(create: (ctx) => CollectRegisterBloc()),

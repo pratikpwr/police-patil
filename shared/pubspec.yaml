@@ -17,6 +17,8 @@ dependencies:
   meta: ^1.7.0
   intl: ^0.17.0
   shared_preferences: ^2.0.7
+  package_info: ^2.0.2
+  pub_semver: ^2.1.0
 
   api:
     path: ../api

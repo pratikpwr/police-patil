@@ -22,6 +22,13 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> appVersion() async {
+    String path = ApiConstants.GET_APP_VERSION;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
   static Future<Response> getUserData({required int userId}) async {
     String path = ApiConstants.GET_USER_DATA + "$userId";
 
