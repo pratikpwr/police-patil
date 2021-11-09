@@ -71,10 +71,9 @@ export 'package:policepatil/src/views/widgets/gps_widget.dart';
 export 'package:policepatil/src/views/widgets/attach_button.dart';
 export 'package:policepatil/src/views/widgets/side_menu.dart';
 export 'package:policepatil/src/views/widgets/news_widget.dart';
-
 export 'package:policepatil/src/views/widgets/heading_value_text_widget.dart';
+export 'package:policepatil/src/views/widgets/village_select_dropdown.dart';
 
-// export 'package:policepatil/src/views/widgets/';
 // export 'package:policepatil/src/views/widgets/';
 // export 'package:policepatil/src/views/widgets/';
 // export 'package:policepatil/src/views/widgets/';

@@ -52,6 +52,20 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> getPoliceStation() async {
+    String path = ApiConstants.POLICE_STATION;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> getVillages() async {
+    String path = ApiConstants.VILLAGE_LIST;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
   // ARMS Register
   static Future<Response> postArmsRegister({required body}) async {
     String path = ApiConstants.POST_ARMS_BY_PP;
@@ -112,8 +126,8 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getWatch() async {
-    String path = ApiConstants.GET_WATCH;
+  static Future<Response> getWatch({String? params}) async {
+    String path = "${ApiConstants.GET_WATCH}${params ?? ""}";
 
     Response response = await RestApiHandlerData.getData(path);
     return response;

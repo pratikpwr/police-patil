@@ -133,7 +133,7 @@ class ArmsDetailWidget extends StatelessWidget {
                       value: armsData.licenceNumber ?? "-"),
                   HeadValueText(
                       title: "परवान्याची वैधता कालावधी",
-                      value: dateInStringFormat(armsData.validity!)),
+                      value: dateInStringFormat(armsData.validity)),
                   spacer(height: 8),
                   if (armsData.aadhar != null)
                     Text(

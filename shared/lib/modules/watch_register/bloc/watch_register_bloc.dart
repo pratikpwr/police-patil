@@ -37,10 +37,22 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
   File? file;
   File? photo;
 
+  String? chosenType, psId, ppId, fromDate, toDate;
+  final List<String> types = <String>[
+    "सर्व",
+    "भटक्या टोळी",
+    "सराईत गुन्हेगार",
+    "फरार आरोपी",
+    "तडीपार आरोपी",
+    "स्टॅंडिंग वॉरंट"
+  ];
+
   Stream<WatchRegisterState> _mapGetWatchDataState(GetWatchData event) async* {
     yield WatchDataLoading();
     try {
-      Response _response = await _watchRepository.getWatchRegister();
+      String? params = getParams(event);
+      Response _response =
+          await _watchRepository.getWatchRegister(params: params);
       if (_response.statusCode! < 400) {
         final _watchResponse = WatchResponse.fromJson(_response.data);
         yield WatchDataLoaded(_watchResponse);
@@ -66,5 +78,30 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
     } catch (err) {
       yield WatchDataSendError(err.toString());
     }
+  }
+
+  String getParams(GetWatchData event) {
+    String _params = "?";
+
+    if (event.type != null) {
+      if (event.type == "सर्व") {
+        _params += "";
+      } else {
+        _params += "type=${event.type}&";
+      }
+    }
+    if (event.psId != null) {
+      _params += "psid=${event.psId}&";
+    }
+    if (event.ppId != null) {
+      _params += "ppid=${event.ppId}&";
+    }
+    if (event.fromDate != null && event.fromDate != "") {
+      _params += "fromdate=${event.fromDate}&";
+    }
+    if (event.toDate != null && event.toDate != "") {
+      _params += "todate=${event.toDate}&";
+    }
+    return _params;
   }
 }

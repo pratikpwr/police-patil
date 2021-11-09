@@ -30,9 +30,10 @@ class AppVersionBloc extends Bloc<AppVersionEvent, AppVersionState> {
           Version curVersion = Version.parse(packageInfo.version);
           Version minVersion = Version.parse(_appVer.minVersion!);
           Version latVersion = Version.parse(_appVer.latestVersion!);
-          // Version curVersion = Version.parse("1.0.0+1");
-          // Version minVersion = Version.parse("0.0.0");
-          // Version latVersion = Version.parse("1.0.0+1");
+          // TODO : remove following code
+          curVersion = Version.parse("1.0.0+1");
+          minVersion = Version.parse("0.0.0");
+          latVersion = Version.parse("1.0.0+1");
 
           if (minVersion > curVersion) {
             yield const AppVersionSuccess(AppStatus.outdated);

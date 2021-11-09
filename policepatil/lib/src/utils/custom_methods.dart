@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shared/modules/village_ps_list/village_ps_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:policepatil/src/config/constants.dart';
 
@@ -134,8 +135,39 @@ void launchUrl(String url) async {
   await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 }
 
-String dateInStringFormat(DateTime dateTime) {
+String dateInStringFormat(DateTime? dateTime) {
+  if (dateTime == null) {
+    return "-";
+  }
   String date = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
   String time = "${dateTime.hour}:${dateTime.minute}";
   return "वेळ: $time आणि तारीख: $date";
+}
+
+List<String> getVillageListInString(List<Village> list) {
+  List<String> villageList = [];
+  for (var vil in list) {
+    villageList.add(vil.village!);
+  }
+  return villageList;
+}
+
+List<String> getPSListInString(List<PoliceStation> list) {
+  List<String> villageList = [];
+  for (var vil in list) {
+    villageList.add(vil.psname!);
+  }
+  return villageList;
+}
+
+String getPsIDFromPSName(List<PoliceStation> psList, String psname) {
+  var curVil = psList.firstWhere((element) => element.psname == psname);
+
+  return curVil.id!.toString();
+}
+
+String getPpIDFromVillage(List<Village> vilList, String village) {
+  var curVil = vilList.firstWhere((element) => element.village == village);
+
+  return curVil.ppid!.toString();
 }

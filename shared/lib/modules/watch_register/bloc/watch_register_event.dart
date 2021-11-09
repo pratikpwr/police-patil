@@ -7,7 +7,11 @@ abstract class WatchRegisterEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetWatchData extends WatchRegisterEvent {}
+class GetWatchData extends WatchRegisterEvent {
+  String? type, psId, ppId, fromDate, toDate;
+
+  GetWatchData({this.type, this.psId, this.ppId, this.fromDate, this.toDate});
+}
 
 class AddWatchData extends WatchRegisterEvent {
   final WatchData watchData;

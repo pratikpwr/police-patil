@@ -20,6 +20,7 @@ export 'package:shared/modules/village_safety/village_safety.dart';
 export 'package:shared/modules/certificates/certificates.dart';
 export 'package:shared/modules/mandhan/mandhan.dart';
 export 'package:shared/modules/app_version/app_version.dart';
+export 'package:shared/modules/village_ps_list/village_ps_list.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

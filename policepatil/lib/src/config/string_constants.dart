@@ -67,6 +67,11 @@ const String DISASTER_TOOLS = "उपलब्ध साधने";
 const String APP_UPDATE = "अँप अपडेट उपलब्ध आहे!";
 const String UPDATE_NOW = "अपडेट करा";
 const String LATER = "नंतर";
+
+const String APPLY_FILTER = "फिल्टर करा";
+const String DATE_FROM = "दिनांक पासुन";
+const String DATE_TO = "दिनांक पर्यंत";
+const String CHOSE_TYPE = "प्रकार निवडा";
 // const String = "";
 // const String = "";
 // const String = "";
