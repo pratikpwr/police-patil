@@ -25,6 +25,8 @@ class AppVersionBloc extends Bloc<AppVersionEvent, AppVersionState> {
         if (_response.data["message"] == "Success") {
           final _appVer = AppVersion.fromJson(_response.data);
 
+          // TODO: latest version
+          // hardcoded curVersion in file
           PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
           Version curVersion = Version.parse(packageInfo.version);
