@@ -44,3 +44,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// TODO : remove sync pdf package - costs 3MB costs
+
+//

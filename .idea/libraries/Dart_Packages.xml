@@ -122,13 +122,6 @@
             </list>
           </value>
         </entry>
-        <entry key="convert">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/convert-3.0.1/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="cross_file">
           <value>
             <list>
@@ -608,48 +601,6 @@
             </list>
           </value>
         </entry>
-        <entry key="syncfusion_flutter_core">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_core-19.3.44/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="syncfusion_flutter_pdf">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdf-19.3.44-beta/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="syncfusion_flutter_pdfviewer">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdfviewer-19.3.44-beta/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="syncfusion_flutter_pdfviewer_macos">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdfviewer_macos-19.3.44-beta/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="syncfusion_flutter_pdfviewer_platform_interface">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdfviewer_platform_interface-19.3.44-beta/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="syncfusion_flutter_pdfviewer_web">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdfviewer_web-19.3.44-beta/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="synchronized">
           <value>
             <list>
@@ -797,7 +748,6 @@
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_for_web-0.4.0+1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_macos-0.2.1+2/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_platform_interface-2.0.1/lib" />
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/convert-3.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/cross_file-0.3.1+5/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/dio-4.0.0/lib" />
@@ -865,12 +815,6 @@
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0/lib" />
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_core-19.3.44/lib" />
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdf-19.3.44-beta/lib" />
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdfviewer-19.3.44-beta/lib" />
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdfviewer_macos-19.3.44-beta/lib" />
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdfviewer_platform_interface-19.3.44-beta/lib" />
-      <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_pdfviewer_web-19.3.44-beta/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-3.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.3/lib" />

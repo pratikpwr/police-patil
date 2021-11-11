@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/utils.dart';
-import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
 class KayadeScreen extends StatelessWidget {
@@ -53,13 +52,7 @@ class KayadeScreen extends StatelessWidget {
                                         color: Colors.black87),
                                   ),
                                   onPressed: () async {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (_) {
-                                      return PDFViewScreen(
-                                        title: kayadeData.title!,
-                                        link: kayadeData.file!,
-                                      );
-                                    }));
+                                    launchUrl("https://${kayadeData.file!}");
                                   }),
                             );
                           })),

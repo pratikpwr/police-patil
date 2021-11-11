@@ -11,10 +11,7 @@ class ImageConstants {
   // static String IMG_POLICE_LOGO = "assets/logo_no_bg.png";
   static String IMG_POLICE_LOGO = "assets/police patil.jpeg";
   static String IMG_PLACEHOLDER = "assets/feed.png";
-  static String PROFILE_PIC = "assets/profile.jpg";
   static String UPDATES = "assets/newspaper.png";
-  static String IMG_SHAPES_1 = "assets/blob.png";
-  static String IMG_SHAPES_2 = "assets/back_1.png";
   static String IMG_SHAPES_3 = "assets/back_2.png";
   static String IMG_WATCH = "assets/watching.png";
   static String IMG_MOVEMENT = "assets/movement.png";
@@ -30,7 +27,6 @@ class ImageConstants {
   static String IMG_DEATH = "assets/skull.png";
   static String IMG_MISSING = "assets/missing.png";
   static String IMG_PROFILE = "assets/user.png";
-  static String IMG_ATTENDANCE = "assets/accepted.png";
   static String IMG_CERTIFICATE = "assets/certificate.png";
   static String IMG_MONEY = "assets/money.png";
   static String IMG_MEETING = "assets/meeting.png";

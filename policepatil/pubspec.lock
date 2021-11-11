@@ -127,13 +127,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  convert:
-    dependency: transitive
-    description:
-      name: convert
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   cross_file:
     dependency: transitive
     description:
@@ -149,7 +142,7 @@ packages:
     source: hosted
     version: "3.0.1"
   dio:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: dio
       url: "https://pub.dartlang.org"
@@ -409,7 +402,7 @@ packages:
     source: hosted
     version: "1.0.0+1"
   package_info:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: package_info
       url: "https://pub.dartlang.org"
@@ -609,48 +602,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
-  syncfusion_flutter_core:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_core
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "19.3.44"
-  syncfusion_flutter_pdf:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_pdf
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "19.3.44-beta"
-  syncfusion_flutter_pdfviewer:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_pdfviewer
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "19.3.44-beta"
-  syncfusion_flutter_pdfviewer_macos:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_pdfviewer_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "19.3.44-beta"
-  syncfusion_flutter_pdfviewer_platform_interface:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_pdfviewer_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "19.3.44-beta"
-  syncfusion_flutter_pdfviewer_web:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_pdfviewer_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "19.3.44-beta"
   synchronized:
     dependency: transitive
     description:

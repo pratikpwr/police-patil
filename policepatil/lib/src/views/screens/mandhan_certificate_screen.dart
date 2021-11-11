@@ -27,14 +27,9 @@ class _SelfCertificateScreenState extends State<SelfCertificateScreen> {
             showSnackBar(context, state.error);
           }
           if (state is MandhanSuccess) {
-            // launchUrl(url);
+            launchUrl("https://${state.link}");
             // Navigator.of(context).pop();
-            Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return PDFViewScreen(
-                title: "हजेरीबाबतचे स्वयंघोषणापत्र",
-                link: state.link,
-              );
-            }));
+
           }
         },
         child: SafeArea(

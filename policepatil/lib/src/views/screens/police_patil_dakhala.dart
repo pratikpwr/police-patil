@@ -30,14 +30,7 @@ class _PatilCertificateState extends State<PatilCertificate> {
             showSnackBar(context, state.error);
           }
           if (state is CertificatesSuccess) {
-            // launchUrl(url);
-            // Navigator.of(context).pop();
-            Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return PDFViewScreen(
-                title: "पोलीस पाटील दाखला",
-                link: state.link,
-              );
-            }));
+            launchUrl("https://${state.link}");
           }
         },
         child: SafeArea(

@@ -10,7 +10,6 @@ export 'package:policepatil/src/views/screens/bottom_nav_bar.dart';
 export 'package:policepatil/src/views/screens/profile_screen.dart';
 export 'package:policepatil/src/views/screens/mandhan_certificate_screen.dart';
 export 'package:policepatil/src/views/screens/update_user_screen.dart';
-export 'package:policepatil/src/views/screens/pdf_view_screen.dart';
 export 'package:policepatil/src/views/screens/police_patil_dakhala.dart';
 export 'package:policepatil/src/views/screens/news_screen.dart';
 
