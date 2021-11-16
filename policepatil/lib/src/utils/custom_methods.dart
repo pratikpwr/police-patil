@@ -144,6 +144,14 @@ String dateInStringFormat(DateTime? dateTime) {
   return "वेळ: $time आणि तारीख: $date";
 }
 
+String dateInYYYYMMDDFormat(DateTime? dateTime) {
+  if (dateTime == null) {
+    return "";
+  }
+  String date = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
+  return date;
+}
+
 List<String> getVillageListInString(List<Village> list) {
   List<String> villageList = [];
   for (var vil in list) {

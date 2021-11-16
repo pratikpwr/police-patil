@@ -36,3 +36,5 @@ class ArmsDataSendError extends ArmsRegisterState {
 
   const ArmsDataSendError(this.error);
 }
+
+class ArmsDataChangeSuccess extends ArmsRegisterState {}

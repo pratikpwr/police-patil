@@ -1,4 +1,6 @@
-// ignore_for_bloc.file: prefer_final_fields
+// ignore_forfile: prefer_final_fields
+
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +13,43 @@ import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
+/// The forms screen handles adding and editing data
+/// editing the data has made this so much complex
 class ArmsRegFormScreen extends StatefulWidget {
-  const ArmsRegFormScreen({Key? key}) : super(key: key);
+  ArmsRegFormScreen({Key? key, this.armsData}) : super(key: key);
+  ArmsData? armsData; // if mode is editing this is required
 
   @override
   State<ArmsRegFormScreen> createState() => _ArmsRegFormScreenState();
 }
 
 class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
-  final _bloc = ArmsRegisterBloc();
-
+  bool _isEdit = false;
   Position? _position;
+  double longitude = 0.00;
+  double latitude = 0.00;
+
+  String? armsValue;
+  String? weaponCondition;
+
+  final List<String> weaponCondTypes = <String>[
+    "परवाना धारकाकडे शस्त्र आहे",
+    "पो. ठा. कडे जमा",
+    "गहाळ",
+    "फक्त परवाना आहे शस्त्र नाही",
+  ];
+  final List<String> armsRegTypes = <String>[
+    "शस्त्र परवानाधारक",
+    "स्फोटक पदार्थ विक्री",
+    "स्फोटक जवळ बाळगणारे",
+    "स्फोटक उडविणारे"
+  ];
+
+  String? fileName;
+  String? photoName;
+
+  File? file;
+  File? photo;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -33,6 +61,34 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
       TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _initializeValues();
+  }
+
+  _initializeValues() {
+    /// checks is edit mode or not
+    _isEdit = widget.armsData != null;
+
+    /// based on mode if its edit then previous values assigned
+    _nameController.text = _isEdit ? widget.armsData!.name ?? '' : '';
+    _phoneController.text = "${_isEdit ? widget.armsData!.mobile ?? '' : ''}";
+    _addressController.text = _isEdit ? widget.armsData!.address ?? '' : '';
+    _certificateNoController.text =
+        _isEdit ? widget.armsData!.licenceNumber ?? '' : '';
+    _uIDController.text = _isEdit ? widget.armsData!.uid ?? '' : '';
+    _certificateExpiryController.text =
+        _isEdit ? dateInYYYYMMDDFormat(widget.armsData!.validity) : '';
+    armsValue = _isEdit ? widget.armsData!.type : null;
+    weaponCondition = _isEdit ? widget.armsData!.weaponCondition : null;
+    fileName = _isEdit ? 'आधार कार्ड जोडलेले आहे' : 'आधार कार्ड जोडा';
+    photoName =
+        _isEdit ? 'परवान्याचा फोटो जोडलेले आहे' : 'परवान्याचा फोटो जोडा';
+    longitude = _isEdit ? widget.armsData!.longitude ?? 0.00 : 0.00;
+    latitude = _isEdit ? widget.armsData!.latitude ?? 0.00 : 0.00;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -41,10 +97,10 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
       body: BlocListener<ArmsRegisterBloc, ArmsRegisterState>(
           listener: (context, state) {
             if (state is ArmsDataSendError) {
-              showSnackBar(context, state.error);
+              showSnackBar(context, SOMETHING_WENT_WRONG);
             }
             if (state is ArmsDataSent) {
-              showSnackBar(context, state.message);
+              // showSnackBar(context, state.message);
               Navigator.pop(context);
             }
           },
@@ -56,12 +112,12 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                   children: [
                     spacer(),
                     buildDropButton(
-                        value: _bloc.armsValue,
-                        items: _bloc.armsRegTypes,
+                        value: armsValue,
+                        items: armsRegTypes,
                         hint: "प्रकार निवडा",
                         onChanged: (String? value) {
                           setState(() {
-                            _bloc.armsValue = value;
+                            armsValue = value;
                           });
                         }),
                     spacer(),
@@ -70,12 +126,12 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                     buildTextField(_phoneController, MOB_NO),
                     spacer(),
                     AttachButton(
-                      text: _bloc.fileName,
+                      text: fileName!,
                       onTap: () async {
                         getFileFromDevice(context).then((pickedFile) {
                           setState(() {
-                            _bloc.file = pickedFile;
-                            _bloc.fileName = getFileName(pickedFile!.path);
+                            file = pickedFile;
+                            fileName = getFileName(pickedFile!.path);
                           });
                         });
                       },
@@ -83,7 +139,7 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                     spacer(),
                     buildTextField(_addressController, ADDRESS),
                     spacer(),
-                    if (_bloc.armsValue != "शस्त्र परवानाधारक")
+                    if (armsValue != "शस्त्र परवानाधारक")
                       Column(
                         children: [
                           AttachButton(
@@ -92,8 +148,8 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                               onTap: () async {
                                 _position = await determinePosition();
                                 setState(() {
-                                  _bloc.longitude = _position!.longitude;
-                                  _bloc.latitude = _position!.latitude;
+                                  longitude = _position!.longitude;
+                                  latitude = _position!.latitude;
                                 });
                               }),
                           spacer(),
@@ -101,17 +157,17 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text("$LONGITUDE: ${_bloc.longitude}",
+                              Text("$LONGITUDE: $longitude",
                                   style: GoogleFonts.poppins(fontSize: 14)),
                               const SizedBox(width: 12),
-                              Text("$LATITUDE: ${_bloc.latitude}",
+                              Text("$LATITUDE: $latitude",
                                   style: GoogleFonts.poppins(fontSize: 14)),
                             ],
                           ),
                         ],
                       ),
                     spacer(height: 8),
-                    if (_bloc.armsValue == "शस्त्र परवानाधारक")
+                    if (armsValue == "शस्त्र परवानाधारक")
                       buildTextField(_uIDController, "युआईडी क्रमांक"),
                     spacer(),
                     buildTextField(_certificateNoController, "परवाना क्रमांक"),
@@ -119,34 +175,41 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
                     buildDateTextField(context, _certificateExpiryController,
                         "परवान्याची वैधता कालावधी"),
                     spacer(),
-                    if (_bloc.armsValue == "शस्त्र परवानाधारक")
+                    if (armsValue == "शस्त्र परवानाधारक")
                       buildDropButton(
-                          value: _bloc.weaponCondition,
-                          items: _bloc.weaponCondTypes,
+                          value: weaponCondition,
+                          items: weaponCondTypes,
                           hint: "शस्त्राची सद्यस्तिथी निवडा",
                           onChanged: (String? value) {
                             setState(() {
-                              _bloc.weaponCondition = value;
+                              weaponCondition = value;
                             });
                           }),
                     spacer(),
                     AttachButton(
-                      text: _bloc.photoName,
+                      text: photoName!,
                       onTap: () async {
                         getFileFromDevice(context).then((pickedFile) {
                           setState(() {
-                            _bloc.photo = pickedFile;
-                            _bloc.photoName = getFileName(pickedFile!.path);
+                            photo = pickedFile;
+                            photoName = getFileName(pickedFile!.path);
                           });
                         });
                       },
                     ),
                     spacer(),
-                    CustomButton(
-                        text: DO_REGISTER,
-                        onTap: () {
-                          _registerArmsData();
-                        }),
+                    BlocBuilder<ArmsRegisterBloc, ArmsRegisterState>(
+                      builder: (context, state) {
+                        if (state is ArmsDataSending) {
+                          return const Loading();
+                        }
+                        return CustomButton(
+                            text: DO_REGISTER,
+                            onTap: () {
+                              _registerArmsData();
+                            });
+                      },
+                    ),
                     spacer()
                   ],
                 )),
@@ -156,23 +219,27 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
 
   _registerArmsData() async {
     ArmsData armsData = ArmsData(
-        type: _bloc.armsValue!,
+        id: _isEdit ? widget.armsData!.id : null,
+        type: armsValue ?? widget.armsData!.type,
         name: _nameController.text,
         mobile: parseInt(_phoneController.text),
-        aadhar: _bloc.file?.path != null
-            ? await MultipartFile.fromFile(_bloc.file!.path)
-            : " ",
+        aadhar: file?.path != null
+            ? await MultipartFile.fromFile(file!.path)
+            : null,
         uid: _uIDController.text,
-        weaponCondition: _bloc.weaponCondition,
+        weaponCondition: weaponCondition,
         address: _addressController.text,
-        latitude: _bloc.latitude,
-        longitude: _bloc.longitude,
-        validity: parseDate(_certificateExpiryController.text),
-        licencephoto: _bloc.photo?.path != null
-            ? await MultipartFile.fromFile(_bloc.photo!.path)
-            : " ",
+        latitude: latitude,
+        longitude: longitude,
+        validity: _isEdit
+            ? widget.armsData!.validity
+            : parseDate(_certificateExpiryController.text),
+        licencephoto: photo?.path != null
+            ? await MultipartFile.fromFile(photo!.path)
+            : null,
         licenceNumber: _certificateNoController.text);
 
-    BlocProvider.of<ArmsRegisterBloc>(context).add(AddArmsData(armsData));
+    BlocProvider.of<ArmsRegisterBloc>(context)
+        .add(_isEdit ? EditArmsData(armsData) : AddArmsData(armsData));
   }
 }

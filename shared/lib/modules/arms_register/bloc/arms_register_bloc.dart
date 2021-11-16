@@ -23,34 +23,14 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
   ) async* {
     if (event is GetArmsData) {
       yield* _mapGetArmsDataState(event);
-    }
-    if (event is AddArmsData) {
+    } else if (event is AddArmsData) {
       yield* _mapAddArmsDataState(event);
+    } else if (event is EditArmsData) {
+      yield* _mapEditArmsDataState(event);
+    } else if (event is DeleteArmsData) {
+      yield* _mapDeleteArmsDataState(event);
     }
   }
-
-  String? armsValue;
-  String? weaponCondition;
-  double longitude = 0.00;
-  double latitude = 0.00;
-  final List<String> weaponCondTypes = <String>[
-    "परवाना धारकाकडे शस्त्र आहे",
-    "पो. ठा. कडे जमा",
-    "गहाळ",
-    "फक्त परवाना आहे शस्त्र नाही",
-  ];
-  final List<String> armsRegTypes = <String>[
-    "शस्त्र परवानाधारक",
-    "स्फोटक पदार्थ विक्री",
-    "स्फोटक जवळ बाळगणारे",
-    "स्फोटक उडविणारे"
-  ];
-
-  String fileName = 'आधार कार्ड जोडा';
-  String photoName = "परवान्याचा फोटो जोडा";
-
-  File? file;
-  File? photo;
 
   Stream<ArmsRegisterState> _mapGetArmsDataState(GetArmsData event) async* {
     yield ArmsDataLoading();
@@ -81,6 +61,38 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
       }
     } catch (err) {
       yield ArmsDataSendError(err.toString());
+    }
+  }
+
+  Stream<ArmsRegisterState> _mapEditArmsDataState(EditArmsData event) async* {
+    yield ArmsDataSending();
+    try {
+      Response _response =
+          await _armsRepository.editArmsData(armsData: event.armsData);
+
+      if (_response.data["message"] == 'Success') {
+        yield ArmsDataSent(_response.data["message"]);
+      } else {
+        yield ArmsDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield ArmsDataSendError(err.toString());
+    }
+  }
+
+  Stream<ArmsRegisterState> _mapDeleteArmsDataState(
+      DeleteArmsData event) async* {
+    yield ArmsDataLoading();
+    try {
+      Response _response = await _armsRepository.deleteArmsData(id: event.id);
+
+      if (_response.data["message"] == "Success") {
+        yield ArmsDataChangeSuccess();
+      } else {
+        yield ArmsLoadError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield ArmsLoadError(err.toString());
     }
   }
 }

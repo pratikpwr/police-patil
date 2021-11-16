@@ -24,6 +24,10 @@ class ArmsScreen extends StatelessWidget {
             debugPrint(state.message);
             showSnackBar(context, state.message);
           }
+          if (state is ArmsDataChangeSuccess) {
+            BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
+            showSnackBar(context, 'Deleted Success.');
+          }
         },
         child: BlocBuilder<ArmsRegisterBloc, ArmsRegisterState>(
           builder: (context, state) {
@@ -34,18 +38,24 @@ class ArmsScreen extends StatelessWidget {
                 return NoRecordFound();
               } else {
                 return SafeArea(
-                  child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      physics: const BouncingScrollPhysics(),
-                      child: ListView.builder(
-                          itemCount: state.armsResponse.data.length,
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return ArmsDetailWidget(
-                              armsData: state.armsResponse.data[index],
-                            );
-                          })),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      BlocProvider.of<ArmsRegisterBloc>(context)
+                          .add(GetArmsData());
+                    },
+                    child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        physics: const BouncingScrollPhysics(),
+                        child: ListView.builder(
+                            itemCount: state.armsResponse.data.length,
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return ArmsDetailWidget(
+                                armsData: state.armsResponse.data[index],
+                              );
+                            })),
+                  ),
                 );
               }
             } else if (state is ArmsLoadError) {
@@ -58,8 +68,9 @@ class ArmsScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // _navigateToRegister(context);
           Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const ArmsRegFormScreen();
+            return ArmsRegFormScreen();
           })).then((value) {
             BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
           });
@@ -69,6 +80,8 @@ class ArmsScreen extends StatelessWidget {
     );
   }
 }
+
+_navigateToRegister(BuildContext context, {ArmsData? armsData}) {}
 
 class ArmsDetailWidget extends StatelessWidget {
   const ArmsDetailWidget({Key? key, required this.armsData}) : super(key: key);
@@ -89,9 +102,45 @@ class ArmsDetailWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              armsData.type!,
-              style: Styles.primaryTextStyle(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  armsData.type!,
+                  style: Styles.primaryTextStyle(),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(
+                        Icons.edit_rounded,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        // _navigateToRegister(context, armsData: armsData);
+                        Navigator.push(context, MaterialPageRoute(builder: (_) {
+                          return ArmsRegFormScreen(
+                            armsData: armsData,
+                          );
+                        })).then((value) {
+                          BlocProvider.of<ArmsRegisterBloc>(context)
+                              .add(GetArmsData());
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.delete_rounded,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        BlocProvider.of<ArmsRegisterBloc>(context)
+                            .add(DeleteArmsData(armsData.id!));
+                      },
+                    ),
+                  ],
+                )
+              ],
             ),
             const Divider(),
             HeadValueText(title: NAME, value: armsData.name ?? "-"),

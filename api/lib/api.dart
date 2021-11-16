@@ -81,6 +81,20 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> editArmsRegister({required body}) async {
+    String path = ApiConstants.POST_ARMS_BY_PP + '/edit';
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deleteArmsRegister({required body}) async {
+    String path = ApiConstants.POST_ARMS_BY_PP + '/delete';
+
+    Response response = await RestApiHandlerData.deleteData(path, body: body);
+    return response;
+  }
+
   static Future<Response> getArms() async {
     String path = ApiConstants.GET_ARMS;
 
