@@ -21,7 +21,8 @@ class ArmsRepository {
     Map<String, dynamic> _body = armsData.toJson();
     _body['armsid'] = armsData.id;
     _body['_method'] = 'put';
-    final response = await ApiSdk.editArmsRegister(body: _body);
+    FormData _formData = FormData.fromMap(_body);
+    final response = await ApiSdk.editArmsRegister(body: _formData);
     return response;
   }
 

@@ -84,7 +84,7 @@ class ArmsData {
         "licencenumber": licenceNumber,
         "uid": uid,
         "weapon_condition": weaponCondition,
-        "validity": validity,
+        "validity": validity == null ? null : validity!.toIso8601String(),
         "licencephoto": licencephoto,
       };
 }

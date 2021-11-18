@@ -19,8 +19,11 @@ class ApiBaseHelper {
   }
 
   Future<Response> get(String url) async {
-    debugPrint('Url : $url ');
+    debugPrint(' GET --- Url : $url ');
     String? token = await LocalPrefs.getToken();
+    // if (!await checkConnection()) {
+    //   throw FetchDataException('No Internet connection.');
+    // }
     Response response;
     try {
       dio.options.headers['content-Type'] = 'application/json';
@@ -34,7 +37,7 @@ class ApiBaseHelper {
   }
 
   Future<Response> post(String url, dynamic data) async {
-    debugPrint('{Url : $url,\nbody: ${data.toString()}');
+    debugPrint('POST  --- Url : $url,\nbody: ${data.toString()}');
     String? token = await LocalPrefs.getToken();
     Response response;
     try {
@@ -58,7 +61,7 @@ class ApiBaseHelper {
   }
 
   Future<Response> put(String url, dynamic data) async {
-    debugPrint('{Url : $url,\nbody: ${data.toString()}');
+    debugPrint('PUT --- Url : $url,\nbody: ${data.toString()}');
     String? token = await LocalPrefs.getToken();
     Response response;
     try {
@@ -82,7 +85,7 @@ class ApiBaseHelper {
   }
 
   Future<Response> delete(String url, {dynamic data}) async {
-    debugPrint('{Url : $url,\nbody: ${data.toString()}');
+    debugPrint('DELETE --- Url : $url,\nbody: ${data.toString()}');
     String? token = await LocalPrefs.getToken();
     Response response;
     try {
