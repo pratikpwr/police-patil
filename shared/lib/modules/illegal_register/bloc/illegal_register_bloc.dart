@@ -36,21 +36,7 @@ class IllegalRegisterBloc
     }
   }
 
-  String? chosenValue;
 
-  double longitude = 0.00;
-  double latitude = 0.00;
-
-  File? photo;
-  String photoName = "फोटो जोडा";
-
-  final List<String> watchRegTypes = <String>[
-    "अवैद्य दारू विक्री करणारे",
-    "अवैद्य गुटका विक्री करणारे",
-    "जुगार/मटका चालविणारे/खेळणारे",
-    "अवैद्य गौण खनिज उत्खनन करणारे वाळू तस्कर",
-    "अमली पदार्थ विक्री करणारे"
-  ];
 
   Stream<IllegalRegisterState> _mapGetIllegalDataState(
       GetIllegalData event) async* {

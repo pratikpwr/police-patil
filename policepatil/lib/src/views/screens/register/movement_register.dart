@@ -11,7 +11,8 @@ import 'package:policepatil/src/views/widgets/attach_button.dart';
 import 'package:shared/shared.dart';
 
 class MovementRegFormScreen extends StatefulWidget {
-  const MovementRegFormScreen({Key? key}) : super(key: key);
+  MovementRegFormScreen({Key? key, this.movementData}) : super(key: key);
+  MovementData? movementData;
 
   @override
   State<MovementRegFormScreen> createState() => _MovementRegFormScreenState();
@@ -64,14 +65,14 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                 spacer(),
                 _bloc.movementValue != null
                     ? buildDropButton(
-                    value: _bloc.movementSubValue,
-                    items: _bloc.movementSubRegTypes!,
-                    hint: "हालचाली उपप्रकार निवडा",
-                    onChanged: (String? value) {
-                      setState(() {
-                        _bloc.movementSubValue = value;
-                      });
-                    })
+                        value: _bloc.movementSubValue,
+                        items: _bloc.movementSubRegTypes!,
+                        hint: "हालचाली उपप्रकार निवडा",
+                        onChanged: (String? value) {
+                          setState(() {
+                            _bloc.movementSubValue = value;
+                          });
+                        })
                     : spacer(height: 0),
                 spacer(),
                 buildTextField(_placeController, PLACE),

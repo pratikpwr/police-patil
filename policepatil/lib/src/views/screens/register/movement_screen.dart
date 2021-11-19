@@ -42,9 +42,44 @@ class MovementScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return MovementDetailWidget(
-                              movementData:
-                                  state.movementResponse.movementData![index],
+                            final movementData =
+                                state.movementResponse.movementData![index];
+                            return InkWell(
+                              onTap: () {
+                                _showDetails(context, movementData);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(movementData.type!,
+                                        style: Styles.primaryTextStyle()),
+                                    Text(movementData.subtype!,
+                                        style: Styles.primaryTextStyle()),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: DESCRIPTION,
+                                        value: movementData.description ?? "-"),
+                                    HeadValueText(
+                                        title: ADDRESS,
+                                        value: movementData.address ?? "-"),
+                                    HeadValueText(
+                                        title: ATTENDANCE,
+                                        value:
+                                            "${movementData.attendance ?? 0}"),
+                                    HeadValueText(
+                                        title: DATE,
+                                        value:
+                                            showDate(movementData.datetime!)),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -59,55 +94,22 @@ class MovementScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const MovementRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<MovementRegisterBloc>(context)
-                .add(GetMovementData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
   }
-}
 
-class MovementDetailWidget extends StatelessWidget {
-  const MovementDetailWidget({Key? key, required this.movementData})
-      : super(key: key);
-  final MovementData movementData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(movementData.type!, style: Styles.primaryTextStyle()),
-            Text(movementData.subtype!, style: Styles.primaryTextStyle()),
-            const Divider(),
-            HeadValueText(
-                title: DESCRIPTION, value: movementData.description ?? "-"),
-            HeadValueText(title: ADDRESS, value: movementData.address ?? "-"),
-            HeadValueText(
-                title: ATTENDANCE, value: "${movementData.attendance ?? 0}"),
-            HeadValueText(title: DATE, value: showDate(movementData.datetime!)),
-          ],
-        ),
-      ),
-    );
+  _navigateToRegister(BuildContext context, {MovementData? movementData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return MovementRegFormScreen(movementData: movementData);
+    })).then((value) {
+      BlocProvider.of<MovementRegisterBloc>(context).add(GetMovementData());
+    });
   }
 
-  _showDetails(BuildContext context) {
+  _showDetails(BuildContext context, MovementData movementData) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,

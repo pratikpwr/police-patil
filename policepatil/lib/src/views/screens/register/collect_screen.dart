@@ -24,6 +24,11 @@ class CollectionScreen extends StatelessWidget {
             debugPrint(state.message);
             showSnackBar(context, state.message);
           }
+          if (state is CollectionDataDeleted) {
+            BlocProvider.of<CollectRegisterBloc>(context)
+                .add(GetCollectionData());
+            showSnackBar(context, DELETED);
+          }
         },
         child: BlocBuilder<CollectRegisterBloc, CollectRegisterState>(
           builder: (context, state) {
@@ -59,8 +64,43 @@ class CollectionScreen extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(collect.type!,
-                                        style: Styles.primaryTextStyle()),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          collect.type!,
+                                          style: Styles.primaryTextStyle(),
+                                        ),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                _navigateToRegister(context,
+                                                    collect: collect);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            CollectRegisterBloc>(
+                                                        context)
+                                                    .add(DeleteCollectionData(
+                                                        collect.id!));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                     const Divider(),
                                     HeadValueText(
                                         title: DESCRIPTION,
@@ -88,16 +128,22 @@ class CollectionScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const CollectRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<CollectRegisterBloc>(context)
-                .add(GetCollectionData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
+  }
+
+  _navigateToRegister(BuildContext context, {CollectionData? collect}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return CollectRegFormScreen(
+        collect: collect,
+      );
+    })).then((value) =>
+        BlocProvider.of<CollectRegisterBloc>(context).add(GetCollectionData()));
+    // whenComplete(
+    //     () => BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData()));
   }
 
   _showDetails(BuildContext context, CollectionData collect) {

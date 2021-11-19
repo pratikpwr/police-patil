@@ -23,6 +23,10 @@ class IllegalScreen extends StatelessWidget {
           if (state is IllegalLoadError) {
             showSnackBar(context, state.message);
           }
+          if (state is IllegalDeleted) {
+            showSnackBar(context, DELETED);
+            BlocProvider.of<IllegalRegisterBloc>(context).add(GetIllegalData());
+          }
         },
         child: BlocBuilder<IllegalRegisterBloc, IllegalRegisterState>(
           builder: (context, state) {
@@ -41,8 +45,69 @@ class IllegalScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return IllegalDetailWidget(
-                              illegalData: state.illegalResponse.data![index],
+                            IllegalData illegalData =
+                                state.illegalResponse.data![index];
+                            return InkWell(
+                              onTap: () {
+                                _showDetails(context, illegalData);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          illegalData.type!,
+                                          style: Styles.primaryTextStyle(),
+                                        ),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                _navigateToRegister(context,
+                                                    illegalData: illegalData);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            IllegalRegisterBloc>(
+                                                        context)
+                                                    .add(DeleteIllegalData(
+                                                        illegalData.id!));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: NAME,
+                                        value: illegalData.name ?? " - "),
+                                    HeadValueText(
+                                        title: ADDRESS,
+                                        value: illegalData.address ?? "-"),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -57,49 +122,23 @@ class IllegalScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const IllegalWorksFormScreen();
-          })).then((value) {
-            BlocProvider.of<IllegalRegisterBloc>(context).add(GetIllegalData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
   }
-}
 
-class IllegalDetailWidget extends StatelessWidget {
-  const IllegalDetailWidget({Key? key, required this.illegalData})
-      : super(key: key);
-  final IllegalData illegalData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(illegalData.type!, style: Styles.primaryTextStyle()),
-            const Divider(),
-            HeadValueText(title: NAME, value: illegalData.name ?? " - "),
-            HeadValueText(title: ADDRESS, value: illegalData.address ?? "-"),
-          ],
-        ),
-      ),
-    );
+  _navigateToRegister(BuildContext context, {IllegalData? illegalData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return IllegalWorksFormScreen(
+        illegalData: illegalData,
+      );
+    })).then((value) =>
+        BlocProvider.of<IllegalRegisterBloc>(context).add(GetIllegalData()));
   }
 
-  _showDetails(BuildContext context) {
+  _showDetails(BuildContext context, IllegalData illegalData) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,

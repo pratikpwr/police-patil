@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -34,20 +33,6 @@ class CollectRegisterBloc
       yield* _mapDeleteCollectionDataState(event);
     }
   }
-
-  String? chosenValue;
-
-  final List<String> collectionType = <String>[
-    "बेवारस वाहने",
-    "दागिने",
-    "गौण खनिज",
-    "इतर"
-  ];
-
-  String photoName = "फोटो जोडा";
-  File? photo;
-  double longitude = 0.00;
-  double latitude = 0.00;
 
   Stream<CollectRegisterState> _mapGetCollectionDataState(
       GetCollectionData event) async* {
@@ -101,7 +86,7 @@ class CollectRegisterBloc
 
   Stream<CollectRegisterState> _mapDeleteCollectionDataState(
       DeleteCollectionData event) async* {
-    yield CollectionDataSending();
+    yield CollectionDataLoading();
     try {
       Response _response = await _collectionRepository.deleteArmsData(
         id: event.id,
@@ -110,10 +95,10 @@ class CollectRegisterBloc
       if (_response.data["message"] != null) {
         yield CollectionDataDeleted();
       } else {
-        yield CollectionDataSendError(_response.data["error"]);
+        yield CollectionLoadError(_response.data["error"]);
       }
     } catch (err) {
-      yield CollectionDataSendError(err.toString());
+      yield CollectionLoadError(err.toString());
     }
   }
 }

@@ -157,7 +157,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         mobile: parseInt(_mobileController.text),
         photo: _photo?.path != null
             ? await MultipartFile.fromFile(_photo!.path)
-            : widget.user.photo,
+            : null,
         latitude: _latitude,
         longitude: _longitude,
         orderNo: _orderNoController.text,
