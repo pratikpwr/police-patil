@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:policepatil/src/utils/styles.dart';
 import 'package:shared/modules/village_ps_list/village_ps_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:policepatil/src/config/constants.dart';
@@ -11,8 +12,8 @@ import 'package:policepatil/src/config/constants.dart';
 void showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
-    message,
-    style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500),
+        message,
+    style: Styles.subTitleTextStyle(fontSize: 12),
   )));
 }
 

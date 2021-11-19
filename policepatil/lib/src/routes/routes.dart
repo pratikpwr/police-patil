@@ -11,6 +11,10 @@ Route routes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const BottomNavBar());
     case '/auth':
       return MaterialPageRoute(builder: (_) => const SignInScreen());
+    case '/registers':
+      return MaterialPageRoute(builder: (_) => const RegisterMenuScreen());
+    case '/crime-registers':
+      return MaterialPageRoute(builder: (_) => const CrimesRegMenuScreen());
     default:
       return MaterialPageRoute(builder: (_) => const SplashScreen());
   }

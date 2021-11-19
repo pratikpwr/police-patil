@@ -67,12 +67,6 @@ class ApiSdk {
   }
 
   // ARMS Register
-  static Future<Response> postArmsRegister({required body}) async {
-    String path = ApiConstants.POST_ARMS_BY_PP;
-
-    Response response = await RestApiHandlerData.postData(path, body);
-    return response;
-  }
 
   static Future<Response> getArmsByPP({required int userId}) async {
     String path = ApiConstants.GET_ARMS_BY_PP + "$userId";
@@ -81,16 +75,23 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> postArmsRegister({required body}) async {
+    String path = ApiConstants.POST_ARMS_BY_PP;
+
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
   static Future<Response> editArmsRegister({required body}) async {
     String path = ApiConstants.POST_ARMS_BY_PP + '/edit';
-
+    body['_method'] = 'put';
     Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }
 
   static Future<Response> deleteArmsRegister({required body}) async {
     String path = ApiConstants.POST_ARMS_BY_PP + '/delete';
-
+    body['_method'] = 'delete';
     Response response = await RestApiHandlerData.deleteData(path, body: body);
     return response;
   }
@@ -103,6 +104,14 @@ class ApiSdk {
   }
 
   // Collect Register
+
+  static Future<Response> getCollect() async {
+    String path = ApiConstants.GET_COLLECT;
+
+    Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
   static Future<Response> postCollectRegister({required dynamic body}) async {
     String path = ApiConstants.POST_COLLECT_BY_PP;
 
@@ -110,10 +119,17 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getCollect() async {
-    String path = ApiConstants.GET_COLLECT;
+  static Future<Response> editCollectRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_COLLECT_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
 
-    Response response = await RestApiHandlerData.getData(path);
+  static Future<Response> deleteCollectRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_COLLECT_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }
 
@@ -132,6 +148,21 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> editMovementRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_MOVEMENT_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deleteMovementRegister(
+      {required dynamic body}) async {
+    String path = ApiConstants.POST_MOVEMENT_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
   //  Register
   static Future<Response> postWatchRegister({required body}) async {
     String path = ApiConstants.POST_WATCH_BY_PP;
@@ -144,6 +175,20 @@ class ApiSdk {
     String path = "${ApiConstants.GET_WATCH}${params ?? ""}";
 
     Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> editWatchRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_WATCH_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deleteWatchRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_WATCH_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }
 
@@ -162,6 +207,20 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> editCrimeRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_CRIME_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deleteCrimeRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_CRIME_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
   //  Register
   static Future<Response> postFireRegister({required body}) async {
     String path = ApiConstants.POST_FIRE_BY_PP;
@@ -174,6 +233,20 @@ class ApiSdk {
     String path = ApiConstants.GET_FIRE;
 
     Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> editFireRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_FIRE_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deleteFireRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_FIRE_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }
 
@@ -192,6 +265,20 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> editDeathRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_DEATH_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deleteDeathRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_DEATH_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
   //  Register
   static Future<Response> postMissingRegister({required body}) async {
     String path = ApiConstants.POST_MISSING_BY_PP;
@@ -204,6 +291,20 @@ class ApiSdk {
     String path = ApiConstants.GET_MISSING;
 
     Response response = await RestApiHandlerData.getData(path);
+    return response;
+  }
+
+  static Future<Response> editMissingRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_MISSING_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deleteMissingRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_MISSING_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }
 
@@ -222,6 +323,20 @@ class ApiSdk {
     return response;
   }
 
+  static Future<Response> editPlaceRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_PUBLIC_PLACE_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deletePlaceRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_PUBLIC_PLACE_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
   //  Register
   static Future<Response> postIllegalRegister({required body}) async {
     String path = ApiConstants.POST_ILLEGAL_WORK_BY_PP;
@@ -236,6 +351,22 @@ class ApiSdk {
     Response response = await RestApiHandlerData.getData(path);
     return response;
   }
+
+  static Future<Response> editIllegalRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_ILLEGAL_WORK_BY_PP + '/edit';
+    body['_method'] = 'put';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  static Future<Response> deleteIllegalRegister({required dynamic body}) async {
+    String path = ApiConstants.POST_ILLEGAL_WORK_BY_PP + '/delete';
+    body['_method'] = 'delete';
+    Response response = await RestApiHandlerData.postData(path, body);
+    return response;
+  }
+
+  //Disasters
 
   static Future<Response> postDisasterHelper({required body}) async {
     String path = ApiConstants.DISASTER_HELPER;

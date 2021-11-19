@@ -100,7 +100,12 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
               showSnackBar(context, SOMETHING_WENT_WRONG);
             }
             if (state is ArmsDataSent) {
-              // showSnackBar(context, state.message);
+              showSnackBar(context, state.message);
+              Navigator.pop(context);
+            }
+            if (state is ArmsEditDone) {
+              showSnackBar(context, state.message);
+              Navigator.pop(context);
               Navigator.pop(context);
             }
           },
@@ -239,7 +244,8 @@ class _ArmsRegFormScreenState extends State<ArmsRegFormScreen> {
             : null,
         licenceNumber: _certificateNoController.text);
 
-    BlocProvider.of<ArmsRegisterBloc>(context)
-        .add(_isEdit ? EditArmsData(armsData) : AddArmsData(armsData));
+    _isEdit
+        ? BlocProvider.of<ArmsRegisterBloc>(context).add(EditArmsData(armsData))
+        : BlocProvider.of<ArmsRegisterBloc>(context).add(AddArmsData(armsData));
   }
 }

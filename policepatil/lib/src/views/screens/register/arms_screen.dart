@@ -8,15 +8,31 @@ import 'package:policepatil/src/views/screens/register/arms_register.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
-class ArmsScreen extends StatelessWidget {
+class ArmsScreen extends StatefulWidget {
   const ArmsScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<ArmsScreen> createState() => _ArmsScreenState();
+}
+
+class _ArmsScreenState extends State<ArmsScreen> {
+  @override
+  void initState() {
+    super.initState();
     BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(ARMS_COLLECTIONS),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _navigateToRegister(context);
+        },
+        child: const Icon(Icons.add),
       ),
       body: BlocListener<ArmsRegisterBloc, ArmsRegisterState>(
         listener: (context, state) {
@@ -51,8 +67,75 @@ class ArmsScreen extends StatelessWidget {
                             shrinkWrap: true,
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
-                              return ArmsDetailWidget(
-                                armsData: state.armsResponse.data[index],
+                              final armsData = state.armsResponse.data[index];
+                              return InkWell(
+                                onTap: () {
+                                  _showDetails(context, armsData);
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(16),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 8),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: CONTAINER_BACKGROUND_COLOR),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            armsData.type!,
+                                            style: Styles.primaryTextStyle(),
+                                          ),
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(
+                                                  Icons.edit_rounded,
+                                                  size: 20,
+                                                ),
+                                                onPressed: () {
+                                                  _navigateToRegister(context,
+                                                      armsData: armsData);
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(
+                                                  Icons.delete_rounded,
+                                                  size: 20,
+                                                ),
+                                                onPressed: () {
+                                                  BlocProvider.of<
+                                                              ArmsRegisterBloc>(
+                                                          context)
+                                                      .add(DeleteArmsData(
+                                                          armsData.id!));
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      const Divider(),
+                                      HeadValueText(
+                                          title: NAME,
+                                          value: armsData.name ?? "-"),
+                                      HeadValueText(
+                                          title: MOB_NO,
+                                          value: "${armsData.mobile ?? "-"} "),
+                                      HeadValueText(
+                                          title: ADDRESS,
+                                          value: armsData.address ?? "-"),
+                                      HeadValueText(
+                                          title: "परवाना क्रमांक",
+                                          value: armsData.licenceNumber ?? "-"),
+                                    ],
+                                  ),
+                                ),
                               );
                             })),
                   ),
@@ -66,95 +149,19 @@ class ArmsScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // _navigateToRegister(context);
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return ArmsRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
-          });
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-_navigateToRegister(BuildContext context, {ArmsData? armsData}) {}
-
-class ArmsDetailWidget extends StatelessWidget {
-  const ArmsDetailWidget({Key? key, required this.armsData}) : super(key: key);
-  final ArmsData armsData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  armsData.type!,
-                  style: Styles.primaryTextStyle(),
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.edit_rounded,
-                        size: 20,
-                      ),
-                      onPressed: () {
-                        // _navigateToRegister(context, armsData: armsData);
-                        Navigator.push(context, MaterialPageRoute(builder: (_) {
-                          return ArmsRegFormScreen(
-                            armsData: armsData,
-                          );
-                        })).then((value) {
-                          BlocProvider.of<ArmsRegisterBloc>(context)
-                              .add(GetArmsData());
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.delete_rounded,
-                        size: 20,
-                      ),
-                      onPressed: () {
-                        BlocProvider.of<ArmsRegisterBloc>(context)
-                            .add(DeleteArmsData(armsData.id!));
-                      },
-                    ),
-                  ],
-                )
-              ],
-            ),
-            const Divider(),
-            HeadValueText(title: NAME, value: armsData.name ?? "-"),
-            HeadValueText(title: MOB_NO, value: "${armsData.mobile ?? "-"} "),
-            HeadValueText(title: ADDRESS, value: armsData.address ?? "-"),
-            HeadValueText(
-                title: "परवाना क्रमांक", value: armsData.licenceNumber ?? "-"),
-          ],
-        ),
-      ),
     );
   }
 
-  _showDetails(BuildContext context) {
+  _navigateToRegister(BuildContext context, {ArmsData? armsData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return ArmsRegFormScreen(armsData: armsData);
+    })).then((value) =>
+        BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData()));
+    // whenComplete(
+    //     () => BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData()));
+  }
+
+  _showDetails(BuildContext context, ArmsData armsData) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,
@@ -212,3 +219,78 @@ class ArmsDetailWidget extends StatelessWidget {
         });
   }
 }
+
+//
+// class ArmsDetailWidget extends StatelessWidget {
+//   const ArmsDetailWidget({Key? key, required this.armsData}) : super(key: key);
+//   final ArmsData armsData;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return InkWell(
+//       onTap: () {
+//         _showDetails(context);
+//       },
+//       child: Container(
+//         padding: const EdgeInsets.all(16),
+//         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+//         decoration: BoxDecoration(
+//             borderRadius: BorderRadius.circular(15),
+//             color: CONTAINER_BACKGROUND_COLOR),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   armsData.type!,
+//                   style: Styles.primaryTextStyle(),
+//                 ),
+//                 Row(
+//                   children: [
+//                     IconButton(
+//                       icon: const Icon(
+//                         Icons.edit_rounded,
+//                         size: 20,
+//                       ),
+//                       onPressed: () {
+//                         // _navigateToRegister(context, armsData: armsData);
+//                         Navigator.push(context, MaterialPageRoute(builder: (_) {
+//                           return ArmsRegFormScreen(
+//                             armsData: armsData,
+//                           );
+//                         })).then((value) {
+//                           BlocProvider.of<ArmsRegisterBloc>(context)
+//                               .add(GetArmsData());
+//                         });
+//                       },
+//                     ),
+//                     IconButton(
+//                       icon: const Icon(
+//                         Icons.delete_rounded,
+//                         size: 20,
+//                       ),
+//                       onPressed: () {
+//                         BlocProvider.of<ArmsRegisterBloc>(context)
+//                             .add(DeleteArmsData(armsData.id!));
+//                       },
+//                     ),
+//                   ],
+//                 )
+//               ],
+//             ),
+//             const Divider(),
+//             HeadValueText(title: NAME, value: armsData.name ?? "-"),
+//             HeadValueText(title: MOB_NO, value: "${armsData.mobile ?? "-"} "),
+//             HeadValueText(title: ADDRESS, value: armsData.address ?? "-"),
+//             HeadValueText(
+//                 title: "परवाना क्रमांक", value: armsData.licenceNumber ?? "-"),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+//
+//
+// }

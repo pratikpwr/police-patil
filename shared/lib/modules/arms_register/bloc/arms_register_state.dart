@@ -31,6 +31,12 @@ class ArmsDataSent extends ArmsRegisterState {
   const ArmsDataSent(this.message);
 }
 
+class ArmsEditDone extends ArmsRegisterState {
+  final String message;
+
+  const ArmsEditDone(this.message);
+}
+
 class ArmsDataSendError extends ArmsRegisterState {
   final String error;
 

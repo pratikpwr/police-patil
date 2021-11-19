@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -23,11 +22,14 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
   ) async* {
     if (event is GetArmsData) {
       yield* _mapGetArmsDataState(event);
-    } else if (event is AddArmsData) {
+    }
+    if (event is AddArmsData) {
       yield* _mapAddArmsDataState(event);
-    } else if (event is EditArmsData) {
+    }
+    if (event is EditArmsData) {
       yield* _mapEditArmsDataState(event);
-    } else if (event is DeleteArmsData) {
+    }
+    if (event is DeleteArmsData) {
       yield* _mapDeleteArmsDataState(event);
     }
   }
@@ -70,8 +72,8 @@ class ArmsRegisterBloc extends Bloc<ArmsRegisterEvent, ArmsRegisterState> {
       Response _response =
           await _armsRepository.editArmsData(armsData: event.armsData);
 
-      if (_response.data["message"] == 'Success') {
-        yield ArmsDataSent(_response.data["message"]);
+      if (_response.data["message"] != null) {
+        yield ArmsEditDone(_response.data["message"]);
       } else {
         yield ArmsDataSendError(_response.data["error"]);
       }
