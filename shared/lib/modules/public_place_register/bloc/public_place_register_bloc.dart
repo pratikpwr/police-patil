@@ -25,6 +25,12 @@ class PublicPlaceRegisterBloc
     if (event is AddPublicPlaceData) {
       yield* _mapAddPublicPlaceDataState(event);
     }
+    if (event is EditPublicPlaceData) {
+      yield* _mapEditPublicPlaceDataState(event);
+    }
+    if (event is DeletePublicPlaceData) {
+      yield* _mapDeletePublicPlaceDataState(event);
+    }
   }
 
   String? chosenValue;
@@ -73,6 +79,39 @@ class PublicPlaceRegisterBloc
 
       if (_response.data["message"] != null) {
         yield PublicPlaceDataSent(_response.data["message"]);
+      } else {
+        yield PublicPlaceDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield PublicPlaceDataSendError(err.toString());
+    }
+  }
+
+  Stream<PublicPlaceRegisterState> _mapEditPublicPlaceDataState(
+      EditPublicPlaceData event) async* {
+    yield PublicPlaceDataSending();
+    try {
+      Response _response =
+          await _placeRepository.editPlaceData(placeData: event.placeData);
+
+      if (_response.data["message"] != null) {
+        yield PublicPlaceDataEdited(_response.data["message"]);
+      } else {
+        yield PublicPlaceDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield PublicPlaceDataSendError(err.toString());
+    }
+  }
+
+  Stream<PublicPlaceRegisterState> _mapDeletePublicPlaceDataState(
+      DeletePublicPlaceData event) async* {
+    yield PublicPlaceDataSending();
+    try {
+      Response _response = await _placeRepository.deletePlaceData(id: event.id);
+
+      if (_response.data["message"] != null) {
+        yield PublicPlaceDeleted();
       } else {
         yield PublicPlaceDataSendError(_response.data["error"]);
       }

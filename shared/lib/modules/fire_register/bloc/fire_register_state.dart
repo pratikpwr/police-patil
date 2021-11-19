@@ -34,8 +34,16 @@ class FireDataSent extends FireRegisterState {
   const FireDataSent(this.message);
 }
 
+class FireDataEdited extends FireRegisterState {
+  final String message;
+
+  const FireDataEdited(this.message);
+}
+
 class FireDataSendError extends FireRegisterState {
   final String error;
 
   const FireDataSendError(this.error);
 }
+
+class FireDataDeleted extends FireRegisterState {}

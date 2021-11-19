@@ -27,6 +27,12 @@ class CollectRegisterBloc
     if (event is AddCollectionData) {
       yield* _mapAddCollectionDataState(event);
     }
+    if (event is EditCollectionData) {
+      yield* _mapEditCollectionDataState(event);
+    }
+    if (event is DeleteCollectionData) {
+      yield* _mapDeleteCollectionDataState(event);
+    }
   }
 
   String? chosenValue;
@@ -68,6 +74,41 @@ class CollectRegisterBloc
 
       if (_response.data["message"] != null) {
         yield CollectionDataSent(_response.data["message"]);
+      } else {
+        yield CollectionDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield CollectionDataSendError(err.toString());
+    }
+  }
+
+  Stream<CollectRegisterState> _mapEditCollectionDataState(
+      EditCollectionData event) async* {
+    yield CollectionDataSending();
+    try {
+      Response _response = await _collectionRepository.editArmsData(
+          collect: event.collectionData);
+
+      if (_response.data["message"] != null) {
+        yield CollectionDataEdited(_response.data["message"]);
+      } else {
+        yield CollectionDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield CollectionDataSendError(err.toString());
+    }
+  }
+
+  Stream<CollectRegisterState> _mapDeleteCollectionDataState(
+      DeleteCollectionData event) async* {
+    yield CollectionDataSending();
+    try {
+      Response _response = await _collectionRepository.deleteArmsData(
+        id: event.id,
+      );
+
+      if (_response.data["message"] != null) {
+        yield CollectionDataDeleted();
       } else {
         yield CollectionDataSendError(_response.data["error"]);
       }

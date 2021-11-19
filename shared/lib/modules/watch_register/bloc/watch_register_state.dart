@@ -34,8 +34,16 @@ class WatchDataSent extends WatchRegisterState {
   const WatchDataSent(this.message);
 }
 
+class WatchDataEdited extends WatchRegisterState {
+  final String message;
+
+  const WatchDataEdited(this.message);
+}
+
 class WatchDataSendError extends WatchRegisterState {
   final String error;
 
   const WatchDataSendError(this.error);
 }
+
+class WatchDataDeleted extends WatchRegisterState {}

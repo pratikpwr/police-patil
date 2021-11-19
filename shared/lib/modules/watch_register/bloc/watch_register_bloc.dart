@@ -26,6 +26,12 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
     if (event is AddWatchData) {
       yield* _mapAddWatchDataState(event);
     }
+    if (event is EditWatchData) {
+      yield* _mapEditWatchDataState(event);
+    }
+    if (event is DeleteWatchData) {
+      yield* _mapDeleteWatchDataState(event);
+    }
   }
 
   String? chosenValue;
@@ -72,6 +78,41 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
 
       if (_response.data["message"] != null) {
         yield WatchDataSent(_response.data["message"]);
+      } else {
+        yield WatchDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield WatchDataSendError(err.toString());
+    }
+  }
+
+  Stream<WatchRegisterState> _mapEditWatchDataState(
+      EditWatchData event) async* {
+    yield WatchDataSending();
+    try {
+      Response _response =
+          await _watchRepository.editWatchData(watchData: event.watchData);
+
+      if (_response.data["message"] != null) {
+        yield WatchDataSent(_response.data["message"]);
+      } else {
+        yield WatchDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield WatchDataSendError(err.toString());
+    }
+  }
+
+  Stream<WatchRegisterState> _mapDeleteWatchDataState(
+      DeleteWatchData event) async* {
+    yield WatchDataSending();
+    try {
+      Response _response = await _watchRepository.deleteWatchData(
+        id: event.id,
+      );
+
+      if (_response.data["message"] != null) {
+        yield WatchDataDeleted();
       } else {
         yield WatchDataSendError(_response.data["error"]);
       }

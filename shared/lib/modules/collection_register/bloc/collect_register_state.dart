@@ -34,8 +34,16 @@ class CollectionDataSent extends CollectRegisterState {
   const CollectionDataSent(this.message);
 }
 
+class CollectionDataEdited extends CollectRegisterState {
+  final String message;
+
+  const CollectionDataEdited(this.message);
+}
+
 class CollectionDataSendError extends CollectRegisterState {
   final String error;
 
   const CollectionDataSendError(this.error);
 }
+
+class CollectionDataDeleted extends CollectRegisterState {}

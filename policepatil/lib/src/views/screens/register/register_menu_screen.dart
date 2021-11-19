@@ -26,7 +26,7 @@ class RegisterMenuScreen extends StatelessWidget {
                   imageUrl: ImageConstants.IMG_ARMS,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) {
-                      return const ArmsScreen();
+                      return ArmsScreen();
                     }));
                   }),
               spacer(),

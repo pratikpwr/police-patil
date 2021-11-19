@@ -17,3 +17,21 @@ class AddDeathData extends DeathRegisterEvent {
   @override
   List<Object> get props => [deathData];
 }
+
+class EditDeathData extends DeathRegisterEvent {
+  final DeathData deathData;
+
+  const EditDeathData(this.deathData);
+
+  @override
+  List<Object> get props => [deathData];
+}
+
+class DeleteDeathData extends DeathRegisterEvent {
+  final int id;
+
+  const DeleteDeathData(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

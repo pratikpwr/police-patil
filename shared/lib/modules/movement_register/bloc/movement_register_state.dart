@@ -34,8 +34,16 @@ class MovementDataSent extends MovementRegisterState {
   const MovementDataSent(this.message);
 }
 
+class MovementDataEdited extends MovementRegisterState {
+  final String message;
+
+  const MovementDataEdited(this.message);
+}
+
 class MovementDataSendError extends MovementRegisterState {
   final String error;
 
   const MovementDataSendError(this.error);
 }
+
+class MovementDeleted extends MovementRegisterState {}

@@ -26,6 +26,12 @@ class MovementRegisterBloc
     if (event is AddMovementData) {
       yield* _mapAddMovementDataState(event);
     }
+    if (event is EditMovementData) {
+      yield* _mapEditMovementDataState(event);
+    }
+    if (event is DeleteMovementData) {
+      yield* _mapDeleteMovementDataState(event);
+    }
   }
 
   String? movementValue;
@@ -96,6 +102,40 @@ class MovementRegisterBloc
 
       if (_response.data["message"] != null) {
         yield MovementDataSent(_response.data["message"]);
+      } else {
+        yield MovementDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield MovementDataSendError(err.toString());
+    }
+  }
+
+  Stream<MovementRegisterState> _mapEditMovementDataState(
+      EditMovementData event) async* {
+    yield MovementDataSending();
+    try {
+      Response _response = await _movementRepository.editMovementData(
+          movementData: event.movementData);
+
+      if (_response.data["message"] != null) {
+        yield MovementDataEdited(_response.data["message"]);
+      } else {
+        yield MovementDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield MovementDataSendError(err.toString());
+    }
+  }
+
+  Stream<MovementRegisterState> _mapDeleteMovementDataState(
+      DeleteMovementData event) async* {
+    yield MovementDataSending();
+    try {
+      Response _response =
+          await _movementRepository.deleteMovementData(id: event.id);
+
+      if (_response.data["message"] != null) {
+        yield MovementDeleted();
       } else {
         yield MovementDataSendError(_response.data["error"]);
       }

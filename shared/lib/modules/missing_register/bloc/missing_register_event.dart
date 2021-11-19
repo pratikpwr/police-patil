@@ -17,3 +17,21 @@ class AddMissingData extends MissingRegisterEvent {
   @override
   List<Object> get props => [missingData];
 }
+
+class EditMissingData extends MissingRegisterEvent {
+  final MissingData missingData;
+
+  const EditMissingData(this.missingData);
+
+  @override
+  List<Object> get props => [missingData];
+}
+
+class DeleteMissingData extends MissingRegisterEvent {
+  final int id;
+
+  const DeleteMissingData(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

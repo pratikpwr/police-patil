@@ -34,8 +34,16 @@ class IllegalDataSent extends IllegalRegisterState {
   const IllegalDataSent(this.message);
 }
 
+class IllegalDataEdited extends IllegalRegisterState {
+  final String message;
+
+  const IllegalDataEdited(this.message);
+}
+
 class IllegalDataSendError extends IllegalRegisterState {
   final String error;
 
   const IllegalDataSendError(this.error);
 }
+
+class IllegalDeleted extends IllegalRegisterState {}

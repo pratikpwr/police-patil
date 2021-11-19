@@ -21,3 +21,21 @@ class AddWatchData extends WatchRegisterEvent {
   @override
   List<Object> get props => [watchData];
 }
+
+class EditWatchData extends WatchRegisterEvent {
+  final WatchData watchData;
+
+  const EditWatchData(this.watchData);
+
+  @override
+  List<Object> get props => [watchData];
+}
+
+class DeleteWatchData extends WatchRegisterEvent {
+  final int id;
+
+  const DeleteWatchData(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

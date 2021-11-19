@@ -34,8 +34,16 @@ class DeathDataSent extends DeathRegisterState {
   const DeathDataSent(this.message);
 }
 
+class DeathDataEdited extends DeathRegisterState {
+  final String message;
+
+  const DeathDataEdited(this.message);
+}
+
 class DeathDataSendError extends DeathRegisterState {
   final String error;
 
   const DeathDataSendError(this.error);
 }
+
+class DeathDataDeleted extends DeathRegisterState {}

@@ -26,6 +26,12 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
     if (event is AddFireData) {
       yield* _mapAddFireDataState(event);
     }
+    if (event is EditFireData) {
+      yield* _mapEditFireDataState(event);
+    }
+    if (event is DeleteFireData) {
+      yield* _mapDeleteFireDataState(event);
+    }
   }
 
   double longitude = 0.00;
@@ -57,6 +63,38 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
 
       if (_response.data["message"] != null) {
         yield FireDataSent(_response.data["message"]);
+      } else {
+        yield FireDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield FireDataSendError(err.toString());
+    }
+  }
+
+  Stream<FireRegisterState> _mapEditFireDataState(EditFireData event) async* {
+    yield FireDataSending();
+    try {
+      Response _response =
+          await _fireRepository.editFireData(fireData: event.fireData);
+
+      if (_response.data["message"] != null) {
+        yield FireDataEdited(_response.data["message"]);
+      } else {
+        yield FireDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield FireDataSendError(err.toString());
+    }
+  }
+
+  Stream<FireRegisterState> _mapDeleteFireDataState(
+      DeleteFireData event) async* {
+    yield FireDataSending();
+    try {
+      Response _response = await _fireRepository.deleteFireData(id: event.id);
+
+      if (_response.data["message"] != null) {
+        yield FireDataDeleted();
       } else {
         yield FireDataSendError(_response.data["error"]);
       }

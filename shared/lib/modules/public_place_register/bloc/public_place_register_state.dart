@@ -34,8 +34,16 @@ class PublicPlaceDataSent extends PublicPlaceRegisterState {
   const PublicPlaceDataSent(this.message);
 }
 
+class PublicPlaceDataEdited extends PublicPlaceRegisterState {
+  final String message;
+
+  const PublicPlaceDataEdited(this.message);
+}
+
 class PublicPlaceDataSendError extends PublicPlaceRegisterState {
   final String error;
 
   const PublicPlaceDataSendError(this.error);
 }
+
+class PublicPlaceDeleted extends PublicPlaceRegisterState {}

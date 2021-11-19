@@ -34,8 +34,16 @@ class CrimeDataSent extends CrimeRegisterState {
   const CrimeDataSent(this.message);
 }
 
+class CrimeDataEdited extends CrimeRegisterState {
+  final String message;
+
+  const CrimeDataEdited(this.message);
+}
+
 class CrimeDataSendError extends CrimeRegisterState {
   final String error;
 
   const CrimeDataSendError(this.error);
 }
+
+class CrimeDataDeleted extends CrimeRegisterState {}

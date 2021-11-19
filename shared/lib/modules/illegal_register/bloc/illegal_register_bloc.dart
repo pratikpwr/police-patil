@@ -28,6 +28,12 @@ class IllegalRegisterBloc
     if (event is AddIllegalData) {
       yield* _mapAddIllegalDataState(event);
     }
+    if (event is EditIllegalData) {
+      yield* _mapEditIllegalDataState(event);
+    }
+    if (event is DeleteIllegalData) {
+      yield* _mapDeleteIllegalDataState(event);
+    }
   }
 
   String? chosenValue;
@@ -71,6 +77,40 @@ class IllegalRegisterBloc
 
       if (_response.data["message"] != null) {
         yield IllegalDataSent(_response.data["message"]);
+      } else {
+        yield IllegalDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield IllegalDataSendError(err.toString());
+    }
+  }
+
+  Stream<IllegalRegisterState> _mapEditIllegalDataState(
+      EditIllegalData event) async* {
+    yield IllegalDataSending();
+    try {
+      Response _response = await _illegalRepository.editIllegalData(
+          illegalData: event.illegalData);
+
+      if (_response.data["message"] != null) {
+        yield IllegalDataEdited(_response.data["message"]);
+      } else {
+        yield IllegalDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield IllegalDataSendError(err.toString());
+    }
+  }
+
+  Stream<IllegalRegisterState> _mapDeleteIllegalDataState(
+      DeleteIllegalData event) async* {
+    yield IllegalDataSending();
+    try {
+      Response _response =
+          await _illegalRepository.deleteIllegalData(id: event.id);
+
+      if (_response.data["message"] != null) {
+        yield IllegalDeleted();
       } else {
         yield IllegalDataSendError(_response.data["error"]);
       }

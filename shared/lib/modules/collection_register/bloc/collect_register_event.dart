@@ -17,3 +17,21 @@ class AddCollectionData extends CollectRegisterEvent {
   @override
   List<Object> get props => [collectionData];
 }
+
+class EditCollectionData extends CollectRegisterEvent {
+  final CollectionData collectionData;
+
+  const EditCollectionData(this.collectionData);
+
+  @override
+  List<Object> get props => [collectionData];
+}
+
+class DeleteCollectionData extends CollectRegisterEvent {
+  final int id;
+
+  const DeleteCollectionData(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

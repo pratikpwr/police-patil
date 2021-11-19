@@ -43,9 +43,37 @@ class CollectionScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return CollectionDetailWidget(
-                              collect:
-                                  state.collectionResponse.collectData![index],
+                            final collect =
+                                state.collectionResponse.collectData![index];
+                            return InkWell(
+                              onTap: () {
+                                _showDetails(context, collect);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(collect.type!,
+                                        style: Styles.primaryTextStyle()),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: DESCRIPTION,
+                                        value: collect.description ?? "-"),
+                                    HeadValueText(
+                                        title: ADDRESS,
+                                        value: collect.address ?? "-"),
+                                    HeadValueText(
+                                        title: DATE,
+                                        value: showDate(collect.date!)),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -71,41 +99,8 @@ class CollectionScreen extends StatelessWidget {
       ),
     );
   }
-}
 
-class CollectionDetailWidget extends StatelessWidget {
-  const CollectionDetailWidget({Key? key, required this.collect})
-      : super(key: key);
-  final CollectionData collect;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(collect.type!, style: Styles.primaryTextStyle()),
-            const Divider(),
-            HeadValueText(
-                title: DESCRIPTION, value: collect.description ?? "-"),
-            HeadValueText(title: ADDRESS, value: collect.address ?? "-"),
-            HeadValueText(title: DATE, value: showDate(collect.date!)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  _showDetails(BuildContext context) {
+  _showDetails(BuildContext context, CollectionData collect) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,

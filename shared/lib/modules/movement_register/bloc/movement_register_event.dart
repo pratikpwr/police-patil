@@ -17,3 +17,21 @@ class AddMovementData extends MovementRegisterEvent {
   @override
   List<Object> get props => [movementData];
 }
+
+class EditMovementData extends MovementRegisterEvent {
+  final MovementData movementData;
+
+  const EditMovementData(this.movementData);
+
+  @override
+  List<Object> get props => [movementData];
+}
+
+class DeleteMovementData extends MovementRegisterEvent {
+  final int id;
+
+  const DeleteMovementData(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

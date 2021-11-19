@@ -25,6 +25,12 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
     if (event is AddCrimeData) {
       yield* _mapAddCrimeDataState(event);
     }
+    if (event is EditCrimeData) {
+      yield* _mapEditCrimeDataState(event);
+    }
+    if (event is DeleteCrimeData) {
+      yield* _mapDeleteCrimeDataState(event);
+    }
   }
 
   String? chosenValue;
@@ -59,6 +65,39 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
 
       if (_response.data["message"] != null) {
         yield CrimeDataSent(_response.data["message"]);
+      } else {
+        yield CrimeDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield CrimeDataSendError(err.toString());
+    }
+  }
+
+  Stream<CrimeRegisterState> _mapEditCrimeDataState(
+      EditCrimeData event) async* {
+    yield CrimeDataSending();
+    try {
+      Response _response =
+          await _crimeRepository.editCrimeData(crimeData: event.crimeData);
+
+      if (_response.data["message"] != null) {
+        yield CrimeDataEdited(_response.data["message"]);
+      } else {
+        yield CrimeDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield CrimeDataSendError(err.toString());
+    }
+  }
+
+  Stream<CrimeRegisterState> _mapDeleteCrimeDataState(
+      DeleteCrimeData event) async* {
+    yield CrimeDataSending();
+    try {
+      Response _response = await _crimeRepository.deleteCrimeData(id: event.id);
+
+      if (_response.data["message"] != null) {
+        yield CrimeDataDeleted();
       } else {
         yield CrimeDataSendError(_response.data["error"]);
       }

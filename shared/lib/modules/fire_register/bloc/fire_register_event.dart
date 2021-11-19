@@ -17,3 +17,21 @@ class AddFireData extends FireRegisterEvent {
   @override
   List<Object> get props => [fireData];
 }
+
+class EditFireData extends FireRegisterEvent {
+  final FireData fireData;
+
+  const EditFireData(this.fireData);
+
+  @override
+  List<Object> get props => [fireData];
+}
+
+class DeleteFireData extends FireRegisterEvent {
+  final int id;
+
+  const DeleteFireData(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

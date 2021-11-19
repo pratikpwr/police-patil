@@ -27,6 +27,12 @@ class MissingRegisterBloc
     if (event is AddMissingData) {
       yield* _mapAddMissingDataState(event);
     }
+    if (event is EditMissingData) {
+      yield* _mapEditMissingDataState(event);
+    }
+    if (event is DeleteMissingData) {
+      yield* _mapDeleteMissingDataState(event);
+    }
   }
 
   var isAbove18;
@@ -59,12 +65,45 @@ class MissingRegisterBloc
       AddMissingData event) async* {
     yield MissingDataSending();
     try {
-
       Response _response = await _missingRepository.addMissingData(
           missingData: event.missingData);
 
       if (_response.data["message"] != null) {
         yield MissingDataSent(_response.data["message"]);
+      } else {
+        yield MissingDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield MissingDataSendError(err.toString());
+    }
+  }
+
+  Stream<MissingRegisterState> _mapEditMissingDataState(
+      EditMissingData event) async* {
+    yield MissingDataSending();
+    try {
+      Response _response = await _missingRepository.editMissingData(
+          missingData: event.missingData);
+
+      if (_response.data["message"] != null) {
+        yield MissingDataEdited(_response.data["message"]);
+      } else {
+        yield MissingDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield MissingDataSendError(err.toString());
+    }
+  }
+
+  Stream<MissingRegisterState> _mapDeleteMissingDataState(
+      DeleteMissingData event) async* {
+    yield MissingDataSending();
+    try {
+      Response _response =
+          await _missingRepository.deleteMissingData(id: event.id);
+
+      if (_response.data["message"] != null) {
+        yield MissingDeleted();
       } else {
         yield MissingDataSendError(_response.data["error"]);
       }

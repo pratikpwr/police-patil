@@ -8,22 +8,10 @@ import 'package:policepatil/src/views/screens/register/arms_register.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
 
-class ArmsScreen extends StatefulWidget {
-  const ArmsScreen({Key? key}) : super(key: key);
-
-  @override
-  State<ArmsScreen> createState() => _ArmsScreenState();
-}
-
-class _ArmsScreenState extends State<ArmsScreen> {
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
-  }
-
+class ArmsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ArmsRegisterBloc>(context).add(GetArmsData());
     return Scaffold(
       appBar: AppBar(
         title: const Text(ARMS_COLLECTIONS),
@@ -81,11 +69,11 @@ class _ArmsScreenState extends State<ArmsScreen> {
                                       color: CONTAINER_BACKGROUND_COLOR),
                                   child: Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             armsData.type!,
@@ -110,10 +98,10 @@ class _ArmsScreenState extends State<ArmsScreen> {
                                                 ),
                                                 onPressed: () {
                                                   BlocProvider.of<
-                                                              ArmsRegisterBloc>(
-                                                          context)
+                                                      ArmsRegisterBloc>(
+                                                      context)
                                                       .add(DeleteArmsData(
-                                                          armsData.id!));
+                                                      armsData.id!));
                                                 },
                                               ),
                                             ],

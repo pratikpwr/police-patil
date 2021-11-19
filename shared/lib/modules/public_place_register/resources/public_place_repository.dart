@@ -14,4 +14,19 @@ class PlaceRepository {
     final response = await ApiSdk.postPlaceRegister(body: _formData);
     return response;
   }
+
+  Future<dynamic> editPlaceData({required PlaceData placeData}) async {
+    Map<String, dynamic> _body = placeData.toJson();
+    _body['publicplaceid'] = placeData.id;
+    _body['_method'] = 'put';
+    FormData _formData = FormData.fromMap(_body);
+    final response = await ApiSdk.editPlaceRegister(body: _formData);
+    return response;
+  }
+
+  Future<dynamic> deletePlaceData({required int id}) async {
+    final _body = {'publicplaceid': id, '_method': 'delete'};
+    final response = await ApiSdk.deletePlaceRegister(body: _body);
+    return response;
+  }
 }

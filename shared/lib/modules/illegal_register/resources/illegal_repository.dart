@@ -10,9 +10,23 @@ class IllegalRepository {
 
   Future<dynamic> addIllegalData({required IllegalData illegalData}) async {
     Map<String, dynamic> _body = illegalData.toJson();
-    // _body['photo'] = await MultipartFile.fromFile(_body['photo']);
     FormData _formData = FormData.fromMap(_body);
     final response = await ApiSdk.postIllegalRegister(body: _formData);
+    return response;
+  }
+
+  Future<dynamic> editIllegalData({required IllegalData illegalData}) async {
+    Map<String, dynamic> _body = illegalData.toJson();
+    _body['illegalid'] = illegalData.id;
+    _body['_method'] = 'put';
+    FormData _formData = FormData.fromMap(_body);
+    final response = await ApiSdk.editIllegalRegister(body: _formData);
+    return response;
+  }
+
+  Future<dynamic> deleteIllegalData({required int id}) async {
+    final _body = {'illegalid': id, '_method': 'delete'};
+    final response = await ApiSdk.deleteIllegalRegister(body: _body);
     return response;
   }
 }

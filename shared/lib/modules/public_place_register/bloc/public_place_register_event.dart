@@ -17,3 +17,21 @@ class AddPublicPlaceData extends PublicPlaceRegisterEvent {
   @override
   List<Object> get props => [placeData];
 }
+
+class EditPublicPlaceData extends PublicPlaceRegisterEvent {
+  final PlaceData placeData;
+
+  const EditPublicPlaceData(this.placeData);
+
+  @override
+  List<Object> get props => [placeData];
+}
+
+class DeletePublicPlaceData extends PublicPlaceRegisterEvent {
+  final int id;
+
+  const DeletePublicPlaceData(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

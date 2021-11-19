@@ -34,8 +34,16 @@ class MissingDataSent extends MissingRegisterState {
   const MissingDataSent(this.message);
 }
 
+class MissingDataEdited extends MissingRegisterState {
+  final String message;
+
+  const MissingDataEdited(this.message);
+}
+
 class MissingDataSendError extends MissingRegisterState {
   final String error;
 
   const MissingDataSendError(this.error);
 }
+
+class MissingDeleted extends MissingRegisterState {}

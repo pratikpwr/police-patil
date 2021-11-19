@@ -26,6 +26,12 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
     if (event is AddDeathData) {
       yield* _mapAddDeathDataState(event);
     }
+    if (event is EditDeathData) {
+      yield* _mapEditDeathDataState(event);
+    }
+    if (event is DeleteDeathData) {
+      yield* _mapDeleteDeathDataState(event);
+    }
   }
 
   var isIdentified;
@@ -61,6 +67,39 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
 
       if (_response.data["message"] != null) {
         yield DeathDataSent(_response.data["message"]);
+      } else {
+        yield DeathDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield DeathDataSendError(err.toString());
+    }
+  }
+
+  Stream<DeathRegisterState> _mapEditDeathDataState(
+      EditDeathData event) async* {
+    yield DeathDataSending();
+    try {
+      Response _response =
+          await _deathRepository.editDeathData(deathData: event.deathData);
+
+      if (_response.data["message"] != null) {
+        yield DeathDataEdited(_response.data["message"]);
+      } else {
+        yield DeathDataSendError(_response.data["error"]);
+      }
+    } catch (err) {
+      yield DeathDataSendError(err.toString());
+    }
+  }
+
+  Stream<DeathRegisterState> _mapDeleteDeathDataState(
+      DeleteDeathData event) async* {
+    yield DeathDataSending();
+    try {
+      Response _response = await _deathRepository.deleteDeathData(id: event.id);
+
+      if (_response.data["message"] != null) {
+        yield DeathDataDeleted();
       } else {
         yield DeathDataSendError(_response.data["error"]);
       }
