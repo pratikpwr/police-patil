@@ -13,8 +13,6 @@ class PatilCertificate extends StatefulWidget {
 }
 
 class _PatilCertificateState extends State<PatilCertificate> {
-  String url =
-      "https://pp.thesupernest.com/uploads/payment/payment_police_patil.pdf";
 
   final _bloc = CertificatesBloc();
   final _nameController = TextEditingController();

@@ -23,6 +23,11 @@ class MovementScreen extends StatelessWidget {
           if (state is MovementLoadError) {
             showSnackBar(context, state.message);
           }
+          if (state is MovementDeleted) {
+            showSnackBar(context, DELETED);
+            BlocProvider.of<MovementRegisterBloc>(context)
+                .add(GetMovementData());
+          }
         },
         child: BlocBuilder<MovementRegisterBloc, MovementRegisterState>(
           builder: (context, state) {
@@ -58,8 +63,41 @@ class MovementScreen extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(movementData.type!,
-                                        style: Styles.primaryTextStyle()),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(movementData.type!,
+                                            style: Styles.primaryTextStyle()),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                _navigateToRegister(context,
+                                                    movementData: movementData);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            MovementRegisterBloc>(
+                                                        context)
+                                                    .add(DeleteMovementData(
+                                                        movementData.id!));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                     Text(movementData.subtype!,
                                         style: Styles.primaryTextStyle()),
                                     const Divider(),

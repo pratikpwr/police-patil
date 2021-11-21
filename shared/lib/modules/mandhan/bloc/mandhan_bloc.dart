@@ -20,11 +20,14 @@ class MandhanBloc extends Bloc<MandhanEvent, MandhanState> {
     MandhanEvent event,
   ) async* {
     if (event is GetMandhanDakhala) {
+      yield MandhanLoading();
       try {
-        Map<String, dynamic> body = {"count": int.parse(chosenValue!)};
-        Response _response = await _mandhanRepository.getMandhanDakhala(body);
+        final sharedPrefs = await prefs;
+        final userId = sharedPrefs.getInt('userId');
+        String params = "?count=${event.count}&id=$userId";
+        Response _response = await _mandhanRepository.getMandhanDakhala(params);
         if (_response.data["message"] == "Success") {
-          String link = _response.data["data"]["link"];
+          String link = _response.data["link"];
           yield MandhanSuccess(link);
         } else {
           yield MandhanError(_response.data["error"]);

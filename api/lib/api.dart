@@ -448,9 +448,9 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getMandhan({required body}) async {
-    String path = ApiConstants.GET_MANDHAN;
-
+  static Future<Response> getMandhan({required String params}) async {
+    String path = ApiConstants.GET_MANDHAN + params;
+    final body = {};
     Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }

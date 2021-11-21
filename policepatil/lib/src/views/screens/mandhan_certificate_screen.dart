@@ -12,9 +12,6 @@ class SelfCertificateScreen extends StatefulWidget {
 }
 
 class _SelfCertificateScreenState extends State<SelfCertificateScreen> {
-  String url =
-      "https://pp.thesupernest.com/uploads/payment/payment_police_patil.pdf";
-
   final _bloc = MandhanBloc();
 
   @override
@@ -57,8 +54,8 @@ class _SelfCertificateScreenState extends State<SelfCertificateScreen> {
                     return CustomButton(
                         text: "हजेरीबाबतचे स्वयंघोषणापत्र मिळवा",
                         onTap: () {
-                          BlocProvider.of<MandhanBloc>(context)
-                              .add(GetMandhanDakhala());
+                          BlocProvider.of<MandhanBloc>(context).add(
+                              GetMandhanDakhala(int.parse(_bloc.chosenValue!)));
                         });
                   },
                 ),
