@@ -24,7 +24,7 @@ class CertificatesBloc extends Bloc<CertificatesEvent, CertificatesState> {
         Response _response =
             await _certificatesRepository.getPoliceDakhala(params);
         if (_response.data["message"] == "Success") {
-          String link = _response.data["data"]["link"];
+          String link = _response.data["link"];
           yield CertificatesSuccess(link);
         } else {
           yield CertificatesError(_response.data["error"]);
