@@ -12,18 +12,17 @@ part 'certificates_state.dart';
 class CertificatesBloc extends Bloc<CertificatesEvent, CertificatesState> {
   CertificatesBloc() : super(CertificatesInitial());
   final _certificatesRepository = CertificatesRepository();
-  String? gender;
-  final List<String> genderTypes = <String>["पुरुष", "स्त्री", "इतर"];
-  Map<String, dynamic> body = {};
 
   @override
   Stream<CertificatesState> mapEventToState(
     CertificatesEvent event,
   ) async* {
     if (event is GetCertificatesDakhala) {
+      yield CertificatesLoading();
       try {
+        String params = "?name=${event.name}&age=${event.age}";
         Response _response =
-            await _certificatesRepository.getPoliceDakhala(body);
+            await _certificatesRepository.getPoliceDakhala(params);
         if (_response.data["message"] == "Success") {
           String link = _response.data["data"]["link"];
           yield CertificatesSuccess(link);

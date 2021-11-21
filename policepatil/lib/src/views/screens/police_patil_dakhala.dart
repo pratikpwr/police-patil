@@ -13,10 +13,8 @@ class PatilCertificate extends StatefulWidget {
 }
 
 class _PatilCertificateState extends State<PatilCertificate> {
-
-  final _bloc = CertificatesBloc();
   final _nameController = TextEditingController();
-  final _casteController = TextEditingController();
+  final _ageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +38,7 @@ class _PatilCertificateState extends State<PatilCertificate> {
                 spacer(),
                 buildTextField(_nameController, NAME),
                 spacer(),
-                buildTextField(_casteController, "जात"),
-                spacer(),
-                buildDropButton(
-                    value: _bloc.gender,
-                    items: _bloc.genderTypes,
-                    hint: "लिंग निवडा",
-                    onChanged: (String? value) {
-                      setState(() {
-                        _bloc.gender = value;
-                      });
-                    }),
+                buildTextField(_ageController, AGE),
                 spacer(),
                 BlocBuilder<CertificatesBloc, CertificatesState>(
                   builder: (context, state) {
@@ -60,11 +48,10 @@ class _PatilCertificateState extends State<PatilCertificate> {
                     return CustomButton(
                         text: "पोलीस पाटील दाखला मिळवा",
                         onTap: () {
-                          _bloc.body["gender"] = _bloc.gender;
-                          _bloc.body["name"] = _nameController.text;
-                          _bloc.body["caste"] = _casteController.text;
-                          BlocProvider.of<CertificatesBloc>(context)
-                              .add(GetCertificatesDakhala());
+                          BlocProvider.of<CertificatesBloc>(context).add(
+                              GetCertificatesDakhala(
+                                  name: _nameController.text,
+                                  age: _ageController.text));
                         });
                   },
                 ),

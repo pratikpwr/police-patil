@@ -441,9 +441,9 @@ class ApiSdk {
     return response;
   }
 
-  static Future<Response> getCertificate({required body}) async {
-    String path = ApiConstants.GET_CERTIFICATE;
-
+  static Future<Response> getCertificate({required String params}) async {
+    String path = ApiConstants.GET_CERTIFICATE + params;
+    final body = {};
     Response response = await RestApiHandlerData.postData(path, body);
     return response;
   }
