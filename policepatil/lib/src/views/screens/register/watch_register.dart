@@ -1,18 +1,18 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:policepatil/src/config/constants.dart';
-import 'package:policepatil/src/utils/custom_methods.dart';
 import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
-import 'package:policepatil/src/views/widgets/attach_button.dart';
-import 'package:shared/modules/watch_register/bloc/watch_register_bloc.dart';
 import 'package:shared/shared.dart';
 
 class WatchRegFormScreen extends StatefulWidget {
-  const WatchRegFormScreen({Key? key}) : super(key: key);
+  WatchRegFormScreen({Key? key, this.watchData}) : super(key: key);
+  WatchData? watchData;
 
   @override
   State<WatchRegFormScreen> createState() => _WatchRegFormScreenState();
@@ -21,11 +21,42 @@ class WatchRegFormScreen extends StatefulWidget {
 class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
   Position? _position;
 
-  final _bloc = WatchRegisterBloc();
+  String? chosenValue;
+  double longitude = 0.00;
+  double latitude = 0.00;
+  final List<String> watchRegTypes = <String>["भटक्या टोळी"];
+  String fileName = 'आधार कार्ड जोडा';
+  String photoName = "फोटो जोडा";
+  File? file;
+  File? photo;
+  bool _isEdit = false;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _otherController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeValues();
+  }
+
+  _initializeValues() {
+    /// checks is edit mode or not
+    _isEdit = widget.watchData != null;
+
+    /// based on mode if its edit then previous values assigned
+    _nameController.text = _isEdit ? widget.watchData!.name ?? '' : '';
+    _phoneController.text = "${_isEdit ? widget.watchData!.mobile ?? '' : ''}";
+    _addressController.text = _isEdit ? widget.watchData!.address ?? '' : '';
+    _otherController.text = _isEdit ? widget.watchData!.description ?? '' : '';
+    chosenValue = _isEdit ? widget.watchData!.type : null;
+    fileName = _isEdit ? 'आधार कार्ड जोडलेले आहे' : 'आधार कार्ड जोडा';
+    photoName =
+        _isEdit ? 'परवान्याचा फोटो जोडलेले आहे' : 'परवान्याचा फोटो जोडा';
+    longitude = _isEdit ? widget.watchData!.longitude ?? 0.00 : 0.00;
+    latitude = _isEdit ? widget.watchData!.latitude ?? 0.00 : 0.00;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +74,11 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
             showSnackBar(context, state.message);
             Navigator.pop(context);
           }
+          if (state is WatchDataEdited) {
+            showSnackBar(context, state.message);
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }
         },
         child: SafeArea(
           child: SingleChildScrollView(
@@ -52,12 +88,12 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
               children: [
                 spacer(),
                 buildDropButton(
-                    value: _bloc.chosenValue,
-                    items: _bloc.watchRegTypes,
+                    value: chosenValue,
+                    items: watchRegTypes,
                     hint: "निगराणी प्रकार निवडा",
                     onChanged: (String? value) {
                       setState(() {
-                        _bloc.chosenValue = value;
+                        chosenValue = value;
                       });
                     }),
                 spacer(),
@@ -66,24 +102,24 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
                 buildTextField(_phoneController, MOB_NO),
                 spacer(),
                 AttachButton(
-                  text: _bloc.photoName,
+                  text: photoName,
                   onTap: () async {
                     getFileFromDevice(context).then((pickedFile) {
                       setState(() {
-                        _bloc.photo = pickedFile;
-                        _bloc.photoName = getFileName(pickedFile!.path);
+                        photo = pickedFile;
+                        photoName = getFileName(pickedFile!.path);
                       });
                     });
                   },
                 ),
                 spacer(),
                 AttachButton(
-                  text: _bloc.fileName,
+                  text: fileName,
                   onTap: () async {
                     getFileFromDevice(context).then((pickedFile) {
                       setState(() {
-                        _bloc.file = pickedFile;
-                        _bloc.fileName = getFileName(pickedFile!.path);
+                        file = pickedFile;
+                        fileName = getFileName(pickedFile!.path);
                       });
                     });
                   },
@@ -99,8 +135,8 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
                     onTap: () async {
                       _position = await determinePosition();
                       setState(() {
-                        _bloc.longitude = _position!.longitude;
-                        _bloc.latitude = _position!.latitude;
+                        longitude = _position!.longitude;
+                        latitude = _position!.latitude;
                       });
                     }),
                 spacer(),
@@ -108,10 +144,10 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("$LONGITUDE: ${_bloc.longitude}",
+                    Text("$LONGITUDE: $longitude",
                         style: GoogleFonts.poppins(fontSize: 14)),
                     const SizedBox(width: 12),
-                    Text("$LATITUDE: ${_bloc.latitude}",
+                    Text("$LATITUDE: $latitude",
                         style: GoogleFonts.poppins(fontSize: 14)),
                   ],
                 ),
@@ -128,11 +164,18 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
                           borderRadius: BorderRadius.circular(10))),
                 ),
                 spacer(),
-                CustomButton(
-                    text: DO_REGISTER,
-                    onTap: () {
-                      _registerWatchData();
-                    }),
+                BlocBuilder<WatchRegisterBloc, WatchRegisterState>(
+                  builder: (context, state) {
+                    if (state is WatchDataSending) {
+                      return const Loading();
+                    }
+                    return CustomButton(
+                        text: DO_REGISTER,
+                        onTap: () {
+                          _registerWatchData();
+                        });
+                  },
+                ),
                 spacer()
               ],
             ),
@@ -144,20 +187,25 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
 
   _registerWatchData() async {
     WatchData _watchData = WatchData(
-        type: _bloc.chosenValue,
+        id: _isEdit ? widget.watchData!.id : null,
+        type: chosenValue,
         name: _nameController.text,
         mobile: parseInt(_phoneController.text),
-        photo: _bloc.photo?.path != null
-            ? await MultipartFile.fromFile(_bloc.photo!.path)
-            : " ",
-        aadhar: _bloc.photo?.path != null
-            ? await MultipartFile.fromFile(_bloc.photo!.path)
-            : " ",
+        photo: photo?.path != null
+            ? await MultipartFile.fromFile(photo!.path)
+            : null,
+        aadhar: photo?.path != null
+            ? await MultipartFile.fromFile(photo!.path)
+            : null,
         address: _addressController.text,
-        latitude: _bloc.latitude,
-        longitude: _bloc.longitude,
+        latitude: latitude,
+        longitude: longitude,
         description: _otherController.text);
 
-    BlocProvider.of<WatchRegisterBloc>(context).add(AddWatchData(_watchData));
+    _isEdit
+        ? BlocProvider.of<WatchRegisterBloc>(context)
+            .add(EditWatchData(_watchData))
+        : BlocProvider.of<WatchRegisterBloc>(context)
+            .add(AddWatchData(_watchData));
   }
 }

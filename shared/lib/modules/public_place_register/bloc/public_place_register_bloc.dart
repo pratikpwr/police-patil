@@ -33,26 +33,6 @@ class PublicPlaceRegisterBloc
     }
   }
 
-  String? chosenValue;
-
-  double longitude = 0.00;
-  double latitude = 0.00;
-
-  File? photo;
-  String photoName = "फोटो जोडा";
-
-  final List<String> socialPlaceTypes = <String>[
-    "रस्ता",
-    "पाणवठा",
-    "जमीन",
-    "पुतळा",
-    "धार्मिक स्थळ",
-    "इतर"
-  ];
-
-  var isIssue;
-  var isCCTV;
-  var isCrimeReg;
 
   Stream<PublicPlaceRegisterState> _mapGetPublicPlaceDataState(
       GetPublicPlaceData event) async* {
@@ -106,17 +86,17 @@ class PublicPlaceRegisterBloc
 
   Stream<PublicPlaceRegisterState> _mapDeletePublicPlaceDataState(
       DeletePublicPlaceData event) async* {
-    yield PublicPlaceDataSending();
+    yield PublicPlaceDataLoading();
     try {
       Response _response = await _placeRepository.deletePlaceData(id: event.id);
 
       if (_response.data["message"] != null) {
         yield PublicPlaceDeleted();
       } else {
-        yield PublicPlaceDataSendError(_response.data["error"]);
+        yield PublicPlaceLoadError(_response.data["error"]);
       }
     } catch (err) {
-      yield PublicPlaceDataSendError(err.toString());
+      yield PublicPlaceLoadError(err.toString());
     }
   }
 }

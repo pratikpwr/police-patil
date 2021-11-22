@@ -46,4 +46,8 @@ class WatchDataSendError extends WatchRegisterState {
   const WatchDataSendError(this.error);
 }
 
-class WatchDataDeleted extends WatchRegisterState {}
+class WatchDataDeleted extends WatchRegisterState {
+  final String message;
+
+  const WatchDataDeleted(this.message);
+}

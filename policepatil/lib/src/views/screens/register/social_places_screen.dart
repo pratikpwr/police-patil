@@ -8,12 +8,22 @@ import 'package:shared/shared.dart';
 
 import '../../views.dart';
 
-class SocialPlaceScreen extends StatelessWidget {
+class SocialPlaceScreen extends StatefulWidget {
   const SocialPlaceScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<SocialPlaceScreen> createState() => _SocialPlaceScreenState();
+}
+
+class _SocialPlaceScreenState extends State<SocialPlaceScreen> {
+  @override
+  void initState() {
     BlocProvider.of<PublicPlaceRegisterBloc>(context).add(GetPublicPlaceData());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(SOCIAL_PLACES),
@@ -22,6 +32,11 @@ class SocialPlaceScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is PublicPlaceLoadError) {
             showSnackBar(context, state.message);
+          }
+          if (state is PublicPlaceDeleted) {
+            showSnackBar(context, DELETED);
+            BlocProvider.of<PublicPlaceRegisterBloc>(context)
+                .add(GetPublicPlaceData());
           }
         },
         child: BlocBuilder<PublicPlaceRegisterBloc, PublicPlaceRegisterState>(
@@ -41,8 +56,71 @@ class SocialPlaceScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return PlaceDetailWidget(
-                              placeData: state.placeResponse.data![index],
+                            final placeData = state.placeResponse.data![index];
+                            return InkWell(
+                              onTap: () {
+                                _showDetails(context, placeData);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          placeData.place!,
+                                          style: Styles.primaryTextStyle(),
+                                        ),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                _navigateToRegister(context,
+                                                    placeData: placeData);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            PublicPlaceRegisterBloc>(
+                                                        context)
+                                                    .add(DeletePublicPlaceData(
+                                                        placeData.id!));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: ADDRESS,
+                                        value: placeData.address ?? "-"),
+                                    HeadValueText(
+                                        title: IS_ISSUE,
+                                        value: placeData.isIssue! ? YES : NO),
+                                    HeadValueText(
+                                        title: "सीसीटीव्ही बसवला आहे का ?",
+                                        value: placeData.isCCTV! ? YES : NO),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -57,54 +135,25 @@ class SocialPlaceScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const SocialPlacesRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<PublicPlaceRegisterBloc>(context)
-                .add(GetPublicPlaceData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
   }
-}
 
-class PlaceDetailWidget extends StatelessWidget {
-  const PlaceDetailWidget({Key? key, required this.placeData})
-      : super(key: key);
-  final PlaceData placeData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(placeData.place!, style: Styles.primaryTextStyle()),
-            const Divider(),
-            HeadValueText(title: ADDRESS, value: placeData.address ?? "-"),
-            HeadValueText(
-                title: IS_ISSUE, value: placeData.isIssue! ? YES : NO),
-            HeadValueText(
-                title: "सीसीटीव्ही बसवला आहे का ?",
-                value: placeData.isCCTV! ? YES : NO),
-          ],
-        ),
-      ),
-    );
+  _navigateToRegister(BuildContext context, {PlaceData? placeData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return SocialPlacesRegFormScreen(
+        placeData: placeData,
+      );
+    })).then((value) {
+      BlocProvider.of<PublicPlaceRegisterBloc>(context)
+          .add(GetPublicPlaceData());
+    });
   }
 
-  _showDetails(BuildContext context) {
+  _showDetails(BuildContext context, PlaceData placeData) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,

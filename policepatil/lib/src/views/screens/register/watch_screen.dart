@@ -42,7 +42,11 @@ class _WatchScreenState extends State<WatchScreen> {
       body: BlocListener<WatchRegisterBloc, WatchRegisterState>(
         listener: (context, state) {
           if (state is WatchLoadError) {
-            showSnackBar(context, state.message.substring(0, 200));
+            showSnackBar(context, state.message);
+          }
+          if (state is WatchDataDeleted) {
+            showSnackBar(context, state.message);
+            BlocProvider.of<WatchRegisterBloc>(context).add(GetWatchData());
           }
         },
         child: BlocBuilder<WatchRegisterBloc, WatchRegisterState>(
@@ -62,8 +66,72 @@ class _WatchScreenState extends State<WatchScreen> {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return WatchDetailWidget(
-                              watchData: state.watchResponse.data![index],
+                            final watchData = state.watchResponse.data![index];
+                            return InkWell(
+                              onTap: () {
+                                _showDetails(context, watchData);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          watchData.type!,
+                                          style: Styles.primaryTextStyle(),
+                                        ),
+                                        if (watchData.type! == "भटक्या टोळी")
+                                          Row(
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(
+                                                  Icons.edit_rounded,
+                                                  size: 20,
+                                                ),
+                                                onPressed: () {
+                                                  _navigateToRegister(context,
+                                                      watchData: watchData);
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(
+                                                  Icons.delete_rounded,
+                                                  size: 20,
+                                                ),
+                                                onPressed: () {
+                                                  BlocProvider.of<
+                                                              WatchRegisterBloc>(
+                                                          context)
+                                                      .add(DeleteWatchData(
+                                                          watchData.id!));
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                      ],
+                                    ),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: NAME,
+                                        value: watchData.name ?? "-"),
+                                    HeadValueText(
+                                        title: DESCRIPTION,
+                                        value: watchData.description ?? "-"),
+                                    HeadValueText(
+                                        title: ADDRESS,
+                                        value: watchData.address ?? "-"),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -78,54 +146,24 @@ class _WatchScreenState extends State<WatchScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const WatchRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<WatchRegisterBloc>(context).add(GetWatchData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
   }
-}
 
-class WatchDetailWidget extends StatelessWidget {
-  const WatchDetailWidget({Key? key, required this.watchData})
-      : super(key: key);
-  final WatchData watchData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              watchData.type!,
-              style: Styles.primaryTextStyle(),
-            ),
-            const Divider(),
-            HeadValueText(title: NAME, value: watchData.name ?? "-"),
-            HeadValueText(
-                title: DESCRIPTION, value: watchData.description ?? "-"),
-            HeadValueText(title: ADDRESS, value: watchData.address ?? "-"),
-          ],
-        ),
-      ),
-    );
+  _navigateToRegister(BuildContext context, {WatchData? watchData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return WatchRegFormScreen(
+        watchData: watchData,
+      );
+    })).then((value) {
+      BlocProvider.of<WatchRegisterBloc>(context).add(GetWatchData());
+    });
   }
 
-  _showDetails(BuildContext context) {
+  _showDetails(BuildContext context, WatchData watchData) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,
@@ -178,19 +216,6 @@ class WatchDetailWidget extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
-class MyWidget extends StatelessWidget {
-  MyWidget({Key? key, this.data, required this.child}) : super(key: key);
-
-  dynamic data;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return data != null ? child : spacer(height: 0);
-  }
-}
-
 class WatchFilterDataWidget extends StatefulWidget {
   const WatchFilterDataWidget({Key? key}) : super(key: key);
 
@@ -208,6 +233,16 @@ class _WatchFilterDataWidgetState extends State<WatchFilterDataWidget> {
     BlocProvider.of<VillagePSListBloc>(context).add(GetVillagePSList());
     super.initState();
   }
+
+  String? chosenType, psId, ppId;
+  final List<String> types = <String>[
+    "सर्व",
+    "भटक्या टोळी",
+    "सराईत गुन्हेगार",
+    "फरार आरोपी",
+    "तडीपार आरोपी",
+    "स्टॅंडिंग वॉरंट"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -228,29 +263,28 @@ class _WatchFilterDataWidgetState extends State<WatchFilterDataWidget> {
                 children: [
                   spacer(),
                   buildDropButton(
-                      value: _bloc.chosenType,
-                      items: _bloc.types,
+                      value: chosenType,
+                      items: types,
                       hint: CHOSE_TYPE,
                       onChanged: (String? value) {
                         setState(() {
-                          _bloc.chosenType = value;
+                          chosenType = value;
                         });
                       }),
                   spacer(),
                   villageSelectDropDown(
                       isPs: true,
                       list: getPSListInString(state.policeStations),
-                      selValue: _bloc.psId,
+                      selValue: psId,
                       onChanged: (value) {
-                        _bloc.psId =
-                            getPsIDFromPSName(state.policeStations, value!);
+                        psId = getPsIDFromPSName(state.policeStations, value!);
                       }),
                   spacer(),
                   villageSelectDropDown(
                       list: getVillageListInString(state.villages),
-                      selValue: _bloc.ppId,
+                      selValue: ppId,
                       onChanged: (value) {
-                        _bloc.ppId = getPpIDFromVillage(state.villages, value!);
+                        ppId = getPpIDFromVillage(state.villages, value!);
                       }),
                   spacer(),
                   buildDateTextField(context, _fromController, DATE_FROM),
@@ -263,9 +297,9 @@ class _WatchFilterDataWidgetState extends State<WatchFilterDataWidget> {
                         Navigator.pop(context);
                         BlocProvider.of<WatchRegisterBloc>(context).add(
                             GetWatchData(
-                                type: _bloc.chosenType,
-                                ppId: _bloc.ppId,
-                                psId: _bloc.psId,
+                                type: chosenType,
+                                ppId: ppId,
+                                psId: psId,
                                 fromDate: _fromController.text,
                                 toDate: _toController.text));
                       })

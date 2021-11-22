@@ -34,25 +34,6 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
     }
   }
 
-  String? chosenValue;
-  double longitude = 0.00;
-  double latitude = 0.00;
-  final List<String> watchRegTypes = <String>["भटक्या टोळी"];
-  String fileName = 'आधार कार्ड जोडा';
-  String photoName = "फोटो जोडा";
-  File? file;
-  File? photo;
-
-  String? chosenType, psId, ppId, fromDate, toDate;
-  final List<String> types = <String>[
-    "सर्व",
-    "भटक्या टोळी",
-    "सराईत गुन्हेगार",
-    "फरार आरोपी",
-    "तडीपार आरोपी",
-    "स्टॅंडिंग वॉरंट"
-  ];
-
   Stream<WatchRegisterState> _mapGetWatchDataState(GetWatchData event) async* {
     yield WatchDataLoading();
     try {
@@ -94,7 +75,7 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
           await _watchRepository.editWatchData(watchData: event.watchData);
 
       if (_response.data["message"] != null) {
-        yield WatchDataSent(_response.data["message"]);
+        yield WatchDataEdited(_response.data["message"]);
       } else {
         yield WatchDataSendError(_response.data["error"]);
       }
@@ -105,19 +86,19 @@ class WatchRegisterBloc extends Bloc<WatchRegisterEvent, WatchRegisterState> {
 
   Stream<WatchRegisterState> _mapDeleteWatchDataState(
       DeleteWatchData event) async* {
-    yield WatchDataSending();
+    yield WatchDataLoading();
     try {
       Response _response = await _watchRepository.deleteWatchData(
         id: event.id,
       );
 
       if (_response.data["message"] != null) {
-        yield WatchDataDeleted();
+        yield WatchDataDeleted(_response.data["message"]);
       } else {
-        yield WatchDataSendError(_response.data["error"]);
+        yield WatchLoadError(_response.data["error"]);
       }
     } catch (err) {
-      yield WatchDataSendError(err.toString());
+      yield WatchLoadError(err.toString());
     }
   }
 
