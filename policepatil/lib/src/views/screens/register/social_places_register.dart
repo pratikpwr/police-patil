@@ -65,11 +65,14 @@ class _SocialPlacesRegFormScreenState extends State<SocialPlacesRegFormScreen> {
     _situationController.text =
         _isEdit ? widget.placeData!.issueCondition ?? '' : '';
     chosenValue = _isEdit ? widget.placeData!.place : null;
-    isCCTV = _isEdit ? widget.placeData!.isCCTV : null;
+    isCCTV = _isEdit
+        ? widget.placeData!.isCCTV != null
+            ? YES
+            : NO
+        : null;
     isIssue = _isEdit ? widget.placeData!.isIssue : null;
     isCrimeReg = _isEdit ? widget.placeData!.isCrimeRegistered : null;
-    photoName =
-        _isEdit ? 'परवान्याचा फोटो जोडलेले आहे' : 'परवान्याचा फोटो जोडा';
+    photoName = _isEdit ? 'फोटो जोडलेले आहे' : 'फोटो जोडा';
     longitude = _isEdit ? widget.placeData!.longitude ?? 0.00 : 0.00;
     latitude = _isEdit ? widget.placeData!.latitude ?? 0.00 : 0.00;
   }

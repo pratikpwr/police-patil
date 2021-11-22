@@ -21,6 +21,10 @@ class MissingScreen extends StatelessWidget {
           if (state is MissingLoadError) {
             showSnackBar(context, state.message);
           }
+          if (state is MissingDeleted) {
+            showSnackBar(context, DELETED);
+            BlocProvider.of<MissingRegisterBloc>(context).add(GetMissingData());
+          }
         },
         child: BlocBuilder<MissingRegisterBloc, MissingRegisterState>(
           builder: (context, state) {
@@ -39,8 +43,73 @@ class MissingScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return MissingDetailWidget(
-                              missingData: state.missingResponse.data![index],
+                            final missingData =
+                                state.missingResponse.data![index];
+                            return InkWell(
+                              onTap: () {
+                                _showDetails(context, missingData);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        HeadValueText(
+                                            title: "१८ वर्षावरील आहे का ?",
+                                            value: missingData.isAdult!
+                                                ? YES
+                                                : NO),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                _navigateToRegister(context,
+                                                    missingData: missingData);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            MissingRegisterBloc>(
+                                                        context)
+                                                    .add(DeleteMissingData(
+                                                        missingData.id!));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: NAME,
+                                        value: missingData.name ?? "-"),
+                                    HeadValueText(
+                                        title: ADDRESS,
+                                        value: missingData.address ?? "-"),
+                                    HeadValueText(
+                                        title: "लिंग",
+                                        value: missingData.gender ?? "-"),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -55,51 +124,22 @@ class MissingScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const MissingRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<MissingRegisterBloc>(context).add(GetMissingData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
   }
-}
 
-class MissingDetailWidget extends StatelessWidget {
-  const MissingDetailWidget({Key? key, required this.missingData})
-      : super(key: key);
-  final MissingData missingData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeadValueText(
-                title: "१८ वर्षावरील आहे का ?",
-                value: missingData.isAdult! ? YES : NO),
-            HeadValueText(title: NAME, value: missingData.name ?? "-"),
-            HeadValueText(title: ADDRESS, value: missingData.address ?? "-"),
-            HeadValueText(title: "लिंग", value: missingData.gender ?? "-"),
-          ],
-        ),
-      ),
-    );
+  _navigateToRegister(BuildContext context, {MissingData? missingData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return MissingRegFormScreen(missingData: missingData);
+    })).then((value) {
+      BlocProvider.of<MissingRegisterBloc>(context).add(GetMissingData());
+    });
   }
 
-  _showDetails(BuildContext context) {
+  _showDetails(BuildContext context, MissingData missingData) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,

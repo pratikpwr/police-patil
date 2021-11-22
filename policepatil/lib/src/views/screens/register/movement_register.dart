@@ -110,8 +110,7 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
     _otherController.text =
         _isEdit ? widget.movementData?.description ?? '' : '';
     isIssue = widget.movementData?.issue;
-    photoName =
-        _isEdit ? 'परवान्याचा फोटो जोडलेले आहे' : 'परवान्याचा फोटो जोडा';
+    photoName = _isEdit ? 'फोटो जोडलेले आहे' : 'फोटो जोडा';
     longitude = _isEdit ? widget.movementData?.longitude ?? 0.00 : 0.00;
     latitude = _isEdit ? widget.movementData?.latitude ?? 0.00 : 0.00;
   }

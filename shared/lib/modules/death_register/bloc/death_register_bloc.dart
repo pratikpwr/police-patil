@@ -34,16 +34,6 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
     }
   }
 
-  var isIdentified;
-  String? gender;
-  final List<String> genderTypes = <String>["पुरुष", "स्त्री", "इतर"];
-
-  double longitude = 0.00;
-  double latitude = 0.00;
-
-  File? photo;
-  String photoName = "फोटो जोडा";
-
   Stream<DeathRegisterState> _mapGetDeathDataState(GetDeathData event) async* {
     yield DeathDataLoading();
     try {
@@ -94,17 +84,17 @@ class DeathRegisterBloc extends Bloc<DeathRegisterEvent, DeathRegisterState> {
 
   Stream<DeathRegisterState> _mapDeleteDeathDataState(
       DeleteDeathData event) async* {
-    yield DeathDataSending();
+    yield DeathDataLoading();
     try {
       Response _response = await _deathRepository.deleteDeathData(id: event.id);
 
       if (_response.data["message"] != null) {
         yield DeathDataDeleted();
       } else {
-        yield DeathDataSendError(_response.data["error"]);
+        yield DeathLoadError(_response.data["error"]);
       }
     } catch (err) {
-      yield DeathDataSendError(err.toString());
+      yield DeathLoadError(err.toString());
     }
   }
 }

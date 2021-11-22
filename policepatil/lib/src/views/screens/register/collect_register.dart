@@ -53,8 +53,7 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
         _isEdit ? dateInYYYYMMDDFormat(widget.collect!.date) ?? '' : '';
     _addressController.text = _isEdit ? widget.collect!.address ?? '' : '';
     _detailsController.text = _isEdit ? widget.collect!.description ?? '' : '';
-    photoName =
-        _isEdit ? 'परवान्याचा फोटो जोडलेले आहे' : 'परवान्याचा फोटो जोडा';
+    photoName = _isEdit ? 'फोटो जोडलेले आहे' : 'फोटो जोडा';
     longitude = _isEdit ? widget.collect!.longitude ?? 0.00 : 0.00;
     latitude = _isEdit ? widget.collect!.latitude ?? 0.00 : 0.00;
   }

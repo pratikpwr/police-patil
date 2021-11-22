@@ -34,11 +34,7 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
     }
   }
 
-  double longitude = 0.00;
-  double latitude = 0.00;
 
-  File? photo;
-  String photoName = "फोटो जोडा";
 
   Stream<FireRegisterState> _mapGetFireDataState(GetFireData event) async* {
     yield FireDataLoading();
@@ -89,17 +85,17 @@ class FireRegisterBloc extends Bloc<FireRegisterEvent, FireRegisterState> {
 
   Stream<FireRegisterState> _mapDeleteFireDataState(
       DeleteFireData event) async* {
-    yield FireDataSending();
+    yield FireDataLoading();
     try {
       Response _response = await _fireRepository.deleteFireData(id: event.id);
 
       if (_response.data["message"] != null) {
         yield FireDataDeleted();
       } else {
-        yield FireDataSendError(_response.data["error"]);
+        yield FireLoadError(_response.data["error"]);
       }
     } catch (err) {
-      yield FireDataSendError(err.toString());
+      yield FireLoadError(err.toString());
     }
   }
 }

@@ -20,6 +20,10 @@ class FiresScreen extends StatelessWidget {
           if (state is FireLoadError) {
             showSnackBar(context, state.message);
           }
+          if (state is FireDataDeleted) {
+            showSnackBar(context, DELETED);
+            BlocProvider.of<FireRegisterBloc>(context).add(GetFireData());
+          }
         },
         child: BlocBuilder<FireRegisterBloc, FireRegisterState>(
           builder: (context, state) {
@@ -38,8 +42,70 @@ class FiresScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return FireDetailWidget(
-                              fireData: state.fireResponse.data![index],
+                            final fireData = state.fireResponse.data![index];
+                            return InkWell(
+                              onTap: () {
+                                _showDetails(context, fireData);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        HeadValueText(
+                                            title: PLACE,
+                                            value: fireData.address ?? "-"),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                _navigateToRegister(context,
+                                                    fireData: fireData);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            FireRegisterBloc>(
+                                                        context)
+                                                    .add(DeleteFireData(
+                                                        fireData.id!));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: DATE,
+                                        value: showDate(fireData.date!)),
+                                    HeadValueText(
+                                        title: "आगीचे कारण",
+                                        value: fireData.reason ?? "-"),
+                                    HeadValueText(
+                                        title: "अंदाजे नुकसान",
+                                        value: fireData.loss ?? "-"),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -54,48 +120,22 @@ class FiresScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const FireRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<FireRegisterBloc>(context).add(GetFireData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
   }
-}
 
-class FireDetailWidget extends StatelessWidget {
-  const FireDetailWidget({Key? key, required this.fireData}) : super(key: key);
-  final FireData fireData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeadValueText(title: PLACE, value: fireData.address ?? "-"),
-            HeadValueText(title: DATE, value: showDate(fireData.date!)),
-            HeadValueText(title: "आगीचे कारण", value: fireData.reason ?? "-"),
-            HeadValueText(title: "अंदाजे नुकसान", value: fireData.loss ?? "-"),
-          ],
-        ),
-      ),
-    );
+  _navigateToRegister(BuildContext context, {FireData? fireData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return FireRegFormScreen(fireData: fireData);
+    })).then((value) {
+      BlocProvider.of<FireRegisterBloc>(context).add(GetFireData());
+    });
   }
 
-  _showDetails(BuildContext context) {
+  _showDetails(BuildContext context, FireData fireData) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,

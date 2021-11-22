@@ -33,15 +33,6 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
     }
   }
 
-  String? chosenValue;
-  final List<String> crimesTypes = [
-    "शरीरा विरुद्ध",
-    "माला विरुद्ध",
-    "महिलांविरुद्ध",
-    "अपघात",
-    "इतर अपराध"
-  ];
-
   Stream<CrimeRegisterState> _mapGetCrimeDataState(GetCrimeData event) async* {
     yield CrimeDataLoading();
     try {
@@ -92,17 +83,17 @@ class CrimeRegisterBloc extends Bloc<CrimeRegisterEvent, CrimeRegisterState> {
 
   Stream<CrimeRegisterState> _mapDeleteCrimeDataState(
       DeleteCrimeData event) async* {
-    yield CrimeDataSending();
+    yield CrimeDataLoading();
     try {
       Response _response = await _crimeRepository.deleteCrimeData(id: event.id);
 
       if (_response.data["message"] != null) {
         yield CrimeDataDeleted();
       } else {
-        yield CrimeDataSendError(_response.data["error"]);
+        yield CrimeLoadError(_response.data["error"]);
       }
     } catch (err) {
-      yield CrimeDataSendError(err.toString());
+      yield CrimeLoadError(err.toString());
     }
   }
 }

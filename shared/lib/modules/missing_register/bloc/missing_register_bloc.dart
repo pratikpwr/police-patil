@@ -35,16 +35,6 @@ class MissingRegisterBloc
     }
   }
 
-  var isAbove18;
-  String? gender;
-  final List<String> genderTypes = <String>["पुरुष", "स्त्री", "इतर"];
-
-  double longitude = 0.00;
-  double latitude = 0.00;
-
-  File? photo;
-  String photoName = "फोटो जोडा";
-
   Stream<MissingRegisterState> _mapGetMissingDataState(
       GetMissingData event) async* {
     yield MissingDataLoading();
@@ -97,7 +87,7 @@ class MissingRegisterBloc
 
   Stream<MissingRegisterState> _mapDeleteMissingDataState(
       DeleteMissingData event) async* {
-    yield MissingDataSending();
+    yield MissingDataLoading();
     try {
       Response _response =
           await _missingRepository.deleteMissingData(id: event.id);
@@ -105,10 +95,10 @@ class MissingRegisterBloc
       if (_response.data["message"] != null) {
         yield MissingDeleted();
       } else {
-        yield MissingDataSendError(_response.data["error"]);
+        yield MissingLoadError(_response.data["error"]);
       }
     } catch (err) {
-      yield MissingDataSendError(err.toString());
+      yield MissingLoadError(err.toString());
     }
   }
 }

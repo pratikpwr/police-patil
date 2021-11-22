@@ -23,6 +23,10 @@ class DeathScreen extends StatelessWidget {
           if (state is DeathLoadError) {
             showSnackBar(context, state.message);
           }
+          if (state is DeathDataDeleted) {
+            showSnackBar(context, DELETED);
+            BlocProvider.of<DeathRegisterBloc>(context).add(GetDeathData());
+          }
         },
         child: BlocBuilder<DeathRegisterBloc, DeathRegisterState>(
           builder: (context, state) {
@@ -41,8 +45,71 @@ class DeathScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return DeathDetailWidget(
-                              deathData: state.deathResponse.data![index],
+                            final deathData = state.deathResponse.data![index];
+                            return InkWell(
+                              onTap: () {
+                                _showDetails(context, deathData);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        HeadValueText(
+                                            title: "ओळख पटलेली आहे का ?",
+                                            value:
+                                                deathData.isKnown! ? YES : NO),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                _navigateToRegister(context,
+                                                    deathData: deathData);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            DeathRegisterBloc>(
+                                                        context)
+                                                    .add(DeleteDeathData(
+                                                        deathData.id!));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: "मरणाचे प्राथमिक कारण",
+                                        value: deathData.causeOfDeath ?? "-"),
+                                    HeadValueText(
+                                        title: "कोठे सापडले ठिकाण",
+                                        value: deathData.foundAddress ?? "-"),
+                                    HeadValueText(
+                                        title: "लिंग",
+                                        value: deathData.gender ?? "-"),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -57,55 +124,22 @@ class DeathScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const DeathRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<DeathRegisterBloc>(context).add(GetDeathData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
   }
-}
 
-class DeathDetailWidget extends StatelessWidget {
-  const DeathDetailWidget({Key? key, required this.deathData})
-      : super(key: key);
-  final DeathData deathData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        _showDetails(context);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeadValueText(
-                title: "ओळख पटलेली आहे का ?",
-                value: deathData.isKnown! ? YES : NO),
-            HeadValueText(
-                title: "मरणाचे प्राथमिक कारण",
-                value: deathData.causeOfDeath ?? "-"),
-            HeadValueText(
-                title: "कोठे सापडले ठिकाण",
-                value: deathData.foundAddress ?? "-"),
-            HeadValueText(title: "लिंग", value: deathData.gender ?? "-"),
-          ],
-        ),
-      ),
-    );
+  _navigateToRegister(BuildContext context, {DeathData? deathData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return DeathRegFormScreen(deathData: deathData);
+    })).then((value) {
+      BlocProvider.of<DeathRegisterBloc>(context).add(GetDeathData());
+    });
   }
 
-  _showDetails(BuildContext context) {
+  _showDetails(BuildContext context, DeathData deathData) {
     showModalBottomSheet(
         context: context,
         enableDrag: true,

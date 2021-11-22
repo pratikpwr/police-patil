@@ -7,17 +7,43 @@ import 'package:shared/shared.dart';
 import '../../../views.dart';
 
 class CrimeRegFormScreen extends StatefulWidget {
-  const CrimeRegFormScreen({Key? key}) : super(key: key);
+  CrimeRegFormScreen({Key? key, this.crimesData}) : super(key: key);
+  CrimeData? crimesData;
 
   @override
   _CrimeRegFormScreenState createState() => _CrimeRegFormScreenState();
 }
 
 class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
-  final _bloc = CrimeRegisterBloc();
   final TextEditingController _noController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+  bool _isEdit = false;
+  String? chosenValue;
+  final List<String> crimesTypes = [
+    "शरीरा विरुद्ध",
+    "माला विरुद्ध",
+    "महिलांविरुद्ध",
+    "अपघात",
+    "इतर अपराध"
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeValues();
+  }
+
+  _initializeValues() {
+    /// checks is edit mode or not
+    _isEdit = widget.crimesData != null;
+
+    chosenValue = _isEdit ? widget.crimesData!.type : null;
+    _noController.text = _isEdit ? widget.crimesData!.registerNumber ?? '' : '';
+    _timeController.text = _isEdit ? widget.crimesData!.time ?? '' : '';
+    _dateController.text =
+        _isEdit ? dateInYYYYMMDDFormat(widget.crimesData!.date) : '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +60,11 @@ class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
             showSnackBar(context, state.message);
             Navigator.pop(context);
           }
+          if (state is CrimeDataEdited) {
+            showSnackBar(context, state.message);
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }
         },
         child: SafeArea(
             child: SingleChildScrollView(
@@ -43,12 +74,12 @@ class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
             children: [
               spacer(),
               buildDropButton(
-                  value: _bloc.chosenValue,
-                  items: _bloc.crimesTypes,
+                  value: chosenValue,
+                  items: crimesTypes,
                   hint: "गुन्ह्याचा प्रकार निवडा",
                   onChanged: (String? value) {
                     setState(() {
-                      _bloc.chosenValue = value;
+                      chosenValue = value;
                     });
                   }),
               spacer(),
@@ -58,11 +89,18 @@ class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
               spacer(),
               buildTimeTextField(context, _timeController, TIME),
               spacer(),
-              CustomButton(
-                  text: DO_REGISTER,
-                  onTap: () {
-                    _registerCrimeData();
-                  })
+              BlocBuilder<CrimeRegisterBloc, CrimeRegisterState>(
+                builder: (context, state) {
+                  if (state is CrimeDataSending) {
+                    return const Loading();
+                  }
+                  return CustomButton(
+                      text: DO_REGISTER,
+                      onTap: () {
+                        _registerCrimeData();
+                      });
+                },
+              )
             ],
           ),
         )),
@@ -72,12 +110,16 @@ class _CrimeRegFormScreenState extends State<CrimeRegFormScreen> {
 
   _registerCrimeData() {
     CrimeData _crimeData = CrimeData(
-        type: _bloc.chosenValue!,
+        id: _isEdit ? widget.crimesData!.id : null,
+        type: chosenValue,
         registerNumber: _noController.text,
-        date: parseDate(_dateController.text + " " + _timeController.text,
-            form: "yyyy-MM-dd HH:mm"),
+        date: parseDate(_dateController.text),
         time: _timeController.text);
 
-    BlocProvider.of<CrimeRegisterBloc>(context).add(AddCrimeData(_crimeData));
+    _isEdit
+        ? BlocProvider.of<CrimeRegisterBloc>(context)
+            .add(EditCrimeData(_crimeData))
+        : BlocProvider.of<CrimeRegisterBloc>(context)
+            .add(AddCrimeData(_crimeData));
   }
 }

@@ -57,8 +57,7 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
     _nameController.text = _isEdit ? widget.illegalData!.name ?? '' : '';
     _addressController.text = _isEdit ? widget.illegalData!.address ?? '' : '';
     chosenValue = _isEdit ? widget.illegalData!.type : null;
-    photoName =
-        _isEdit ? 'परवान्याचा फोटो जोडलेले आहे' : 'परवान्याचा फोटो जोडा';
+    photoName = _isEdit ? 'फोटो जोडलेले आहे' : 'फोटो जोडा';
     longitude = _isEdit ? widget.illegalData!.longitude ?? 0.00 : 0.00;
     latitude = _isEdit ? widget.illegalData!.latitude ?? 0.00 : 0.00;
   }

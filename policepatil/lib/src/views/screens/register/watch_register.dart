@@ -52,8 +52,7 @@ class _WatchRegFormScreenState extends State<WatchRegFormScreen> {
     _otherController.text = _isEdit ? widget.watchData!.description ?? '' : '';
     chosenValue = _isEdit ? widget.watchData!.type : null;
     fileName = _isEdit ? 'आधार कार्ड जोडलेले आहे' : 'आधार कार्ड जोडा';
-    photoName =
-        _isEdit ? 'परवान्याचा फोटो जोडलेले आहे' : 'परवान्याचा फोटो जोडा';
+    photoName = _isEdit ? 'फोटो जोडलेले आहे' : 'फोटो जोडा';
     longitude = _isEdit ? widget.watchData!.longitude ?? 0.00 : 0.00;
     latitude = _isEdit ? widget.watchData!.latitude ?? 0.00 : 0.00;
   }

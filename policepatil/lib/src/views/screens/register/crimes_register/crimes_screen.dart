@@ -23,6 +23,10 @@ class CrimesScreen extends StatelessWidget {
             debugPrint(state.message);
             showSnackBar(context, state.message);
           }
+          if (state is CrimeDataDeleted) {
+            showSnackBar(context, DELETED);
+            BlocProvider.of<CrimeRegisterBloc>(context).add(GetCrimeData());
+          }
         },
         child: BlocBuilder<CrimeRegisterBloc, CrimeRegisterState>(
           builder: (context, state) {
@@ -41,8 +45,67 @@ class CrimesScreen extends StatelessWidget {
                           shrinkWrap: true,
                           physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return CrimeDetailWidget(
-                              crimesData: state.crimeResponse.data![index],
+                            final crimesData = state.crimeResponse.data![index];
+                            return InkWell(
+                              onTap: () {},
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: CONTAINER_BACKGROUND_COLOR),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          crimesData.type!,
+                                          style: Styles.primaryTextStyle(),
+                                        ),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                _navigateToRegister(context,
+                                                    crimesData: crimesData);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete_rounded,
+                                                size: 20,
+                                              ),
+                                              onPressed: () {
+                                                BlocProvider.of<
+                                                            CrimeRegisterBloc>(
+                                                        context)
+                                                    .add(DeleteCrimeData(
+                                                        crimesData.id!));
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Divider(),
+                                    HeadValueText(
+                                        title: "गुन्हा रजिस्टर नंबर",
+                                        value:
+                                            crimesData.registerNumber ?? "-"),
+                                    HeadValueText(
+                                        title: DATE,
+                                        value: showDate(crimesData.date!)),
+                                  ],
+                                ),
+                              ),
                             );
                           })),
                 );
@@ -57,45 +120,18 @@ class CrimesScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return const CrimeRegFormScreen();
-          })).then((value) {
-            BlocProvider.of<CrimeRegisterBloc>(context).add(GetCrimeData());
-          });
+          _navigateToRegister(context);
         },
         child: const Icon(Icons.add, size: 24),
       ),
     );
   }
-}
 
-class CrimeDetailWidget extends StatelessWidget {
-  const CrimeDetailWidget({Key? key, required this.crimesData})
-      : super(key: key);
-  final CrimeData crimesData;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: CONTAINER_BACKGROUND_COLOR),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(crimesData.type!, style: Styles.primaryTextStyle()),
-            const Divider(),
-            HeadValueText(
-                title: "गुन्हा रजिस्टर नंबर",
-                value: crimesData.registerNumber ?? "-"),
-            HeadValueText(title: DATE, value: showDate(crimesData.date!)),
-          ],
-        ),
-      ),
-    );
+  _navigateToRegister(BuildContext context, {CrimeData? crimesData}) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) {
+      return CrimeRegFormScreen(crimesData: crimesData);
+    })).then((value) {
+      BlocProvider.of<CrimeRegisterBloc>(context).add(GetCrimeData());
+    });
   }
 }
