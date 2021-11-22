@@ -91,8 +91,7 @@ class MovementData {
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "type": type,
         "subtype": subtype,
         "address": address,
@@ -100,7 +99,7 @@ class MovementData {
         "leader": leader,
         "movement_type": movementType,
         "longitude": longitude,
-        "datetime": datetime!.toIso8601String(),
+        "datetime": datetime == null ? null : datetime!.toIso8601String(),
         "issue": issue! ? 1 : 0,
         "attendance": attendance,
         "description": description,

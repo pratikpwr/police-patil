@@ -443,8 +443,8 @@ class ApiSdk {
 
   static Future<Response> getCertificate({required String params}) async {
     String path = ApiConstants.GET_CERTIFICATE + params;
-    final body = {};
-    Response response = await RestApiHandlerData.postData(path, body);
+    // final body = {};
+    Response response = await RestApiHandlerData.getData(path);
     return response;
   }
 

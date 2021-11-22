@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +21,6 @@ class MovementRegFormScreen extends StatefulWidget {
 }
 
 class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
-  final _bloc = MovementRegisterBloc();
   Position? _position;
   final TextEditingController _countController = TextEditingController();
   final TextEditingController _leaderController = TextEditingController();
@@ -27,6 +28,93 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _otherController = TextEditingController();
+
+  bool _isEdit = false;
+  String? movementValue;
+  String? timeValue;
+  String? movementSubValue;
+  var isIssue;
+  List<String>? movementSubRegTypes;
+
+  double longitude = 0.00;
+  double latitude = 0.00;
+
+  String photoName = "हालचालीचा फोटो जोडा";
+  File? photo;
+  final List<String> timeType = <String>["संभाव्य", "घटित"];
+  final List<String> movementRegTypes = <String>[
+    "राजकीय हालचाली",
+    "धार्मिक हालचाली",
+    "जातीय हालचाली",
+    "सांस्कृतिक हालचाली"
+  ];
+  final List<String> politicalMovements = <String>[
+    "आंदोलने",
+    "सभा",
+    "निवडणुका",
+    "इतर"
+    // "राजकीय संघर्ष/वाद-विवाद"
+  ];
+  final List<String> religionMovements = <String>[
+    "यात्रा/उत्सव",
+    "घेण्यात येणारे कार्यक्रम",
+    "इतर"
+    // "धार्मिक प्रसंगी उद्भवणारे वाद-विवाद"
+  ];
+  final List<String> castMovements = <String>[
+    "कार्यक्रम",
+    "जातीय वाद-विवाद",
+    "जातीय आंदोलने",
+    "इतर"
+  ];
+  final List<String> culturalMovements = <String>[
+    "जयंती/पुण्यतिथी",
+    "सण/उत्सव",
+    "इतर सांस्कृतिक हालचाली"
+  ];
+
+  List<String> getSubList() {
+    if (movementValue == "राजकीय हालचाली") {
+      return politicalMovements;
+    } else if (movementValue == "धार्मिक हालचाली") {
+      return religionMovements;
+    } else if (movementValue == "जातीय हालचाली") {
+      return castMovements;
+    } else if (movementValue == "सांस्कृतिक हालचाली") {
+      return culturalMovements;
+    } else {
+      return ["अगोदर हालचाली प्रकार निवडा"];
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeValues();
+  }
+
+  _initializeValues() {
+    /// checks is edit mode or not
+    _isEdit = widget.movementData != null;
+
+    movementValue = _isEdit ? widget.movementData?.type : null;
+    movementSubRegTypes = getSubList();
+    movementSubValue = _isEdit ? widget.movementData?.subtype : null;
+    timeValue = _isEdit ? widget.movementData?.movementType : null;
+    _dateController.text = _isEdit
+        ? dateInYYYYMMDDFormat(widget.movementData!.datetime) ?? ''
+        : '';
+    _countController.text = _isEdit ? "${widget.movementData?.attendance}" : '';
+    _leaderController.text = _isEdit ? widget.movementData?.leader ?? '' : '';
+    _placeController.text = _isEdit ? widget.movementData?.address ?? '' : '';
+    _otherController.text =
+        _isEdit ? widget.movementData?.description ?? '' : '';
+    isIssue = widget.movementData?.issue;
+    photoName =
+        _isEdit ? 'परवान्याचा फोटो जोडलेले आहे' : 'परवान्याचा फोटो जोडा';
+    longitude = _isEdit ? widget.movementData?.longitude ?? 0.00 : 0.00;
+    latitude = _isEdit ? widget.movementData?.latitude ?? 0.00 : 0.00;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +131,11 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
             showSnackBar(context, state.message);
             Navigator.pop(context);
           }
+          if (state is MovementDataEdited) {
+            showSnackBar(context, state.message);
+            Navigator.pop(context);
+            Navigator.pop(context);
+          }
         },
         child: SafeArea(
           child: SingleChildScrollView(
@@ -52,25 +145,25 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
               children: [
                 spacer(),
                 buildDropButton(
-                    value: _bloc.movementValue,
-                    items: _bloc.movementRegTypes,
+                    value: movementValue,
+                    items: movementRegTypes,
                     hint: "हालचाली प्रकार निवडा",
                     onChanged: (String? value) {
                       setState(() {
-                        _bloc.movementValue = value;
-                        _bloc.movementSubRegTypes = _bloc.getSubList();
-                        _bloc.movementSubValue = null;
+                        movementValue = value;
+                        movementSubRegTypes = getSubList();
+                        movementSubValue = null;
                       });
                     }),
                 spacer(),
-                _bloc.movementValue != null
+                movementValue != null
                     ? buildDropButton(
-                        value: _bloc.movementSubValue,
-                        items: _bloc.movementSubRegTypes!,
+                        value: movementSubValue,
+                        items: movementSubRegTypes!,
                         hint: "हालचाली उपप्रकार निवडा",
                         onChanged: (String? value) {
                           setState(() {
-                            _bloc.movementSubValue = value;
+                            movementSubValue = value;
                           });
                         })
                     : spacer(height: 0),
@@ -83,8 +176,8 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                     onTap: () async {
                       _position = await determinePosition();
                       setState(() {
-                        _bloc.longitude = _position!.longitude;
-                        _bloc.latitude = _position!.latitude;
+                        longitude = _position!.longitude;
+                        latitude = _position!.latitude;
                       });
                     }),
                 spacer(),
@@ -92,28 +185,28 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("$LONGITUDE: ${_bloc.longitude}",
+                    Text("$LONGITUDE: ${longitude}",
                         style: GoogleFonts.poppins(fontSize: 14)),
                     const SizedBox(width: 12),
-                    Text("$LATITUDE: ${_bloc.latitude}",
+                    Text("$LATITUDE: ${latitude}",
                         style: GoogleFonts.poppins(fontSize: 14)),
                   ],
                 ),
                 spacer(),
                 buildDropButton(
-                    value: _bloc.timeValue,
-                    items: _bloc.timeType,
+                    value: timeValue,
+                    items: timeType,
                     hint: "हालचाली स्तिथी निवडा",
                     onChanged: (String? value) {
                       setState(() {
-                        _bloc.timeValue = value;
+                        timeValue = value;
                       });
                     }),
                 spacer(),
-                if (_bloc.timeValue == "संभाव्य")
+                if (timeValue == "संभाव्य")
                   buildDateTextField(context, _dateController, DATE,
                       minTime: DateTime.now()),
-                if (_bloc.timeValue == "घटित")
+                if (timeValue == "घटित")
                   buildDateTextField(context, _dateController, DATE,
                       maxTime: DateTime.now()),
                 spacer(),
@@ -132,10 +225,10 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                           children: [
                             Radio(
                                 value: YES,
-                                groupValue: _bloc.isIssue,
+                                groupValue: isIssue,
                                 onChanged: (value) {
                                   setState(() {
-                                    _bloc.isIssue = value;
+                                    isIssue = value;
                                   });
                                 }),
                             Text(
@@ -151,10 +244,10 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                           children: [
                             Radio(
                                 value: NO,
-                                groupValue: _bloc.isIssue,
+                                groupValue: isIssue,
                                 onChanged: (value) {
                                   setState(() {
-                                    _bloc.isIssue = value;
+                                    isIssue = value;
                                   });
                                 }),
                             Text(
@@ -179,12 +272,12 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
                 ),
                 spacer(),
                 AttachButton(
-                  text: _bloc.photoName,
+                  text: photoName,
                   onTap: () async {
                     getFileFromDevice(context).then((pickedFile) {
                       setState(() {
-                        _bloc.photo = pickedFile;
-                        _bloc.photoName = getFileName(pickedFile!.path);
+                        photo = pickedFile;
+                        photoName = getFileName(pickedFile!.path);
                       });
                     });
                   },
@@ -206,23 +299,29 @@ class _MovementRegFormScreenState extends State<MovementRegFormScreen> {
 
   _registerMovementData() async {
     MovementData _movementData = MovementData(
-        type: _bloc.movementValue,
-        subtype: _bloc.movementSubValue,
-        movementType: _bloc.timeValue,
+        id: _isEdit ? widget.movementData?.id : null,
+        type: movementValue,
+        subtype: movementSubValue,
+        movementType: timeValue,
         leader: _leaderController.text,
         address: _placeController.text,
-        latitude: _bloc.latitude,
-        longitude: _bloc.longitude,
-        datetime: parseDate(_dateController.text + " " + _timeController.text,
-            form: "yyyy-MM-dd HH:mm"),
-        issue: _bloc.isIssue == YES ? true : false,
+        latitude: latitude,
+        longitude: longitude,
+        datetime: _isEdit
+            ? parseDate(_dateController.text)
+            : parseDate(_dateController.text + " " + _timeController.text,
+                form: "yyyy-MM-dd HH:mm"),
+        issue: isIssue == YES ? true : false,
         attendance: parseInt(_countController.text),
         description: _otherController.text,
-        photo: _bloc.photo?.path != null
-            ? await MultipartFile.fromFile(_bloc.photo!.path)
-            : " ");
+        photo: photo?.path != null
+            ? await MultipartFile.fromFile(photo!.path)
+            : null);
 
-    BlocProvider.of<MovementRegisterBloc>(context)
-        .add(AddMovementData(_movementData));
+    _isEdit
+        ? BlocProvider.of<MovementRegisterBloc>(context)
+            .add(EditMovementData(_movementData))
+        : BlocProvider.of<MovementRegisterBloc>(context)
+            .add(AddMovementData(_movementData));
   }
 }

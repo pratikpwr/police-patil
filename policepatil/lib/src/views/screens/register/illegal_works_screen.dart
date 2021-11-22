@@ -66,7 +66,10 @@ class IllegalScreen extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          illegalData.type!,
+                                          illegalData.type! ==
+                                                  "अवैद्य गौण खनिज उत्खनन करणारे वाळू तस्कर"
+                                              ? "अवैद्य वाळू तस्कर"
+                                              : illegalData.type!,
                                           style: Styles.primaryTextStyle(),
                                         ),
                                         Row(

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -35,8 +34,6 @@ class IllegalRegisterBloc
       yield* _mapDeleteIllegalDataState(event);
     }
   }
-
-
 
   Stream<IllegalRegisterState> _mapGetIllegalDataState(
       GetIllegalData event) async* {
@@ -90,7 +87,7 @@ class IllegalRegisterBloc
 
   Stream<IllegalRegisterState> _mapDeleteIllegalDataState(
       DeleteIllegalData event) async* {
-    yield IllegalDataSending();
+    yield IllegalDataLoading();
     try {
       Response _response =
           await _illegalRepository.deleteIllegalData(id: event.id);
@@ -98,10 +95,10 @@ class IllegalRegisterBloc
       if (_response.data["message"] != null) {
         yield IllegalDeleted();
       } else {
-        yield IllegalDataSendError(_response.data["error"]);
+        yield IllegalLoadError(_response.data["error"]);
       }
     } catch (err) {
-      yield IllegalDataSendError(err.toString());
+      yield IllegalLoadError(err.toString());
     }
   }
 }

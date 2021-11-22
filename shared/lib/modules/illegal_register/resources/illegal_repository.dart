@@ -17,7 +17,7 @@ class IllegalRepository {
 
   Future<dynamic> editIllegalData({required IllegalData illegalData}) async {
     Map<String, dynamic> _body = illegalData.toJson();
-    _body['illegalid'] = illegalData.id;
+    _body['illegalworkid'] = illegalData.id;
     _body['_method'] = 'put';
     FormData _formData = FormData.fromMap(_body);
     final response = await ApiSdk.editIllegalRegister(body: _formData);
@@ -25,7 +25,7 @@ class IllegalRepository {
   }
 
   Future<dynamic> deleteIllegalData({required int id}) async {
-    final _body = {'illegalid': id, '_method': 'delete'};
+    final _body = {'illegalworkid': id, '_method': 'delete'};
     final response = await ApiSdk.deleteIllegalRegister(body: _body);
     return response;
   }

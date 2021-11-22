@@ -165,10 +165,12 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
 
   _registerIllegalData() async {
     IllegalData _illegalData = IllegalData(
+      id: widget.illegalData!.id,
       type: chosenValue,
       name: _nameController.text,
-      photo:
-          photo?.path != null ? await MultipartFile.fromFile(photo!.path) : " ",
+      photo: photo?.path != null
+          ? await MultipartFile.fromFile(photo!.path)
+          : null,
       vehicleNo: _vehicleNoController.text,
       address: _addressController.text,
       latitude: latitude,
