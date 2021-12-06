@@ -20,7 +20,8 @@ class CertificatesBloc extends Bloc<CertificatesEvent, CertificatesState> {
     if (event is GetCertificatesDakhala) {
       yield CertificatesLoading();
       try {
-        String params = "?name=${event.name}&age=${event.age}";
+        String params =
+            "?name=${event.name}&age=${event.age}&gender=${event.gender}";
         Response _response =
             await _certificatesRepository.getPoliceDakhala(params);
         if (_response.data["message"] == "Success") {

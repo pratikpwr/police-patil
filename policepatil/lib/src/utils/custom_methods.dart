@@ -12,7 +12,7 @@ import 'package:policepatil/src/config/constants.dart';
 void showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
-        message,
+    message,
     style: Styles.subTitleTextStyle(fontSize: 12),
   )));
 }
@@ -133,7 +133,8 @@ Future<Position> determinePosition() async {
 }
 
 void launchUrl(String url) async {
-  await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  bool canLaunchUrl = await canLaunch(url);
+  await launch(url);
 }
 
 String dateInStringFormat(DateTime? dateTime) {

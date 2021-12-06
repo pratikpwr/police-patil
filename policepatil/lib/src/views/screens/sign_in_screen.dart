@@ -49,7 +49,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     fit: BoxFit.fill,
                   ),
                   Container(
-                    height: _size.height * 0.8,
+                    height: _size.height * 0.82,
                     width: _size.width < 450 ? _size.width : 450,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(16.0),

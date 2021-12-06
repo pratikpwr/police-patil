@@ -28,6 +28,7 @@ const String ILLEGAL_WORKS = "अवैद्य धंदे";
 const String DISASTER_MANAGEMENT = "आपत्ती व्यवस्थापन";
 
 // const String  = "";
+const String GENDER = "लिंग";
 const String NAME = "नाव";
 const String AADHAR = "आधार कार्ड";
 const String MOB_NO = "मोबाईल नंबर";

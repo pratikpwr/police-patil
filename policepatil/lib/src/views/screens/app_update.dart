@@ -119,8 +119,12 @@ class _AppUpdateState extends State<AppUpdate> {
   }
 
   _onUpdateNowClicked() {
-    launchUrl(
-        "https://play.google.com/store/apps/details?id=com.punerural.policepatil");
+    try {
+      launchUrl(
+          "https://play.google.com/store/apps/details?id=com.punerural.policepatil");
+    } catch (e) {
+      showSnackBar(context, SOMETHING_WENT_WRONG);
+    }
   }
 
   _showCompulsoryUpdateDialog(context) async {

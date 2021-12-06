@@ -10,9 +10,11 @@ abstract class CertificatesEvent extends Equatable {
 class GetCertificatesDakhala extends CertificatesEvent {
   final String name;
   final String age;
+  final String gender;
 
-  const GetCertificatesDakhala({required this.name, required this.age});
+  const GetCertificatesDakhala(
+      {required this.name, required this.gender, required this.age});
 
   @override
-  List<Object> get props => [name, age];
+  List<Object> get props => [name, age, gender];
 }

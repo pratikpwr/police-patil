@@ -109,7 +109,6 @@ class NewsWidget extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-        alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
@@ -137,7 +136,7 @@ class NewsWidget extends StatelessWidget {
                       },
                       icon: const Icon(
                         Icons.attach_file_rounded,
-                        size: 22,
+                        size: 20,
                       ))
               ],
             ),

@@ -16,6 +16,9 @@ class _PatilCertificateState extends State<PatilCertificate> {
   final _nameController = TextEditingController();
   final _ageController = TextEditingController();
 
+  String? gender;
+  final List<String> genderTypes = <String>["पुरुष", "स्त्री", "इतर"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +29,11 @@ class _PatilCertificateState extends State<PatilCertificate> {
             showSnackBar(context, state.error);
           }
           if (state is CertificatesSuccess) {
-            launchUrl("https://${state.link}");
+            try {
+              launchUrl("https://${state.link}");
+            } catch (e) {
+              showSnackBar(context, SOMETHING_WENT_WRONG);
+            }
           }
         },
         child: SafeArea(
@@ -40,6 +47,16 @@ class _PatilCertificateState extends State<PatilCertificate> {
                 spacer(),
                 buildTextField(_ageController, AGE),
                 spacer(),
+                buildDropButton(
+                    value: gender,
+                    items: genderTypes,
+                    hint: "लिंग निवडा",
+                    onChanged: (String? value) {
+                      setState(() {
+                        gender = value;
+                      });
+                    }),
+                spacer(),
                 BlocBuilder<CertificatesBloc, CertificatesState>(
                   builder: (context, state) {
                     if (state is CertificatesLoading) {
@@ -51,6 +68,7 @@ class _PatilCertificateState extends State<PatilCertificate> {
                           BlocProvider.of<CertificatesBloc>(context).add(
                               GetCertificatesDakhala(
                                   name: _nameController.text,
+                                  gender: gender ?? "-",
                                   age: _ageController.text));
                         });
                   },

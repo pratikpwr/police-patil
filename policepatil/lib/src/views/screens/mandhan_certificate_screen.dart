@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:policepatil/src/config/constants.dart';
 import 'package:policepatil/src/utils/utils.dart';
 import 'package:policepatil/src/views/views.dart';
 import 'package:shared/shared.dart';
@@ -24,9 +25,11 @@ class _SelfCertificateScreenState extends State<SelfCertificateScreen> {
             showSnackBar(context, state.error);
           }
           if (state is MandhanSuccess) {
-            launchUrl("https://${state.link}");
-            // Navigator.of(context).pop();
-
+            try {
+              launchUrl("https://${state.link}");
+            } catch (e) {
+              showSnackBar(context, SOMETHING_WENT_WRONG);
+            }
           }
         },
         child: SafeArea(
