@@ -164,7 +164,7 @@ class _IllegalWorksFormScreenState extends State<IllegalWorksFormScreen> {
 
   _registerIllegalData() async {
     IllegalData _illegalData = IllegalData(
-      id: widget.illegalData!.id,
+      id: _isEdit ? widget.illegalData?.id : null,
       type: chosenValue,
       name: _nameController.text,
       photo: photo?.path != null

@@ -9,7 +9,7 @@ class ImageConstants {
 
   // String museTransparent = 'assets/muse.png';
   // static String IMG_POLICE_LOGO = "assets/logo_no_bg.png";
-  static String IMG_POLICE_LOGO = "assets/police patil.jpeg";
+  static String IMG_POLICE_LOGO = "assets/police patil.png";
   static String IMG_PLACEHOLDER = "assets/feed.png";
   static String UPDATES = "assets/newspaper.png";
   static String IMG_SHAPES_3 = "assets/back_2.png";

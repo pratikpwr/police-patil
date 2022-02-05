@@ -162,7 +162,7 @@ class _CollectRegFormScreenState extends State<CollectRegFormScreen> {
 
   _registerCollectionData(BuildContext context) async {
     CollectionData _collectionData = CollectionData(
-      id: widget.collect?.id,
+      id: _isEdit ? widget.collect?.id : null,
       type: chosenValue!,
       address: _addressController.text,
       date: parseDate(_dateController.text),

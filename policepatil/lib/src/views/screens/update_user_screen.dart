@@ -42,7 +42,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     // _photo.path = user.photo ?? "";
 
     _nameController.text = user.name ?? "";
-    _mobileController.text = "${user.mobile ?? 0}";
+    _mobileController.text = "${user.mobile ?? ''}";
     _addressController.text = user.address ?? "";
     _orderNoController.text = user.orderNo ?? "";
     _distanceController.text = "${user.psdistance ?? 0}";
@@ -154,7 +154,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     final user = UserData(
         name: _nameController.text,
         address: _addressController.text,
-        mobile: parseInt(_mobileController.text),
+        mobile: parseInt(_mobileController.text) ?? null,
         photo: _photo?.path != null
             ? await MultipartFile.fromFile(_photo!.path)
             : null,
