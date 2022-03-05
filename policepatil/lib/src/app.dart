@@ -1,9 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:policepatil/src/config/constants.dart';
-import 'package:policepatil/src/config/theme_data.dart';
-import 'package:policepatil/src/routes/routes.dart';
-import 'package:shared/shared.dart';
+
+import 'core/app/bloc_providers.dart';
+import 'core/config/constants.dart';
+import 'core/config/theme_data.dart';
+import 'core/routes/routes.dart';
+import 'features/alert_wall/bloc/alert_bloc.dart';
+import 'features/app_version/bloc/app_version_bloc.dart';
+import 'features/arms_register/bloc/arms_register_bloc.dart';
+import 'features/authentication/bloc/authentication_bloc.dart';
+import 'features/certificates/bloc/certificates_bloc.dart';
+import 'features/collection_register/bloc/collect_register_bloc.dart';
+import 'features/crime_register/bloc/crime_register_bloc.dart';
+import 'features/death_register/bloc/death_register_bloc.dart';
+import 'features/disaster_helper/bloc/disaster_helper_bloc.dart';
+import 'features/disaster_register/bloc/disaster_register_bloc.dart';
+import 'features/disaster_tools/bloc/disaster_tools_bloc.dart';
+import 'features/fire_register/bloc/fire_register_bloc.dart';
+import 'features/illegal_register/bloc/illegal_register_bloc.dart';
+import 'features/kayade/bloc/kayade_bloc.dart';
+import 'features/mandhan/bloc/mandhan_bloc.dart';
+import 'features/missing_register/bloc/missing_register_bloc.dart';
+import 'features/movement_register/bloc/movement_register_bloc.dart';
+import 'features/news/bloc/news_bloc.dart';
+import 'features/profile/bloc/profile_bloc.dart';
+import 'features/public_place_register/bloc/public_place_register_bloc.dart';
+import 'features/village_ps_list/bloc/village_pslist_bloc.dart';
+import 'features/village_safety/bloc/village_safety_bloc.dart';
+import 'features/watch_register/bloc/watch_register_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -44,5 +68,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-//  TODO : too many bugs in edit feature

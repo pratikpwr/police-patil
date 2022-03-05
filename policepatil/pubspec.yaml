@@ -22,22 +22,25 @@ dependencies:
   dropdown_search: ^2.0.1
 
   # Network
+  dio: ^4.0.0
+  http: ^0.13.3
+  connectivity: ^3.0.6
   url_launcher: ^6.0.18
 
   # Util
   intl: ^0.17.0
   geolocator: ^8.0.5
+  shared_preferences: ^2.0.7
   flutter_datetime_picker: ^1.5.1 # simple date picker
   file_picker: ^4.3.3
   image_picker: ^0.8.4+2
   path: ^1.8.0
 
-  # Local
-  shared:
-    path: '../shared'
-  api:
-    path: '../api'
-
+  bloc: ^7.1.0 # do not update to 8.0.0 and above or else refactor
+  equatable: ^2.0.3
+  meta: ^1.7.0
+  package_info: ^2.0.2
+  pub_semver: ^2.1.0
 
 dev_dependencies:
   flutter_test:

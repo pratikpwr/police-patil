@@ -1,0 +1,89 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:equatable/equatable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/user.dart';
+import '../resources/authentication_repository.dart';
+
+part 'authentication_event.dart';
+
+part 'authentication_state.dart';
+
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
+  AuthenticationBloc() : super(AuthenticationInitial());
+  final AuthenticationRepository authenticationService =
+      AuthenticationRepository();
+
+  @override
+  Stream<AuthenticationState> mapEventToState(
+      AuthenticationEvent event) async* {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    if (event is AppLoadedUp) {
+      yield* _mapAppSignUpLoadedState(event);
+    }
+
+    if (event is UserLogin) {
+      yield* _mapUserLoginState(event);
+    }
+    if (event is UserLogOut) {
+      sharedPreferences.setString('authToken', '');
+      sharedPreferences.setInt('userId', 0);
+      yield UserLogoutState();
+    }
+  }
+
+  Stream<AuthenticationState> _mapAppSignUpLoadedState(
+      AppLoadedUp event) async* {
+    yield AuthenticationLoading();
+    try {
+      // a simulated delay for splash
+      // await Future.delayed(const Duration(milliseconds: 5));
+      final SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      String? authToken = sharedPreferences.getString('authToken');
+      if (authToken != "" && authToken != null) {
+        yield AppAuthenticated();
+      } else {
+        yield AuthenticationStart();
+      }
+    } catch (e) {
+      yield AuthenticationFailure(message: e.toString());
+    }
+  }
+
+  Stream<AuthenticationState> _mapUserLoginState(UserLogin event) async* {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    yield AuthenticationLoading();
+    try {
+      Response response = await authenticationService.loginWithEmailAndPassword(
+          event.email, event.password);
+      if (response.data["error"] == null) {
+        final currentUser = UserModel.fromJson(response.data);
+        if (currentUser != null) {
+          if (currentUser.user!.role == "pp") {
+            sharedPreferences.setString('authToken', currentUser.accessToken!);
+            sharedPreferences.setInt("userId", currentUser.user!.id!);
+            sharedPreferences.setInt(
+                'policeStationId', currentUser.user!.psid!);
+            yield AppAuthenticated();
+          } else {
+            yield const AuthenticationFailure(
+                message: "Invalid Login Credentials.");
+          }
+        } else {
+          yield AuthenticationNotAuthenticated();
+        }
+      } else {
+        yield AuthenticationFailure(message: response.data["error"]);
+      }
+    } catch (e) {
+      yield AuthenticationFailure(message: e.toString());
+    }
+  }
+}
