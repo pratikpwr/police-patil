@@ -3,10 +3,10 @@ description: Pune Police Gramin Police-Patil App
 
 publish_to: 'none'
 
-version: 1.0.2
+version: 1.0.3
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
+  sdk: ">=2.16.0-134.5.beta <3.0.0"
 
 dependencies:
   flutter:
@@ -45,6 +45,7 @@ dev_dependencies:
 
   flutter_native_splash: ^2.0.1+1
   flutter_lints: ^1.0.4
+  flutter_launcher_icons_maker: "^0.10.1"
 
 flutter:
 
@@ -63,3 +64,9 @@ flutter_native_splash:
   android_gravity: fill
   ios_content_mode: scaleAspectFill
   # command - flutter pub run flutter_native_splash:create
+
+flutter_icons:
+  android: true
+  ios: true
+  web: true
+  image_path: "assets/police patil.png"

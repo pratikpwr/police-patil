@@ -21,6 +21,9 @@
       <excludeFolder url="file://$MODULE_DIR$/shared/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/shared/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/shared/build" />
+      <excludeFolder url="file://$MODULE_DIR$/policepatilapp/build" />
+      <excludeFolder url="file://$MODULE_DIR$/policepatilapp/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/policepatilapp/.pub" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
