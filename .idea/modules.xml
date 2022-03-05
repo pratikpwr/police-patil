@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/policepatil.iml" filepath="$PROJECT_DIR$/.idea/policepatil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/policepatil_android.iml" filepath="$PROJECT_DIR$/android/policepatil_android.iml" />
     </modules>
   </component>
 </project>

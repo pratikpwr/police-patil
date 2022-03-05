@@ -13,7 +13,6 @@
       <excludeFolder url="file://$MODULE_DIR$/api/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/api/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/api/build" />
-      <excludeFolder url="file://$MODULE_DIR$/policepatil/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/policepatil/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/policepatil/build" />
       <excludeFolder url="file://$MODULE_DIR$/sdk/.pub" />
@@ -24,10 +23,14 @@
       <excludeFolder url="file://$MODULE_DIR$/policepatilapp/build" />
       <excludeFolder url="file://$MODULE_DIR$/policepatilapp/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/policepatilapp/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+      <excludeFolder url="file://$MODULE_DIR$/.dart_tool" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />
     <orderEntry type="library" name="Dart Packages" level="project" />
+    <orderEntry type="library" name="Flutter Plugins" level="project" />
   </component>
 </module>
